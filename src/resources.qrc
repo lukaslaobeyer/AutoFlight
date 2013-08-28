@@ -1,0 +1,28 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+	<qresource>
+		<file>resources/icon.png</file>
+		<file>resources/autoflight.png</file>
+		
+		<file>resources/autoscript.png</file>
+		
+		
+		<file>resources/indicator_gyroYAW_128x128.png</file>
+		<file>resources/indicator_gyroPITCH_128x128.png</file>
+		<file>resources/indicator_gyroROLL_128x128.png</file>
+		<file>resources/speedometer_160x160.png</file>
+		<file>resources/speedometer-needle_160x160.png</file>
+		
+		<file>resources/controller_button-only.png</file>
+		<file>resources/controller_button.png</file>
+		<file>resources/controller_stick.png</file>
+		
+		<file>resources/as_save.png</file>
+		<file>resources/as_open.png</file>
+		<file>resources/as_sim.png</file>
+		<file>resources/as_exec.png</file>
+		<file>resources/as_abort.png</file>
+		<file>resources/as_landonerror.png</file>
+		<file>resources/as_errormarker.png</file>
+	</qresource>
+</RCC>

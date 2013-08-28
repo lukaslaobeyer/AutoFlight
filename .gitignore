@@ -1,0 +1,8 @@
+*~
+
+.project
+.cproject
+.settings/
+
+release_linux/
+release_windows/
