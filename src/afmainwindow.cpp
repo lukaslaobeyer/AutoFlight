@@ -367,6 +367,18 @@ bool AFMainWindow::eventFilter(QObject *watched, QEvent* e)
 					}
 					_af->ardrone()->drone_toggleRecording();
 					break;
+				case Qt::Key_N:
+					// Start/stop Recording Sensor Data
+					if(_af->ardrone()->drone_isRecordingNavdata())
+					{
+						showMessage("Stopped recording sensor data");
+					}
+					else
+					{
+						showMessage("Recording sensor data");
+					}
+					_af->ardrone()->drone_toggleRecordingNavdata();
+					break;
 				case Qt::Key_V:
 					// Change View
 					showMessage("Switching view");

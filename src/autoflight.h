@@ -16,9 +16,9 @@ class AutoFlight
 		ASEngine *asengine();
 
 		static std::string getProgramDirectory(); // Returns the directory where the AutoFlight executable is (needed to find support files)
-
+		static std::string getHomeDirectory();
 	private:
-		ARDrone _drone;
+		ARDrone *_drone = NULL;
 		ASEngine *_ase = NULL;
 };
 

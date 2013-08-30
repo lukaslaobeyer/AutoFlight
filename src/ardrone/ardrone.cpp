@@ -22,20 +22,22 @@
 #include <thread>
 #include <cmath>
 
+#include <boost/filesystem.hpp>
+
 #ifndef M_PI
 	#define M_PI 3.141592653589793238462643383279502884197169399375105820974944592307816406
 #endif
 
 using namespace std;
 
-ARDrone::ARDrone()
-{
-	_ip = ardrone::DEFAULT_IP;
-}
+ARDrone::ARDrone() : ARDrone(ardrone::DEFAULT_IP) {}
 
 ARDrone::ARDrone(string ip)
 {
 	_ip = ip;
+	_saveDir = "";
+
+	addNavdataListener(&_ndrecorder);
 }
 
 ARDrone::~ARDrone()
@@ -49,6 +51,15 @@ ARDrone::~ARDrone()
 void ARDrone::setIP(string ip)
 {
 	_ip = ip;
+}
+
+void ARDrone::setSaveDirectory(string saveDir)
+{
+	_saveDir = saveDir;
+	if(_saveDir.back() != '/' && _saveDir.back() != '\\')
+	{
+		_saveDir.append("/");
+	}
 }
 
 int ARDrone::connect()
@@ -795,6 +806,65 @@ bool ARDrone::drone_stopRecordingOnUSB()
 	return true;
 }
 
+bool ARDrone::drone_startRecordingNavdata()
+{
+	if(!isConnected())
+	{
+		return false;
+	}
+
+	string nddirectory = _saveDir;
+	nddirectory.append("SensorData/");
+
+	// Create the dirextory if it doesn't exist
+	boost::filesystem::create_directories(nddirectory);
+
+	const boost::posix_time::ptime now= boost::posix_time::second_clock::local_time();
+	string timestamp = to_iso_timestamp(now);
+
+	string filename = "Sen_";
+	filename.append(timestamp);
+	filename.append(".csv");
+
+	_isRecordingNavdata = _ndrecorder.startRecording(nddirectory + filename);
+
+	return _isRecordingNavdata;
+}
+
+bool ARDrone::drone_stopRecordingNavdata()
+{
+	if(!isConnected())
+	{
+		return false;
+	}
+
+	_isRecordingNavdata = _ndrecorder.stopRecording();
+
+	return !_isRecordingNavdata;
+}
+
+bool ARDrone::drone_toggleRecordingNavdata()
+{
+	if(!isConnected())
+	{
+		return false;
+	}
+
+	if(_isRecordingNavdata)
+	{
+		return drone_stopRecordingNavdata();
+	}
+	else
+	{
+		return drone_startRecordingNavdata();
+	}
+}
+
+bool ARDrone::drone_isRecordingNavdata()
+{
+	return _isRecordingNavdata;
+}
+
 bool ARDrone::drone_takeOff()
 {
 	if(!isConnected())
@@ -849,6 +919,12 @@ bool ARDrone::drone_takePicture()
 		return false;
 	}
 
+	string picdirectory = _saveDir;
+	picdirectory.append("Pictures/");
+
+	// Create the dirextory if it doesn't exist
+	boost::filesystem::create_directories(picdirectory);
+
 	const boost::posix_time::ptime now= boost::posix_time::second_clock::local_time();
 	string timestamp = to_iso_timestamp(now);
 
@@ -856,7 +932,7 @@ bool ARDrone::drone_takePicture()
 	filename.append(timestamp);
 	filename.append(".jpg");
 
-	_vm.takePicture(filename);
+	_vm.takePicture(picdirectory + filename);
 
 	return true;
 }
@@ -871,6 +947,12 @@ bool ARDrone::drone_startRecording()
 	// Tell the drone to start sending the record stream
 	drone_setConfiguration(ardrone::config::VIDEO_CODEC, ardrone::config::codec::MP4_360P_H264_720P);
 
+	string videodirectory = _saveDir;
+	videodirectory.append("Videos/");
+
+	// Create the dirextory if it doesn't exist
+	boost::filesystem::create_directories(videodirectory);
+
 	const boost::posix_time::ptime now = boost::posix_time::second_clock::local_time();
 	string timestamp = to_iso_timestamp(now);
 
@@ -880,7 +962,7 @@ bool ARDrone::drone_startRecording()
 
 	try
 	{
-		if(_vm.startRecording(filename))
+		if(_vm.startRecording(videodirectory + filename))
 		{
 			_isRecording = true;
 		}

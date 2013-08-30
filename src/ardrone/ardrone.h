@@ -10,6 +10,7 @@
 #include "controllink.h"
 #include "navdata/navdatamanager.h"
 #include "navdata/inavdatalistener.h"
+#include "navdata/navdatarecorder.h"
 #include "video/videomanager.h"
 #include "video/ivideolistener.h"
 #include "atcommands/atcommand.h"
@@ -30,6 +31,7 @@ class ARDrone
 		~ARDrone();
 		
 		void setIP(std::string ip);
+		void setSaveDirectory(std::string saveDir);
 
 		int connect(); // Returns a code defined in afconstants.h
 		bool isConnected();
@@ -50,12 +52,16 @@ class ARDrone
 		float drone_getBatteryStatus();
 		bool drone_isRecordingOnUSB();
 		bool drone_isRecording();
+		bool drone_isRecordingNavdata();
 		bool drone_isFlying();
 
 		bool drone_takePicture();
 		bool drone_startRecording();
 		bool drone_stopRecording();
 		bool drone_toggleRecording();
+		bool drone_startRecordingNavdata();
+		bool drone_stopRecordingNavdata();
+		bool drone_toggleRecordingNavdata();
 
 		bool drone_move(float phi, float theta, float gaz, float yaw);
 		bool drone_setPhi(float phi);
@@ -86,14 +92,17 @@ class ARDrone
 
 		std::string _ip;
 		boost::asio::io_service _io_service;
+		std::string _saveDir;
 		ControlLink _cl;
 		NavdataManager _nm;
 		VideoManager _vm;
+		NavdataRecorder _ndrecorder;
 		std::vector<INavdataListener *> _ndlisteners;
 		std::vector<IVideoListener *> _vlisteners;
 		ControllerConfiguration *_controllerconfig = NULL;
 		int _currentView;
 		bool _isRecording = false;
+		bool _isRecordingNavdata = false;
 		bool _stop_flag = false;
 		bool _connected = false;
 		AFNavdata *_nd = NULL;
