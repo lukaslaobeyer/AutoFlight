@@ -42,6 +42,7 @@ class ARDrone
 		void setControllerConfiguration(ControllerConfiguration *config);
 
 		ardrone::orientation drone_getOrientation();
+		float drone_getRelativeHeading(bool clockwise = true);
 		ardrone::linearvelocity drone_getLinearVelocity();
 		float drone_getAltitude();
 		ardrone::position drone_getPosition();

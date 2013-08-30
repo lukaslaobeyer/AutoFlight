@@ -383,6 +383,33 @@ ardrone::orientation ARDrone::drone_getOrientation()
 	return o;
 }
 
+float ARDrone::drone_getRelativeHeading(bool clockwise)
+{
+	ardrone::orientation o = drone_getOrientation();
+	float heading = o.yaw;
+
+	if(clockwise)
+	{
+		if(heading < 0)
+		{
+			heading += 360;
+		}
+	}
+	else
+	{
+		if(heading >= 0)
+		{
+			heading = 360 - heading;
+		}
+		else
+		{
+			heading *= -1;
+		}
+	}
+
+	return heading;
+}
+
 ardrone::linearvelocity ARDrone::drone_getLinearVelocity()
 {
 	if(!isConnected())
