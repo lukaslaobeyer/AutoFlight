@@ -1,4 +1,5 @@
 #include "../afconstants.h"
+#include "../autoflight.h"
 #include "ardrone.h"
 
 #include "atcommands/configcommand.h"
@@ -819,8 +820,7 @@ bool ARDrone::drone_startRecordingNavdata()
 	// Create the dirextory if it doesn't exist
 	boost::filesystem::create_directories(nddirectory);
 
-	const boost::posix_time::ptime now= boost::posix_time::second_clock::local_time();
-	string timestamp = to_iso_timestamp(now);
+	string timestamp = AutoFlight::af_timestamp();
 
 	string filename = "Sen_";
 	filename.append(timestamp);
@@ -925,8 +925,7 @@ bool ARDrone::drone_takePicture()
 	// Create the dirextory if it doesn't exist
 	boost::filesystem::create_directories(picdirectory);
 
-	const boost::posix_time::ptime now= boost::posix_time::second_clock::local_time();
-	string timestamp = to_iso_timestamp(now);
+	string timestamp = AutoFlight::af_timestamp();
 
 	string filename = "Pic_";
 	filename.append(timestamp);
@@ -953,8 +952,7 @@ bool ARDrone::drone_startRecording()
 	// Create the dirextory if it doesn't exist
 	boost::filesystem::create_directories(videodirectory);
 
-	const boost::posix_time::ptime now = boost::posix_time::second_clock::local_time();
-	string timestamp = to_iso_timestamp(now);
+	string timestamp = AutoFlight::af_timestamp();
 
 	string filename = "Vid_";
 	filename.append(timestamp);
@@ -1017,14 +1015,4 @@ bool ARDrone::drone_toggleRecording()
 	}
 
 	return true;
-}
-
-string ARDrone::to_iso_timestamp(boost::posix_time::ptime time)
-{
-	stringstream timestamp;
-	timestamp << setw(4) << setfill('0') << time.date().year() << setw(2) << time.date().month() << setw(2) << time.date().day();
-	timestamp << "T";
-	timestamp << setw(2) << time.time_of_day().hours() << setw(2) << time.time_of_day().minutes() << setw(2) << time.time_of_day().seconds();
-
-	return timestamp.str();
 }

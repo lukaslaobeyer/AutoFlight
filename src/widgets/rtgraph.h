@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QLabel>
 #include <string>
-#include "../qcustomplot/qcustomplot.h"
+#include <qcustomplot/qcustomplot.h>
 
 class RTGraph : public QWidget
 {

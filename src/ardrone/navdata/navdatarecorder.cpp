@@ -1,4 +1,5 @@
 #include "navdatarecorder.h"
+#include "../../autoflight.h"
 #include <iostream>
 
 using namespace std;
@@ -68,21 +69,10 @@ void NavdataRecorder::navdataAvailable(AFNavdata *nd)
 			_headerWritten = true;
 		}
 
-		const boost::posix_time::ptime now = boost::posix_time::second_clock::local_time();
-		string timestamp = to_iso_timestamp(now);
+		string timestamp = AutoFlight::af_timestamp();
 
 		recordFile << timestamp << "; " << nd->vbatpercentage << "; " << nd->wifipercentage << "; " << nd->altitude << "; "
 				   << nd->psi << "; " << nd->theta << "; " << nd->phi << "; " << nd->vx << "; " << nd->vy << "; " << nd->vz
 				   << "; " << nd->ax << "; " << nd->ay << "; " << nd->az << endl;
 	}
-}
-
-string NavdataRecorder::to_iso_timestamp(boost::posix_time::ptime time)
-{
-	stringstream timestamp;
-	timestamp << setw(4) << setfill('0') << time.date().year() << setw(2) << time.date().month() << setw(2) << time.date().day();
-	timestamp << "T";
-	timestamp << setw(2) << time.time_of_day().hours() << setw(2) << time.time_of_day().minutes() << setw(2) << time.time_of_day().seconds();
-
-	return timestamp.str();
 }

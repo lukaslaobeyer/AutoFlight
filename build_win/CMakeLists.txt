@@ -31,7 +31,7 @@ find_package(Qt5WebKitWidgets)
 
 # Find the Boost libraries
 set(Python_ADDITIONAL_VERSIONS 3)
-find_package(Boost 1.53 COMPONENTS python python3 system thread chrono REQUIRED)
+find_package(Boost 1.53 COMPONENTS python python3 system thread chrono date_time REQUIRED)
 include_directories(${Boost_INCLUDE_DIR})
 
 # Needed on Windows
@@ -74,8 +74,13 @@ file(GLOB AutoFlight_SRC
     "../src/ardrone/video/*.cpp"
     "../src/autoscript/*.h"
     "../src/autoscript/*.cpp"
-    "../src/qcustomplot/qcustomplot.h"
-    "../src/qcustomplot/qcustomplot.cpp"
+    "../src/tools/*.h"
+    "../src/tools/*.cpp"
+    
+    "../lib/include/qcustomplot/*.h"
+    "../lib/include/qcustomplot/*.cpp"
+    "../lib/include/pugixml/*.hpp"
+    "../lib/include/pugixml/*.cpp"
 )
 
 # Add the resources

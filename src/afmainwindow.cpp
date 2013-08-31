@@ -502,5 +502,6 @@ void AFMainWindow::closeEvent(QCloseEvent *event)
 {
 	_af->ardrone()->removeNavdataListener(this);
 	_af->ardrone()->removeVideoListener(this);
+	_af->saveSession();
 	//TODO: exit confirmation dialog, etc.
 }

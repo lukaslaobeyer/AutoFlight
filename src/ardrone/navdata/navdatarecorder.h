@@ -22,8 +22,6 @@ class NavdataRecorder : public INavdataListener
 		std::ofstream recordFile;
 		bool _record = false;
 		bool _headerWritten = false;
-
-		std::string to_iso_timestamp(boost::posix_time::ptime time);
 };
 
 #endif

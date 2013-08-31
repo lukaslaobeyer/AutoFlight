@@ -88,7 +88,6 @@ class ARDrone
 	private:
 		void runUpdateLoop();
 		void processControllerInput();
-		std::string to_iso_timestamp(boost::posix_time::ptime);
 
 		std::string _ip;
 		boost::asio::io_service _io_service;

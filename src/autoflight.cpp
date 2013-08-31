@@ -2,6 +2,7 @@
 #include "afconstants.h"
 
 #include <iostream>
+#include <boost/filesystem.hpp>
 #include <QCoreApplication>
 #include <QDir>
 
@@ -14,6 +15,8 @@ AutoFlight::AutoFlight()
 
 	_drone->setIP(ardrone::DEFAULT_IP);
 	_drone->setSaveDirectory(getHomeDirectory().append("AutoFlightSaves/"));
+
+	_srec = new SessionRecorder(_sessionRecDoc);
 }
 
 AutoFlight::~AutoFlight()
@@ -56,6 +59,11 @@ ASEngine *AutoFlight::asengine()
 	return _ase;
 }
 
+SessionRecorder *AutoFlight::sessionrecorder()
+{
+	return _srec;
+}
+
 bool AutoFlight::attemptConnectionToDrone()
 {
 	int connected = _drone->connect();
@@ -92,4 +100,32 @@ bool AutoFlight::attemptConnectionToDrone()
 	{
 		return false;
 	}
+}
+
+void AutoFlight::saveSession()
+{
+	string filename = "AF_";
+	filename.append(AutoFlight::af_timestamp());
+	filename.append(".xml");
+
+	string sessiondir = getHomeDirectory();
+	sessiondir.append("AutoFlightSaves/Sessions/");
+
+	boost::filesystem::create_directories(sessiondir);
+
+	cout << "Saving session under " << (sessiondir + filename) << endl;
+
+	_sessionRecDoc.save_file((sessiondir + filename).c_str());
+}
+
+string AutoFlight::af_timestamp()
+{
+	const boost::posix_time::ptime time = boost::posix_time::second_clock::local_time();
+
+	stringstream timestamp;
+	timestamp << setw(4) << setfill('0') << time.date().year() << setw(2) << time.date().month() << setw(2) << time.date().day();
+	timestamp << "T";
+	timestamp << setw(2) << time.time_of_day().hours() << setw(2) << time.time_of_day().minutes() << setw(2) << time.time_of_day().seconds();
+
+	return timestamp.str();
 }
