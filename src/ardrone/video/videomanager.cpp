@@ -199,13 +199,14 @@ void VideoManager::packetReceived(const boost::system::error_code &error, size_t
 				if(_pave.payload_size >= BUFFER_MAX_SIZE)
 				{
 					// Frame to big for buffer. Should never happen.
+					startReceive();
 					return;
 				}
 
 				if(_pave.payload_size + _pave.header_size == bytes_transferred)
 				{
 					// Full frame received
-					memmove(&_rawFrame, &_receivedDataBuffer[_pave.header_size], bytes_transferred - _pave.header_size); // Copy the frame to the buffer, and remove the PaVE header
+					memcpy(&_rawFrame, &_receivedDataBuffer[_pave.header_size], bytes_transferred - _pave.header_size); // Copy the frame to the buffer, and remove the PaVE header
 					frame_ready = true;
 					reconstructed_frame_write_position = -1; // No reconstruction needed when a full frame is received, so set this variables to -1
 					_frame_size = _pave.payload_size;
@@ -213,7 +214,7 @@ void VideoManager::packetReceived(const boost::system::error_code &error, size_t
 				else if(_pave.payload_size + _pave.header_size > bytes_transferred)
 				{
 					// Frame seems to be split over more than one packet
-					memmove(&_rawFrame, &_receivedDataBuffer[_pave.header_size], bytes_transferred - _pave.header_size);  // Copy the partial frame to the buffer, and remove the PaVE header
+					memcpy(&_rawFrame, &_receivedDataBuffer[_pave.header_size], bytes_transferred - _pave.header_size);  // Copy the partial frame to the buffer, and remove the PaVE header
 					frame_ready = false;
 					reconstructed_frame_write_position = bytes_transferred - _pave.header_size;
 					_frame_size = _pave.payload_size;
@@ -224,13 +225,24 @@ void VideoManager::packetReceived(const boost::system::error_code &error, size_t
 				if(frame_ready == false && reconstructed_frame_write_position >= 0 && _frame_size >= 0)
 				{
 					// Data seems to be a part of a split packet: add received data
-					memmove(&_rawFrame[reconstructed_frame_write_position], &_receivedDataBuffer, (unsigned long int) bytes_transferred);
+					memcpy(&_rawFrame[reconstructed_frame_write_position], &_receivedDataBuffer, (unsigned long int) bytes_transferred);
 
 					if(_frame_size == reconstructed_frame_write_position + bytes_transferred)
 					{
 						// Frame has been completely received
 						frame_ready = true;
 						reconstructed_frame_write_position = -1;
+					}
+					else if(_frame_size < reconstructed_frame_write_position + bytes_transferred)
+					{
+						// Something strange happened: Discard the frame
+						cout << "[Error] Frame size should be " << _frame_size << " but is " << (reconstructed_frame_write_position + bytes_transferred) << endl;
+						reconstructed_frame_write_position = -1;
+
+						// Try next frame
+						_status = READY;
+						startReceive();
+						return;
 					}
 					else
 					{
@@ -278,13 +290,14 @@ void VideoManager::recording_packetReceived(const boost::system::error_code &err
 				if(_recording_pave.payload_size >= BUFFER_MAX_SIZE)
 				{
 					// Frame to big for buffer. Should never happen.
+					recording_startReceive();
 					return;
 				}
 
 				if(_recording_pave.payload_size + _recording_pave.header_size == bytes_transferred)
 				{
 					// Full frame received
-					memmove(&_recording_rawFrame, &_recording_receivedDataBuffer[_recording_pave.header_size], bytes_transferred - _recording_pave.header_size); // Copy the frame to the buffer, and remove the PaVE header
+					memcpy(&_recording_rawFrame, &_recording_receivedDataBuffer[_recording_pave.header_size], bytes_transferred - _recording_pave.header_size); // Copy the frame to the buffer, and remove the PaVE header
 					recording_frame_ready = true;
 					recording_reconstructed_frame_write_position = -1; // No reconstruction needed when a full frame is received, so set this variables to -1
 					_recording_frame_size = _recording_pave.payload_size;
@@ -292,7 +305,7 @@ void VideoManager::recording_packetReceived(const boost::system::error_code &err
 				else if(_recording_pave.payload_size + _recording_pave.header_size > bytes_transferred)
 				{
 					// Frame seems to be split over more than one packet
-					memmove(&_recording_rawFrame, &_recording_receivedDataBuffer[_recording_pave.header_size], bytes_transferred - _recording_pave.header_size);  // Copy the partial frame to the buffer, and remove the PaVE header
+					memcpy(&_recording_rawFrame, &_recording_receivedDataBuffer[_recording_pave.header_size], bytes_transferred - _recording_pave.header_size);  // Copy the partial frame to the buffer, and remove the PaVE header
 					recording_frame_ready = false;
 					recording_reconstructed_frame_write_position = bytes_transferred - _recording_pave.header_size;
 					_recording_frame_size = _recording_pave.payload_size;
@@ -303,13 +316,23 @@ void VideoManager::recording_packetReceived(const boost::system::error_code &err
 				if(recording_frame_ready == false && recording_reconstructed_frame_write_position >= 0 && _recording_frame_size >= 0)
 				{
 					// Data seems to be a part of a split packet: add received data
-					memmove(&_recording_rawFrame[recording_reconstructed_frame_write_position], &_recording_receivedDataBuffer, (unsigned long int) bytes_transferred);
+					memcpy(&_recording_rawFrame[recording_reconstructed_frame_write_position], &_recording_receivedDataBuffer, (unsigned long int) bytes_transferred);
 
 					if(_recording_frame_size == recording_reconstructed_frame_write_position + bytes_transferred)
 					{
 						// Frame has been completely received
 						recording_frame_ready = true;
 						recording_reconstructed_frame_write_position = -1;
+					}
+					else if(_recording_frame_size < recording_reconstructed_frame_write_position + bytes_transferred)
+					{
+						// Something strange happened: Discard the frame
+						cout << "[Recording] [Error] Frame size should be " << _recording_frame_size << " but is " << (recording_reconstructed_frame_write_position + bytes_transferred) << endl;
+						recording_reconstructed_frame_write_position = -1;
+
+						// Try next frame
+						recording_startReceive();
+						return;
 					}
 					else
 					{
@@ -538,7 +561,7 @@ bool VideoManager::takePicture(string savePath)
 	try
 	{
 #ifdef __MINGW32__
-#warning The OpenCV HighGUI module conflicts with Qt5. Make sure you have built OpenCV without Qt.
+#warning The OpenCV HighGUI module can conflict with Qt5. Make sure you have built OpenCV with Qt5.
 #endif
 		imwrite(savePath, _frame);
 		succeeded = true;
