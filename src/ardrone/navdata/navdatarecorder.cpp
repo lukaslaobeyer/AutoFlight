@@ -69,7 +69,9 @@ void NavdataRecorder::navdataAvailable(AFNavdata *nd)
 			_headerWritten = true;
 		}
 
-		string timestamp = AutoFlight::af_timestamp();
+		string timestamp;
+		const boost::posix_time::ptime now = boost::posix_time::microsec_clock::local_time();
+		timestamp = boost::posix_time::to_iso_extended_string(now);
 
 		recordFile << timestamp << "; " << nd->vbatpercentage << "; " << nd->wifipercentage << "; " << nd->altitude << "; "
 				   << nd->psi << "; " << nd->theta << "; " << nd->phi << "; " << nd->vx << "; " << nd->vy << "; " << nd->vz

@@ -15,6 +15,7 @@
 #include "video/ivideolistener.h"
 #include "atcommands/atcommand.h"
 #include "input/controllerconfiguration.h"
+#include "../tools/sessionrecorder.h"
 
 class NotConnectedException : public std::runtime_error
 {
@@ -32,6 +33,7 @@ class ARDrone
 		
 		void setIP(std::string ip);
 		void setSaveDirectory(std::string saveDir);
+		void setSessionRecorder(SessionRecorder *srec);
 
 		int connect(); // Returns a code defined in afconstants.h
 		bool isConnected();
@@ -92,6 +94,7 @@ class ARDrone
 		std::string _ip;
 		boost::asio::io_service _io_service;
 		std::string _saveDir;
+		SessionRecorder *_srec = NULL;
 		ControlLink _cl;
 		NavdataManager _nm;
 		VideoManager _vm;

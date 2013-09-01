@@ -500,6 +500,8 @@ bool AFMainWindow::eventFilter(QObject *watched, QEvent* e)
 
 void AFMainWindow::closeEvent(QCloseEvent *event)
 {
+	_af->sessionrecorder()->addEvent("ProgramExit");
+
 	_af->ardrone()->removeNavdataListener(this);
 	_af->ardrone()->removeVideoListener(this);
 	_af->saveSession();

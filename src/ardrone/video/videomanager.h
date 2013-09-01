@@ -12,6 +12,7 @@ extern "C"
 #include "pave.h"
 
 #define BUFFER_MAX_SIZE 204800
+#define MAX_FRAMES_PER_PACKET 4
 #define READY 3
 #define PROCESSING 4
 #define WRITING_FRAME 5
@@ -40,8 +41,8 @@ class VideoManager
 		void packetReceived(const boost::system::error_code &error, size_t bytes_transferred);
 		void recording_packetReceived(const boost::system::error_code &error, size_t bytes_transferred);
 		void recording_writeFrame();
-		PaVE *parsePaVE(char *frame);
-		bool frameHasPaVE(char *frame);
+		PaVE *parsePaVE(char *frame, unsigned int offset = 0);
+		bool frameHasPaVE(char *frame, unsigned int offset = 0);
 		void decodePacket();
 		bool initializeDecoder();
 		void closeDecoder();
@@ -52,12 +53,13 @@ class VideoManager
 		cv::Mat _frame;
 		int _previous_width = -1; // Width of the previous received frame, needed to see if the size changed
 		char _receivedDataBuffer[BUFFER_MAX_SIZE];
-		char _rawFrame[BUFFER_MAX_SIZE];
+		char _rawFrame[MAX_FRAMES_PER_PACKET][BUFFER_MAX_SIZE];
+		int framesInPacket = 0;
 		bool frame_ready = false;
 		int reconstructed_frame_write_position = -1; // When a frame is split over multiple packets, this is the position to continue writing to when the next packet arrives
-		unsigned int _frame_size = -1;
+		unsigned int _frame_size[MAX_FRAMES_PER_PACKET] = {0};
 		unsigned int _recording_frame_size = -1;
-		PaVE _pave;
+		PaVE _pave[MAX_FRAMES_PER_PACKET];
 		PaVE _recording_pave;
 		AVPacket _packet; // Received data is stored into this, and then decoded.
 		bool _got_first_iframe = false; // Needed so we don't feed P-frames to the decoder before we have an I-frame

@@ -10,7 +10,7 @@ class SessionRecorder
 		SessionRecorder(pugi::xml_document &doc);
 		~SessionRecorder();
 
-		void addEvent(std::string eventName);
+		void addEvent(std::string eventType, std::string content = "");
 	private:
 		pugi::xml_node _root;
 };

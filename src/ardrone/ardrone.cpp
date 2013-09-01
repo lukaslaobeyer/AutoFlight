@@ -63,6 +63,11 @@ void ARDrone::setSaveDirectory(string saveDir)
 	}
 }
 
+void ARDrone::setSessionRecorder(SessionRecorder *srec)
+{
+	_srec = srec;
+}
+
 int ARDrone::connect()
 {
 	if(!_connected)
@@ -828,6 +833,11 @@ bool ARDrone::drone_startRecordingNavdata()
 
 	_isRecordingNavdata = _ndrecorder.startRecording(nddirectory + filename);
 
+	if(_isRecordingNavdata && _srec != NULL)
+	{
+		_srec->addEvent("NavdataRecordingStart", nddirectory + filename);
+	}
+
 	return _isRecordingNavdata;
 }
 
@@ -839,6 +849,11 @@ bool ARDrone::drone_stopRecordingNavdata()
 	}
 
 	_isRecordingNavdata = _ndrecorder.stopRecording();
+
+	if(!_isRecordingNavdata && _srec != NULL)
+	{
+		_srec->addEvent("NavdataRecordingStop");
+	}
 
 	return !_isRecordingNavdata;
 }
@@ -931,9 +946,14 @@ bool ARDrone::drone_takePicture()
 	filename.append(timestamp);
 	filename.append(".jpg");
 
-	_vm.takePicture(picdirectory + filename);
+	bool picTaken = _vm.takePicture(picdirectory + filename);
 
-	return true;
+	if(picTaken && _srec != NULL)
+	{
+		_srec->addEvent("PictureTaken", picdirectory + filename);
+	}
+
+	return picTaken;
 }
 
 bool ARDrone::drone_startRecording()
@@ -970,6 +990,11 @@ bool ARDrone::drone_startRecording()
 		cout << "Error: " << e.what() << endl;
 	}
 
+	if(_isRecording && _srec != NULL)
+	{
+		_srec->addEvent("VideoRecordingStart", videodirectory + filename);
+	}
+
 	return true;
 }
 
@@ -990,6 +1015,11 @@ bool ARDrone::drone_stopRecording()
 	catch(runtime_error &e)
 	{
 		cout << "Error: " << e.what() << endl;
+	}
+
+	if(!_isRecording && _srec != NULL)
+	{
+		_srec->addEvent("VideoRecordingStop");
 	}
 
 	// Tell the drone to stop sending the record stream

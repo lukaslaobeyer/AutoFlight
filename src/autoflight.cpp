@@ -17,12 +17,16 @@ AutoFlight::AutoFlight()
 	_drone->setSaveDirectory(getHomeDirectory().append("AutoFlightSaves/"));
 
 	_srec = new SessionRecorder(_sessionRecDoc);
+	_srec->addEvent("ProgramStart");
+
+	_drone->setSessionRecorder(_srec);
 }
 
 AutoFlight::~AutoFlight()
 {
 	delete _ase;
 	delete _drone;
+	delete _srec;
 }
 
 string AutoFlight::getProgramDirectory()
@@ -123,7 +127,7 @@ string AutoFlight::af_timestamp()
 	const boost::posix_time::ptime time = boost::posix_time::second_clock::local_time();
 
 	stringstream timestamp;
-	timestamp << setw(4) << setfill('0') << time.date().year() << setw(2) << time.date().month() << setw(2) << time.date().day();
+	timestamp << setw(4) << setfill('0') << time.date().year() << setw(2) << time.date().month().as_number() << setw(2) << time.date().day().as_number();
 	timestamp << "T";
 	timestamp << setw(2) << time.time_of_day().hours() << setw(2) << time.time_of_day().minutes() << setw(2) << time.time_of_day().seconds();
 
