@@ -16,7 +16,8 @@ using boost::asio::ip::tcp;
 
 VideoManager::VideoManager()
 {
-
+	_receivedDataBuffer = new char[BUFFER_MAX_SIZE * MAX_FRAMES_PER_PACKET];
+	_rawFrame = new char[MAX_FRAMES_PER_PACKET * BUFFER_MAX_SIZE];
 }
 
 VideoManager::~VideoManager()
@@ -31,6 +32,10 @@ VideoManager::~VideoManager()
 		socket->close();
 		delete socket;
 	}
+
+	delete[] _receivedDataBuffer;
+
+	delete[] _rawFrame;
 }
 
 void VideoManager::init(string ip, boost::asio::io_service &io_service)
@@ -174,7 +179,7 @@ bool VideoManager::stopRecording()
 
 void VideoManager::startReceive()
 {
-	socket->async_receive(boost::asio::buffer(_receivedDataBuffer), boost::bind(&VideoManager::packetReceived, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+	socket->async_receive(boost::asio::buffer(_receivedDataBuffer, BUFFER_MAX_SIZE * MAX_FRAMES_PER_PACKET), boost::bind(&VideoManager::packetReceived, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 }
 
 void VideoManager::recording_startReceive()
@@ -199,6 +204,7 @@ void VideoManager::packetReceived(const boost::system::error_code &error, size_t
 			if(_pave[0].payload_size >= BUFFER_MAX_SIZE)
 			{
 				// Frame to big for buffer. Should never happen.
+				cout << "Frame too big for buffer. Discarding it." << endl;
 				_status = READY;
 				startReceive();
 				return;
@@ -207,7 +213,7 @@ void VideoManager::packetReceived(const boost::system::error_code &error, size_t
 			if(_pave[0].payload_size + _pave[0].header_size <= bytes_transferred)
 			{
 				// Full frame received
-				memcpy(&_rawFrame[0], &_receivedDataBuffer[_pave[0].header_size], _pave[0].payload_size); // Copy the frame to the buffer, and remove the PaVE header
+				memcpy(_rawFrame, &_receivedDataBuffer[_pave[0].header_size], _pave[0].payload_size); // Copy the frame to the buffer, and remove the PaVE header
 				framesInPacket = 1;
 				reconstructed_frame_write_position = -1; // No reconstruction needed when a full frame is received, so set this variables to -1
 				_frame_size[0] = _pave[0].payload_size;
@@ -216,18 +222,33 @@ void VideoManager::packetReceived(const boost::system::error_code &error, size_t
 				{
 					// Multiple frames in one packet
 					int frameIndex = 1;
-					int frameOffset = _pave[frameIndex - 1].payload_size + _pave[frameIndex - 1].header_size;
+					int frameOffset = _pave[0].payload_size + _pave[0].header_size;
 
 					while(frameHasPaVE(_receivedDataBuffer, frameOffset)) // Check if more PaVE headers are present
 					{
-						_pave[frameIndex] = *parsePaVE(_receivedDataBuffer, frameOffset);
+						if(frameIndex < MAX_FRAMES_PER_PACKET)
+						{
+							_pave[frameIndex] = *parsePaVE(_receivedDataBuffer, frameOffset);
 
-						memcpy(&_rawFrame[frameIndex], &_receivedDataBuffer[frameOffset + _pave[frameIndex].header_size], _pave[frameIndex].payload_size); // Copy the frame to the buffer, and remove the PaVE header
-						_frame_size[frameIndex] = _pave[frameIndex].payload_size;
+							if(_pave[frameIndex].payload_size >= BUFFER_MAX_SIZE)
+							{
+								cout << "Frame too big for buffer. Discarding it." << endl;
+								break;
+							}
 
-						frameIndex++;
-						framesInPacket++;
-						frameOffset += _pave[frameIndex].payload_size + _pave[frameIndex].header_size;
+							memcpy(_rawFrame + (BUFFER_MAX_SIZE * frameIndex), _receivedDataBuffer + frameOffset + _pave[frameIndex].header_size, _pave[frameIndex].payload_size); // Copy the frame to the buffer, and remove the PaVE header
+							_frame_size[frameIndex] = _pave[frameIndex].payload_size;
+
+							frameOffset += _pave[frameIndex].payload_size + _pave[frameIndex].header_size;
+
+							frameIndex++;
+							framesInPacket++;
+						}
+						else
+						{
+							cout << "Too many frames in one packet (more than " << MAX_FRAMES_PER_PACKET << ")!" << endl;
+							break;
+						}
 					}
 				}
 
@@ -236,7 +257,7 @@ void VideoManager::packetReceived(const boost::system::error_code &error, size_t
 			else if(_pave[0].payload_size + _pave[0].header_size > bytes_transferred)
 			{
 				// Frame seems to be split over more than one packet
-				memcpy(&_rawFrame[0], &_receivedDataBuffer[_pave[0].header_size], bytes_transferred - _pave[0].header_size);  // Copy the partial frame to the buffer, and remove the PaVE header
+				memcpy(_rawFrame, &_receivedDataBuffer[_pave[0].header_size], bytes_transferred - _pave[0].header_size);  // Copy the partial frame to the buffer, and remove the PaVE header
 				frame_ready = false;
 				reconstructed_frame_write_position = bytes_transferred - _pave[0].header_size;
 				_frame_size[0] = _pave[0].payload_size;
@@ -247,7 +268,8 @@ void VideoManager::packetReceived(const boost::system::error_code &error, size_t
 			if(frame_ready == false && reconstructed_frame_write_position >= 0 && _frame_size[0] >= 0)
 			{
 				// Data seems to be a part of a split packet: add received data
-				memcpy(&_rawFrame[0][reconstructed_frame_write_position], &_receivedDataBuffer, (unsigned long int) bytes_transferred);
+				//memcpy(&_rawFrame[reconstructed_frame_write_position], &_receivedDataBuffer, (unsigned long int) bytes_transferred);
+				memcpy(_rawFrame + reconstructed_frame_write_position, _receivedDataBuffer, (unsigned long int) bytes_transferred);
 
 				if(_frame_size[0] <= reconstructed_frame_write_position + bytes_transferred)
 				{
@@ -377,8 +399,7 @@ void VideoManager::recording_packetReceived(const boost::system::error_code &err
 
 bool VideoManager::frameHasPaVE(char *frame, unsigned int offset)
 {
-	PaVE *pave = parsePaVE(frame, offset);
-	if(pave->signature[0] == 'P' && pave->signature[1] == 'a' && pave->signature[2] == 'V' && pave->signature[3] == 'E')
+	if((uint8_t) frame[offset] == 'P' && (uint8_t) frame[offset + 1] == 'a' && (uint8_t) frame[offset + 2] == 'V' && (uint8_t) frame[offset + 3] == 'E')
 	{
 		return true;
 	}
@@ -390,7 +411,7 @@ bool VideoManager::frameHasPaVE(char *frame, unsigned int offset)
 
 PaVE *VideoManager::parsePaVE(char *frame, unsigned int offset)
 {
-	PaVE *p = (PaVE *) &frame[offset];
+	PaVE *p = (PaVE *) (frame + offset);
 	return p;
 }
 
@@ -497,58 +518,61 @@ void VideoManager::decodePacket()
 		}
 	}
 
-	if(initializationNeeded || (_pave[0].encoded_stream_width != _previous_width))
+	for(int i = 0; i < framesInPacket; i++)
 	{
-		cout << "Initializing buffers" << endl;
-
-		cfg.pCodecCtxMP4->width = _pave[0].encoded_stream_width;
-		cfg.pCodecCtxMP4->height = _pave[0].encoded_stream_height;
-		cfg.pCodecCtxH264->width = _pave[0].encoded_stream_width;
-		cfg.pCodecCtxH264->height = _pave[0].encoded_stream_height;
-
-		cfg.destPicture.width = _pave[0].display_width;
-		cfg.destPicture.height = _pave[0].display_height;
-		cfg.destPicture.format = PIX_FMT_BGR24;
-
-		_decode_buffer_size = avpicture_get_size(cfg.destPicture.format, cfg.destPicture.width, cfg.destPicture.height);
-		_decode_buffer = (uint8_t *) av_realloc(_decode_buffer, _decode_buffer_size * sizeof(uint8_t));
-
-		avpicture_fill((AVPicture *) cfg.pFrameOutput, _decode_buffer, cfg.destPicture.format, cfg.destPicture.width, cfg.destPicture.height);
-
-		cfg.swsCtx = sws_getCachedContext(cfg.swsCtx, _pave[0].display_width, _pave[0].display_height,
-                                          cfg.pCodecCtxH264->pix_fmt, _pave[0].display_width, _pave[0].display_height,
-                                          cfg.destPicture.format, SWS_FAST_BILINEAR, NULL, NULL, NULL);
-	}
-
-	if(_got_first_iframe) // Wait for I-frame
-	{
-		_packet.data = (unsigned char*) _rawFrame;
-		_packet.size = _frame_size[0];
-
-		// Try to decode the packet
-		int frameFinished = 0;
-
-		if(_pave[0].video_codec == ardrone::video::codec::MPEG4_VISUAL)
+		if(initializationNeeded || (_pave[i].encoded_stream_width != _previous_width))
 		{
-			avcodec_decode_video2(cfg.pCodecCtxMP4, cfg.pFrame, &frameFinished, &_packet);
-		}
-		else if(_pave[0].video_codec ==  ardrone::video::codec::MPEG4_AVC)
-		{
-			avcodec_decode_video2(cfg.pCodecCtxH264, cfg.pFrame, &frameFinished, &_packet);
+			cout << "Initializing buffers" << endl;
+
+			cfg.pCodecCtxMP4->width = _pave[i].encoded_stream_width;
+			cfg.pCodecCtxMP4->height = _pave[i].encoded_stream_height;
+			cfg.pCodecCtxH264->width = _pave[i].encoded_stream_width;
+			cfg.pCodecCtxH264->height = _pave[i].encoded_stream_height;
+
+			cfg.destPicture.width = _pave[i].display_width;
+			cfg.destPicture.height = _pave[i].display_height;
+			cfg.destPicture.format = PIX_FMT_BGR24;
+
+			_decode_buffer_size = avpicture_get_size(cfg.destPicture.format, cfg.destPicture.width, cfg.destPicture.height);
+			_decode_buffer = (uint8_t *) av_realloc(_decode_buffer, _decode_buffer_size * sizeof(uint8_t));
+
+			avpicture_fill((AVPicture *) cfg.pFrameOutput, _decode_buffer, cfg.destPicture.format, cfg.destPicture.width, cfg.destPicture.height);
+
+			cfg.swsCtx = sws_getCachedContext(cfg.swsCtx, _pave[i].display_width, _pave[i].display_height,
+											  cfg.pCodecCtxH264->pix_fmt, _pave[0].display_width, _pave[i].display_height,
+											  cfg.destPicture.format, SWS_FAST_BILINEAR, NULL, NULL, NULL);
 		}
 
-		if(frameFinished)
+		if(_got_first_iframe) // Wait for I-frame
 		{
-			// Frame successfully decoded :)
-			cfg.pFrameOutput->data[0] = _decode_buffer;
+			_packet.data = (unsigned char*) &_rawFrame[i * BUFFER_MAX_SIZE];
+			_packet.size = _frame_size[i];
 
-			sws_scale(cfg.swsCtx, (const uint8_t *const*)cfg.pFrame->data, cfg.pFrame->linesize, 0,
-					  _pave[0].display_height, cfg.pFrameOutput->data, cfg.pFrameOutput->linesize);
+			// Try to decode the packet
+			int frameFinished = 0;
 
-			_frame = cv::Mat(_pave[0].display_height, _pave[0].display_width, CV_8UC3, _decode_buffer);
+			if(_pave[i].video_codec == ardrone::video::codec::MPEG4_VISUAL)
+			{
+				avcodec_decode_video2(cfg.pCodecCtxMP4, cfg.pFrame, &frameFinished, &_packet);
+			}
+			else if(_pave[i].video_codec ==  ardrone::video::codec::MPEG4_AVC)
+			{
+				avcodec_decode_video2(cfg.pCodecCtxH264, cfg.pFrame, &frameFinished, &_packet);
+			}
+
+			if(frameFinished)
+			{
+				// Frame successfully decoded :)
+				cfg.pFrameOutput->data[0] = _decode_buffer;
+
+				sws_scale(cfg.swsCtx, (const uint8_t *const*)cfg.pFrame->data, cfg.pFrame->linesize, 0,
+						  _pave[0].display_height, cfg.pFrameOutput->data, cfg.pFrameOutput->linesize);
+
+				_frame = cv::Mat(_pave[i].display_height, _pave[i].display_width, CV_8UC3, _decode_buffer);
+			}
+
+			_previous_width = _pave[i].encoded_stream_width;
 		}
-
-		_previous_width = _pave[0].encoded_stream_width;
 	}
 }
 

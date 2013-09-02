@@ -12,7 +12,7 @@ extern "C"
 #include "pave.h"
 
 #define BUFFER_MAX_SIZE 204800
-#define MAX_FRAMES_PER_PACKET 4
+#define MAX_FRAMES_PER_PACKET 10
 #define READY 3
 #define PROCESSING 4
 #define WRITING_FRAME 5
@@ -52,8 +52,8 @@ class VideoManager
 		boost::asio::ip::tcp::socket *socket = NULL;
 		cv::Mat _frame;
 		int _previous_width = -1; // Width of the previous received frame, needed to see if the size changed
-		char _receivedDataBuffer[BUFFER_MAX_SIZE];
-		char _rawFrame[MAX_FRAMES_PER_PACKET][BUFFER_MAX_SIZE];
+		char *_receivedDataBuffer = NULL;
+		char *_rawFrame = NULL;
 		int framesInPacket = 0;
 		bool frame_ready = false;
 		int reconstructed_frame_write_position = -1; // When a frame is split over multiple packets, this is the position to continue writing to when the next packet arrives
