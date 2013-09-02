@@ -16,8 +16,7 @@ using boost::asio::ip::tcp;
 
 VideoManager::VideoManager()
 {
-	_receivedDataBuffer = new char[BUFFER_MAX_SIZE * MAX_FRAMES_PER_PACKET];
-	_rawFrame = new char[MAX_FRAMES_PER_PACKET * BUFFER_MAX_SIZE];
+	_receivedDataBuffer = new char[BUFFER_MAX_SIZE];
 }
 
 VideoManager::~VideoManager()
@@ -34,8 +33,6 @@ VideoManager::~VideoManager()
 	}
 
 	delete[] _receivedDataBuffer;
-
-	delete[] _rawFrame;
 }
 
 void VideoManager::init(string ip, boost::asio::io_service &io_service)
@@ -179,7 +176,7 @@ bool VideoManager::stopRecording()
 
 void VideoManager::startReceive()
 {
-	socket->async_receive(boost::asio::buffer(_receivedDataBuffer, BUFFER_MAX_SIZE * MAX_FRAMES_PER_PACKET), boost::bind(&VideoManager::packetReceived, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+	socket->async_receive(boost::asio::buffer(_receivedDataBuffer, BUFFER_MAX_SIZE), boost::bind(&VideoManager::packetReceived, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 }
 
 void VideoManager::recording_startReceive()
@@ -189,7 +186,9 @@ void VideoManager::recording_startReceive()
 
 void VideoManager::packetReceived(const boost::system::error_code &error, size_t bytes_transferred)
 {
-	frame_ready = false;
+	static int reconstructed_frame_write_position = -1; // When a frame is split over multiple packets, this is the position to continue writing to when the next packet arrives
+
+	int readOffset = 0;
 
 	while(_status == PROCESSING);
 
@@ -197,107 +196,122 @@ void VideoManager::packetReceived(const boost::system::error_code &error, size_t
 
 	if(!error)
 	{
-		if(frameHasPaVE(_receivedDataBuffer))
+		// Check if there's data belonging to a previous frame at the beginning of the received buffer
+		if(!frameHasPaVE(_receivedDataBuffer) && reconstructed_frame_write_position >= 0)
 		{
-			_pave[0] = *parsePaVE(_receivedDataBuffer);
-
-			if(_pave[0].payload_size >= BUFFER_MAX_SIZE)
+			if(_reconstructionFrameBuffer != NULL)
 			{
-				// Frame to big for buffer. Should never happen.
-				cout << "Frame too big for buffer. Discarding it." << endl;
-				_status = READY;
-				startReceive();
-				return;
-			}
-
-			if(_pave[0].payload_size + _pave[0].header_size <= bytes_transferred)
-			{
-				// Full frame received
-				memcpy(_rawFrame, &_receivedDataBuffer[_pave[0].header_size], _pave[0].payload_size); // Copy the frame to the buffer, and remove the PaVE header
-				framesInPacket = 1;
-				reconstructed_frame_write_position = -1; // No reconstruction needed when a full frame is received, so set this variables to -1
-				_frame_size[0] = _pave[0].payload_size;
-
-				if(_pave[0].payload_size + _pave[0].header_size < bytes_transferred)
+				// Received data contains a part of a previous (not completely received) frame
+				if(_reconstructionPaVE.payload_size > bytes_transferred)
 				{
-					// Multiple frames in one packet
-					int frameIndex = 1;
-					int frameOffset = _pave[0].payload_size + _pave[0].header_size;
-
-					while(frameHasPaVE(_receivedDataBuffer, frameOffset)) // Check if more PaVE headers are present
-					{
-						if(frameIndex < MAX_FRAMES_PER_PACKET)
-						{
-							_pave[frameIndex] = *parsePaVE(_receivedDataBuffer, frameOffset);
-
-							if(_pave[frameIndex].payload_size >= BUFFER_MAX_SIZE)
-							{
-								cout << "Frame too big for buffer. Discarding it." << endl;
-								break;
-							}
-
-							memcpy(_rawFrame + (BUFFER_MAX_SIZE * frameIndex), _receivedDataBuffer + frameOffset + _pave[frameIndex].header_size, _pave[frameIndex].payload_size); // Copy the frame to the buffer, and remove the PaVE header
-							_frame_size[frameIndex] = _pave[frameIndex].payload_size;
-
-							frameOffset += _pave[frameIndex].payload_size + _pave[frameIndex].header_size;
-
-							frameIndex++;
-							framesInPacket++;
-						}
-						else
-						{
-							cout << "Too many frames in one packet (more than " << MAX_FRAMES_PER_PACKET << ")!" << endl;
-							break;
-						}
-					}
-				}
-
-				frame_ready = true;
-			}
-			else if(_pave[0].payload_size + _pave[0].header_size > bytes_transferred)
-			{
-				// Frame seems to be split over more than one packet
-				memcpy(_rawFrame, &_receivedDataBuffer[_pave[0].header_size], bytes_transferred - _pave[0].header_size);  // Copy the partial frame to the buffer, and remove the PaVE header
-				frame_ready = false;
-				reconstructed_frame_write_position = bytes_transferred - _pave[0].header_size;
-				_frame_size[0] = _pave[0].payload_size;
-			}
-		}
-		else
-		{
-			if(frame_ready == false && reconstructed_frame_write_position >= 0 && _frame_size[0] >= 0)
-			{
-				// Data seems to be a part of a split packet: add received data
-				//memcpy(&_rawFrame[reconstructed_frame_write_position], &_receivedDataBuffer, (unsigned long int) bytes_transferred);
-				memcpy(_rawFrame + reconstructed_frame_write_position, _receivedDataBuffer, (unsigned long int) bytes_transferred);
-
-				if(_frame_size[0] <= reconstructed_frame_write_position + bytes_transferred)
-				{
-					// Frame has been completely received
-					framesInPacket = 1;
-					frame_ready = true;
-					reconstructed_frame_write_position = -1;
+					// There's even more data than in this packet, so copy everything into the frame reconstruction buffer
+					memcpy(_reconstructionFrameBuffer + reconstructed_frame_write_position, _receivedDataBuffer, bytes_transferred);
+					reconstructed_frame_write_position += bytes_transferred;
+					readOffset += bytes_transferred;
 				}
 				else
 				{
-					reconstructed_frame_write_position += bytes_transferred;
+					_pave.push_back(_reconstructionPaVE);
+
+					// Copy the missing part of a partial frame into the reconstruction buffer
+					memcpy(_reconstructionFrameBuffer + reconstructed_frame_write_position, _receivedDataBuffer, _reconstructionPaVE.payload_size - reconstructed_frame_write_position);
+
+					// Complete frame available
+					char *currentFrameBuffer = new char[_reconstructionPaVE.payload_size]; // Allocate a buffer for the current frame
+					_rawFrame.push_back(currentFrameBuffer);
+
+					// Copy frame into it's buffer
+					memcpy(currentFrameBuffer, _reconstructionFrameBuffer, _reconstructionPaVE.payload_size);
+
+					// Delete reconstruction buffer
+					delete[] _reconstructionFrameBuffer;
+					_reconstructionFrameBuffer = NULL;
+
+					reconstructed_frame_write_position = -1; // Set this to a negative value to make clear there's nothing that has to be reconstructed
+					readOffset +=_reconstructionPaVE.payload_size - reconstructed_frame_write_position;
 				}
 			}
 			else
 			{
-				cout << "Frame has no PaVE header!" << endl;
+				cerr << "Could not reconstruct partial frame: reconstruction buffer not initialized!" << endl;
+			}
+		}
+
+		bool moreFrames = false;
+
+		if(readOffset < (int) bytes_transferred)
+		{
+			moreFrames = frameHasPaVE(_receivedDataBuffer, readOffset);
+		}
+
+		while(moreFrames)
+		{
+			// Get the PaVE header (contains information about the frame)
+			PaVE currentHeader = *parsePaVE(_receivedDataBuffer, readOffset);
+
+			if(bytes_transferred - readOffset >= currentHeader.payload_size + currentHeader.header_size)
+			{
+				_pave.push_back(currentHeader);
+
+				// Complete frame available
+				char *currentFrameBuffer = new char[currentHeader.payload_size]; // Allocate a buffer for the current frame
+				_rawFrame.push_back(currentFrameBuffer);
+
+				// Copy frame into it's buffer
+				memcpy(currentFrameBuffer, _receivedDataBuffer + readOffset + currentHeader.header_size, currentHeader.payload_size);
+
+				readOffset += currentHeader.header_size + currentHeader.payload_size;
+			}
+			else
+			{
+				_reconstructionPaVE = currentHeader;
+
+				// Partial frame available
+				_reconstructionFrameBuffer = new char[currentHeader.payload_size]; // Allocate the reconstruction buffer
+
+				// Copy partial frame into the buffer
+				memcpy(_reconstructionFrameBuffer, _receivedDataBuffer + readOffset + currentHeader.header_size, bytes_transferred - readOffset);
+
+				reconstructed_frame_write_position = bytes_transferred - readOffset;
+				readOffset += bytes_transferred - readOffset;
+			}
+
+			// Check if there are more frames in the buffer
+			if(readOffset < (int) bytes_transferred)
+			{
+				moreFrames = frameHasPaVE(_receivedDataBuffer, readOffset);
+			}
+			else
+			{
+				moreFrames = false;
 			}
 		}
 	}
 
-	if(frame_ready)
+	// Check if frames could be decoded
+	if(_rawFrame.size() > 0)
 	{
-		if(_pave[0].frame_type == ardrone::video::frame_type::I || _pave[0].frame_type == ardrone::video::frame_type::IDR)
+		for(unsigned int i = 0; i < _pave.size(); i++)
 		{
-			_got_first_iframe = true;
+			if(_pave[i].frame_type == ardrone::video::frame_type::I || _pave[i].frame_type == ardrone::video::frame_type::IDR)
+			{
+				_got_first_iframe = true;
+			}
 		}
 
 		decodePacket();
+
+		// Clean up
+		for(unsigned int i = 0; i < _rawFrame.size(); i++)
+		{
+			delete[] _rawFrame[i];
+			_rawFrame.clear();
+			_pave.clear();
+		}
+	}
+	else if(reconstructed_frame_write_position < 0)
+	{
+		cerr << "Could not find video data in packet" << endl;
 	}
 
 	_decodedPackets++;
@@ -518,7 +532,7 @@ void VideoManager::decodePacket()
 		}
 	}
 
-	for(int i = 0; i < framesInPacket; i++)
+	for(unsigned int i = 0; i < _rawFrame.size(); i++)
 	{
 		if(initializationNeeded || (_pave[i].encoded_stream_width != _previous_width))
 		{
@@ -545,8 +559,8 @@ void VideoManager::decodePacket()
 
 		if(_got_first_iframe) // Wait for I-frame
 		{
-			_packet.data = (unsigned char*) &_rawFrame[i * BUFFER_MAX_SIZE];
-			_packet.size = _frame_size[i];
+			_packet.data = (unsigned char *) _rawFrame[i];
+			_packet.size = _pave[i].payload_size;
 
 			// Try to decode the packet
 			int frameFinished = 0;
