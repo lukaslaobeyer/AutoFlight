@@ -32,6 +32,7 @@ void SessionRecorder::addEvent(string eventType, string content)
 
 	if(content.size() > 0)
 	{
-		event.set_value(content.c_str());
+		pugi::xml_node content_node = event.append_child(pugi::node_pcdata);
+		content_node.set_value(content.c_str());
 	}
 }

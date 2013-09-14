@@ -71,12 +71,16 @@ class VideoManager
 		bool _stop_recording_requested = false;
 		bool _recording = false;
 		int _recording_status;
-
+		int _recording_allocatedFrames = 0;
 		AVFormatContext *_recording_ctx = NULL;
 		boost::asio::ip::tcp::socket *recordingSocket = NULL;
-		char _recording_receivedDataBuffer[BUFFER_MAX_SIZE];
-		char _recording_rawFrame[BUFFER_MAX_SIZE];
-		PaVE _recording_pave;
+		char *_recording_receivedDataBuffer = NULL;
+		char *_recording_reconstructionFrameBuffer = NULL;
+		std::vector<PaVE *> _recording_pave;
+		std::vector<char *> _recording_rawFrame;
+		PaVE *_recording_reconstructionPaVE = NULL;
+		int _recording_availableFrames = 0;
+		int _recording_decodedPackets = 0;
 		bool recording_frame_ready = false;
 		int recording_reconstructed_frame_write_position = -1;
 };

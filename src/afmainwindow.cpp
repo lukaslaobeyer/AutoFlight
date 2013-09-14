@@ -198,6 +198,12 @@ QWidget *AFMainWindow::createVerticalToolbar()
 	
 	layout->addStretch();
 	
+	QPushButton *launchSessionViewer = new QPushButton("Session Viewer");
+	//launchSessionViewer->setIcon(QIcon(QPixmap::fromImage(QImage(":/resources/sessionviewer.png"))));
+	launchSessionViewer->setIconSize(QSize(200, 50));
+	QObject::connect(launchSessionViewer, SIGNAL(clicked()), this, SLOT(launchSessionViewerDialog()));
+	layout->addWidget(launchSessionViewer);
+
 	QPushButton *launchAutoScript = new QPushButton();
 	launchAutoScript->setIcon(QIcon(QPixmap::fromImage(QImage(":/resources/autoscript.png"))));
 	launchAutoScript->setIconSize(QSize(200, 50));
@@ -258,6 +264,16 @@ void AFMainWindow::launchAutoScriptIDE()
 	}
 
 	_asWindow->show();
+}
+
+void AFMainWindow::launchSessionViewerDialog()
+{
+	if(_sessionViewerWindow == NULL)
+	{
+		_sessionViewerWindow = new SessionViewer();
+	}
+
+	_sessionViewerWindow->show();
 }
 
 void AFMainWindow::showControlConfigDialog()

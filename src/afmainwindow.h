@@ -10,6 +10,7 @@
 #include <string>
 #include <opencv2/opencv.hpp>
 #include "autoflight.h"
+#include "dialogs/sessionviewer.h"
 #include "ardrone/ardrone.h"
 #include "ardrone/navdata/inavdatalistener.h"
 #include "ardrone/navdata/qnavdatalistener.h"
@@ -51,12 +52,14 @@ class AFMainWindow : public QMainWindow, public INavdataListener, public IVideoL
 		AutoFlight *_af = NULL;
 
 		ASMainWindow *_asWindow = NULL;
+		SessionViewer *_sessionViewerWindow = NULL;
 	private Q_SLOTS:
 		void attemptConnection();
 		void showControlConfigDialog();
 		void videoFrameAvailable(QImage f);
 		void clearConfirmationFlags(); // Called after a timeout to clear the flags used by the confirmation mechanism for performing a flip/sending emergency commands
 		void launchAutoScriptIDE();
+		void launchSessionViewerDialog();
 	Q_SIGNALS:
 		void navdataAvailableSignal(AFNavdata *nd);
 		void videoFrameAvailableSignal(QImage frame);

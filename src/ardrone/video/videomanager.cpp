@@ -17,10 +17,13 @@ using boost::asio::ip::tcp;
 VideoManager::VideoManager()
 {
 	_receivedDataBuffer = new char[BUFFER_MAX_SIZE * 10];
+	_recording_receivedDataBuffer = new char[BUFFER_MAX_SIZE * 10];
 }
 
 VideoManager::~VideoManager()
 {
+	while(_status == PROCESSING);
+
 	// Stop recording if recording
 	stopRecording();
 
@@ -30,6 +33,12 @@ VideoManager::~VideoManager()
 	{
 		socket->close();
 		delete socket;
+	}
+
+	if(recordingSocket != NULL)
+	{
+		recordingSocket->close();
+		delete recordingSocket;
 	}
 
 	delete[] _receivedDataBuffer;
@@ -42,6 +51,17 @@ VideoManager::~VideoManager()
 		delete[] _rawFrame[i];
 	}
 	_rawFrame.clear();
+
+	delete[] _recording_receivedDataBuffer;
+	if(_recording_reconstructionFrameBuffer != NULL)
+	{
+		delete[] _recording_reconstructionFrameBuffer;
+	}
+	for(int i = 0; i < _recording_allocatedFrames; i++)
+	{
+		delete[] _recording_rawFrame[i];
+	}
+	_recording_rawFrame.clear();
 }
 
 void VideoManager::init(string ip, boost::asio::io_service &io_service)
@@ -130,18 +150,21 @@ void VideoManager::recording_writeFrame()
 
 	if(_recording_ctx != NULL)
 	{
-		AVPacket recording_packet;
-		av_init_packet(&recording_packet);
-
-		recording_packet.stream_index = 0; // First stream as there's only one stream
-		recording_packet.data = (unsigned char *) _recording_rawFrame;
-		recording_packet.size = _recording_frame_size;
-
-		int ret_code = av_interleaved_write_frame(_recording_ctx, &recording_packet);
-
-		if(ret_code != 0)
+		for(unsigned int i = 0; i < _recording_rawFrame.size(); i++)
 		{
-			cout << "Error while writing video frame: " << ret_code << endl;
+			AVPacket recording_packet;
+			av_init_packet(&recording_packet);
+
+			recording_packet.stream_index = 0; // First stream as there's only one stream
+			recording_packet.data = (unsigned char *) _recording_rawFrame[i];
+			recording_packet.size = _recording_frame_size;
+
+			int ret_code = av_interleaved_write_frame(_recording_ctx, &recording_packet);
+
+			if(ret_code != 0)
+			{
+				cout << "Error while writing video frame: " << ret_code << endl;
+			}
 		}
 	}
 
@@ -190,7 +213,7 @@ void VideoManager::startReceive()
 
 void VideoManager::recording_startReceive()
 {
-	recordingSocket->async_receive(boost::asio::buffer(_recording_receivedDataBuffer), boost::bind(&VideoManager::recording_packetReceived, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+	recordingSocket->async_receive(boost::asio::buffer(_recording_receivedDataBuffer, BUFFER_MAX_SIZE), boost::bind(&VideoManager::recording_packetReceived, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 }
 
 void VideoManager::packetReceived(const boost::system::error_code &error, size_t bytes_transferred)
@@ -258,6 +281,15 @@ void VideoManager::packetReceived(const boost::system::error_code &error, size_t
 		{
 			// Get the PaVE header (contains information about the frame)
 			PaVE *currentHeader = parsePaVE(_receivedDataBuffer, readOffset);
+
+			if(currentHeader == NULL)
+			{
+				// Unable to parse PaVE, can not really happen
+				_status = READY;
+				startReceive();
+				cerr << "Could not parse PaVE" << endl;
+				return;
+			}
 
 			if(bytes_transferred - readOffset >= currentHeader->payload_size + currentHeader->header_size)
 			{
@@ -337,6 +369,169 @@ void VideoManager::packetReceived(const boost::system::error_code &error, size_t
 }
 
 void VideoManager::recording_packetReceived(const boost::system::error_code &error, size_t bytes_transferred)
+{
+	static int reconstructed_frame_write_position = -1; // When a frame is split over multiple packets, this is the position to continue writing to when the next packet arrives
+	int readOffset = 0;
+	_recording_availableFrames = 0;
+
+	if((_recording || _start_recording_requested) && !(_stop_recording_requested))
+	{
+		if(!error)
+		{
+			// Check if there's data belonging to a previous frame at the beginning of the received buffer
+			if(!frameHasPaVE(_recording_receivedDataBuffer) && reconstructed_frame_write_position >= 0)
+			{
+				if(_recording_reconstructionFrameBuffer != NULL && _recording_reconstructionPaVE != NULL)
+				{
+					// Received data contains a part of a previous (not completely received) frame
+					if(_recording_reconstructionPaVE->payload_size - reconstructed_frame_write_position > bytes_transferred)
+					{
+						// There's even more data than in this packet, so copy everything into the frame reconstruction buffer
+						copy(_recording_receivedDataBuffer, _recording_receivedDataBuffer + bytes_transferred, _recording_reconstructionFrameBuffer + reconstructed_frame_write_position);
+						reconstructed_frame_write_position += bytes_transferred;
+						readOffset += bytes_transferred;
+					}
+					else
+					{
+						_recording_pave.push_back(_recording_reconstructionPaVE);
+
+						// Copy the missing part of a partial frame into the reconstruction buffer
+						copy(_recording_receivedDataBuffer, _recording_receivedDataBuffer + (_recording_reconstructionPaVE->payload_size - reconstructed_frame_write_position), _reconstructionFrameBuffer + reconstructed_frame_write_position);
+
+						// Complete frame available
+						if(_recording_allocatedFrames < _recording_availableFrames + 1) // Check whether allocating a new framebuffer is needed
+						{
+							_recording_rawFrame.push_back(new char[BUFFER_MAX_SIZE]); // Allocate a new buffer
+							_recording_allocatedFrames++;
+						}
+
+						// Copy frame into it's buffer
+						copy(_recording_reconstructionFrameBuffer, _recording_reconstructionFrameBuffer + _recording_reconstructionPaVE->payload_size, _recording_rawFrame[_recording_availableFrames]);
+
+						reconstructed_frame_write_position = -1; // Set this to a negative value to make clear there's nothing that has to be reconstructed
+						readOffset +=_recording_reconstructionPaVE->payload_size - reconstructed_frame_write_position;
+
+						_recording_availableFrames++;
+					}
+				}
+				else
+				{
+					cerr << "[Recording] Could not reconstruct partial frame: reconstruction buffer not initialized!" << endl;
+				}
+			}
+
+			bool moreFrames = false;
+
+			if(readOffset < (int) bytes_transferred)
+			{
+				moreFrames = frameHasPaVE(_recording_receivedDataBuffer, readOffset);
+			}
+
+			while(moreFrames)
+			{
+				// Get the PaVE header (contains information about the frame)
+				PaVE *currentHeader = parsePaVE(_recording_receivedDataBuffer, readOffset);
+
+				if(currentHeader == NULL)
+				{
+					// Unable to parse PaVE, can not really happen
+					_status = READY;
+					recording_startReceive();
+					cerr << "[Recording] Could not parse PaVE" << endl;
+					return;
+				}
+
+				if(bytes_transferred - readOffset >= currentHeader->payload_size + currentHeader->header_size)
+				{
+					_recording_pave.push_back(currentHeader);
+
+					// Complete frame available
+					if(_recording_allocatedFrames < _recording_availableFrames + 1) // Check whether allocating a new framebuffer is needed
+					{
+						_recording_rawFrame.push_back(new char[BUFFER_MAX_SIZE]); // Allocate a new buffer
+						_recording_allocatedFrames++;
+					}
+
+					// Copy frame into it's buffer
+					copy(_recording_receivedDataBuffer + readOffset + currentHeader->header_size, _recording_receivedDataBuffer + readOffset + currentHeader->header_size + currentHeader->payload_size, _recording_rawFrame[_recording_availableFrames]);
+
+					readOffset += currentHeader->header_size + currentHeader->payload_size;
+
+					_recording_availableFrames++;
+				}
+				else
+				{
+					_recording_reconstructionPaVE = currentHeader;
+
+					// Partial frame available
+					if(_recording_reconstructionFrameBuffer == NULL)
+					{
+						_recording_reconstructionFrameBuffer = new char[BUFFER_MAX_SIZE]; // Allocate the reconstruction buffer
+					}
+
+					// Copy partial frame into the buffer
+					copy(_recording_receivedDataBuffer + readOffset + currentHeader->header_size, _recording_receivedDataBuffer + bytes_transferred, _recording_reconstructionFrameBuffer);
+
+					recording_reconstructed_frame_write_position = bytes_transferred - readOffset - currentHeader->header_size;
+					readOffset = bytes_transferred;
+				}
+
+				// Check if there are more frames in the buffer
+				if(readOffset < (int) bytes_transferred)
+				{
+					moreFrames = frameHasPaVE(_recording_receivedDataBuffer, readOffset);
+				}
+				else
+				{
+					moreFrames = false;
+				}
+			}
+		}
+
+		// Check if raw frame data could be extracted
+		if(_recording_availableFrames > 0)
+		{
+			for(unsigned int i = 0; i < _recording_pave.size(); i++)
+			{
+				if(_recording_pave[i]->frame_type == ardrone::video::frame_type::I || _recording_pave[i]->frame_type == ardrone::video::frame_type::IDR)
+				{
+					_recording_got_first_iframe = true;
+					break;
+				}
+			}
+
+			if(_start_recording_requested && _recording_got_first_iframe)
+			{
+				_recording = true;
+				_start_recording_requested = false;
+			}
+
+			if(_recording)
+			{
+				recording_writeFrame();
+			}
+
+			// Clear the PaVE header list
+			_recording_pave.clear();
+		}
+		else if(reconstructed_frame_write_position < 0)
+		{
+			cerr << "[Recording] Could not find video data in packet" << endl;
+		}
+
+		_recording_decodedPackets++;
+	}
+	else if(_stop_recording_requested)
+	{
+		_recording = false;
+		_stop_recording_requested = false;
+	}
+
+	// Listen for the next packet
+	recording_startReceive();
+}
+
+/*void VideoManager::recording_packetReceived(const boost::system::error_code &error, size_t bytes_transferred)
 {
 	recording_frame_ready = false;
 
@@ -423,7 +618,7 @@ void VideoManager::recording_packetReceived(const boost::system::error_code &err
 	}
 	// Listen for the next packet in the record stream
 	recording_startReceive();
-}
+}*/
 
 bool VideoManager::frameHasPaVE(char *frame, unsigned int offset)
 {
@@ -440,7 +635,14 @@ bool VideoManager::frameHasPaVE(char *frame, unsigned int offset)
 PaVE *VideoManager::parsePaVE(char *frame, unsigned int offset)
 {
 	PaVE *p = (PaVE *) (frame + offset);
-	return p;
+	if(p->signature[0] == 'P' && p->signature[1] == 'a' && p->signature[2] == 'V' && p->signature[3] == 'E')
+	{
+		return p;
+	}
+	else
+	{
+		return NULL;
+	}
 }
 
 bool VideoManager::initializeDecoder()
@@ -597,6 +799,10 @@ void VideoManager::decodePacket()
 						  _pave[0]->display_height, cfg.pFrameOutput->data, cfg.pFrameOutput->linesize);
 
 				_frame = cv::Mat(_pave[i]->display_height, _pave[i]->display_width, CV_8UC3, _decode_buffer);
+			}
+			else
+			{
+				cerr << "Could not decode frame" << endl;
 			}
 
 			_previous_width = _pave[i]->encoded_stream_width;
