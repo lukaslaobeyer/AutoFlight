@@ -270,7 +270,7 @@ void AFMainWindow::launchSessionViewerDialog()
 {
 	if(_sessionViewerWindow == NULL)
 	{
-		_sessionViewerWindow = new SessionViewer();
+		_sessionViewerWindow = new SessionViewer(this);
 	}
 
 	_sessionViewerWindow->show();

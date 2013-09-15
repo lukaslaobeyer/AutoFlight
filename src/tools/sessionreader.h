@@ -9,15 +9,18 @@
 class RecordedEvent
 {
 	public:
-		RecordedEvent(pugi::xml_node eventNode);
+		RecordedEvent(std::string type, std::string time, long long relativeTime, std::string content);
 		~RecordedEvent();
-
-	private:
-		pugi::xml_node _eventNode;
 
 		std::string getType();
 		boost::posix_time::ptime getTime();
 		std::string getContent();
+		long long getTimeFromStart();
+	private:
+		std::string _type;
+		std::string _time;
+		std::string _content;
+		long long _relativeTime;
 };
 
 class SessionReader
@@ -27,12 +30,11 @@ class SessionReader
 		~SessionReader();
 
 		bool readSession(std::string path);
+		std::vector<RecordedEvent> getEvents();
 
 		static std::vector<std::string> getSessionSaves();
 	private:
 		pugi::xml_node _root;
-
-		std::vector<RecordedEvent> getEvents();
 };
 
 #endif

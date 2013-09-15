@@ -24,5 +24,9 @@
 		<file>resources/as_abort.png</file>
 		<file>resources/as_landonerror.png</file>
 		<file>resources/as_errormarker.png</file>
+		
+		<file>resources/sessionviewer_picture.png</file>
+		<file>resources/sessionviewer_navdata.png</file>
+		<file>resources/sessionviewer_video.png</file>
 	</qresource>
 </RCC>

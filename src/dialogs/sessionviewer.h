@@ -5,6 +5,9 @@
 #include <QListWidget>
 #include <QListWidgetItem>
 #include <QPushButton>
+#include <QTabWidget>
+#include <QLabel>
+#include "../widgets/timelinewidget.h"
 
 class SessionViewer : public QMainWindow
 {
@@ -17,11 +20,20 @@ class SessionViewer : public QMainWindow
 		void monthSelectionChanged(QListWidgetItem *selected, QListWidgetItem *previous);
 		void daySelectionChanged(QListWidgetItem *selected, QListWidgetItem *previous);
 		void timeSelectionChanged(QListWidgetItem *selected, QListWidgetItem *previous);
+
+		void loadSelectedSession();
 	private:
+		QTabWidget *tabs;
 		QListWidget *monthchooser;
 		QListWidget *daychooser;
 		QListWidget *timechooser;
 		QPushButton *ok;
+
+		QLabel *noSessionOpen;
+		QLabel *sessionTitle;
+		TimelineWidget *timeline;
+
+		void openedSession();
 };
 
 #endif

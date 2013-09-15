@@ -1,10 +1,12 @@
 #include "sessionviewer.h"
+#include "../autoflight.h"
 #include "../tools/sessionreader.h"
 #include <QtWidgets>
 
 #include <vector>
 #include <string>
 #include <iostream>
+#include <locale>
 
 using namespace std;
 
@@ -12,7 +14,7 @@ SessionViewer::SessionViewer(QWidget *parent) : QMainWindow(parent)
 {
 	setWindowTitle(tr("Session Viewer"));
 
-	QTabWidget *tabs = new QTabWidget();
+	tabs = new QTabWidget();
 
 	QWidget *chooserw = new QWidget();
 	QVBoxLayout *layout = new QVBoxLayout();
@@ -109,9 +111,35 @@ SessionViewer::SessionViewer(QWidget *parent) : QMainWindow(parent)
 	QObject::connect(daychooser, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), this, SLOT(daySelectionChanged(QListWidgetItem *, QListWidgetItem *)));
 	QObject::connect(timechooser, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), this, SLOT(timeSelectionChanged(QListWidgetItem *, QListWidgetItem *)));
 
+	QObject::connect(ok, SIGNAL(clicked()), this, SLOT(loadSelectedSession()));
+
 	///////////////////////////
     // Actual session viewer //
 	///////////////////////////
+
+	QWidget *viewer = new QWidget();
+	QVBoxLayout *viewl = new QVBoxLayout();
+	viewl->setSpacing(0);
+	viewl->setContentsMargins(0, 0, 0, 0);
+	viewer->setLayout(viewl);
+
+	tabs->addTab(viewer, tr("Session Viewer"));
+
+	noSessionOpen = new QLabel(tr("No session open"));
+	noSessionOpen->setStyleSheet("padding: 20px; font-size: 28px;");
+	noSessionOpen->setAlignment(Qt::AlignCenter);
+	viewl->addWidget(noSessionOpen);
+
+	sessionTitle = new QLabel();
+	sessionTitle->setStyleSheet("padding: 10px; font-size: 26px;");
+	sessionTitle->setAlignment(Qt::AlignCenter);
+	viewl->addWidget(sessionTitle);
+	sessionTitle->setVisible(false);
+
+	timeline = new TimelineWidget(0);
+	timeline->setMaximumHeight(100);
+	viewl->addWidget(timeline);
+	timeline->setVisible(false);
 }
 
 void SessionViewer::monthSelectionChanged(QListWidgetItem *selected, QListWidgetItem *previous)
@@ -200,4 +228,61 @@ void SessionViewer::timeSelectionChanged(QListWidgetItem *selected, QListWidgetI
 	}
 
 	ok->setEnabled(true);
+}
+
+void SessionViewer::loadSelectedSession()
+{
+	string filename = "AF_";
+	// Append the year and month
+	filename.append(monthchooser->currentItem()->text().toStdString().substr(3, 4) + monthchooser->currentItem()->text().toStdString().substr(0, 2));
+	// Append the day
+	int day = boost::lexical_cast<int>(daychooser->currentItem()->text().toStdString());
+	if(day <= 9)
+	{
+		filename.append("0" + to_string(day));
+	}
+	else
+	{
+		filename.append("" + to_string(day));
+	}
+	// Append the time
+	filename.append("T");
+	string time = timechooser->currentItem()->text().toStdString();
+	time.erase(remove_if(time.begin(), time.end(), not1(ptr_fun(::isdigit))), time.end());
+	filename.append(time);
+	// Append the extension
+	filename.append(".xml");
+
+	// Open the session
+	SessionReader r;
+	if(r.readSession(AutoFlight::getHomeDirectory() + "AutoFlightSaves/Sessions/" + filename))
+	{
+		cout << "Opened session " << filename << endl;
+		vector<RecordedEvent> events = r.getEvents();
+
+		timeline->removeEvents();
+		timeline->setTime((float) events.back().getTimeFromStart() / 1000.0f);
+
+		for(RecordedEvent event : events)
+		{
+			timeline->addEvent(event);
+		}
+
+		openedSession();
+	}
+	else
+	{
+		cerr << "Could not open session " << filename << endl;
+	}
+}
+
+void SessionViewer::openedSession()
+{
+	noSessionOpen->setVisible(false);
+
+	timeline->setVisible(true);
+	sessionTitle->setText(QString(daychooser->currentItem()->text()).append("/").append(monthchooser->currentItem()->text()).append(" ").append(timechooser->currentItem()->text()));
+	sessionTitle->setVisible(true);
+
+	tabs->setCurrentIndex(1);
 }
