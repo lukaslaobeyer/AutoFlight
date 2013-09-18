@@ -7,7 +7,9 @@
 #include <QPushButton>
 #include <QTabWidget>
 #include <QLabel>
+#include "../tools/sessionreader.h"
 #include "../widgets/timelinewidget.h"
+#include "../widgets/gallerywidget.h"
 
 class SessionViewer : public QMainWindow
 {
@@ -22,6 +24,9 @@ class SessionViewer : public QMainWindow
 		void timeSelectionChanged(QListWidgetItem *selected, QListWidgetItem *previous);
 
 		void loadSelectedSession();
+
+		void timelineTimeUpdated(float newTime);
+		void timelineMarkerPressed(RecordedEvent *e);
 	private:
 		QTabWidget *tabs;
 		QListWidget *monthchooser;
@@ -31,7 +36,12 @@ class SessionViewer : public QMainWindow
 
 		QLabel *noSessionOpen;
 		QLabel *sessionTitle;
+		QLabel *sessionInfo;
 		TimelineWidget *timeline;
+
+		GalleryWidget *pics;
+
+		SessionReader _reader;
 
 		void openedSession();
 };

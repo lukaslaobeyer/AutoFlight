@@ -1,6 +1,5 @@
 #include "sessionviewer.h"
 #include "../autoflight.h"
-#include "../tools/sessionreader.h"
 #include <QtWidgets>
 
 #include <vector>
@@ -133,13 +132,31 @@ SessionViewer::SessionViewer(QWidget *parent) : QMainWindow(parent)
 	sessionTitle = new QLabel();
 	sessionTitle->setStyleSheet("padding: 10px; font-size: 26px;");
 	sessionTitle->setAlignment(Qt::AlignCenter);
+	sessionTitle->setMaximumHeight(50);
 	viewl->addWidget(sessionTitle);
 	sessionTitle->setVisible(false);
 
+	sessionInfo = new QLabel();
+	sessionInfo->setStyleSheet("padding: 5px; font-size: 18px");
+	sessionInfo->setAlignment(Qt::AlignCenter);
+	sessionInfo->setMaximumHeight(30);
+	viewl->addWidget(sessionInfo);
+	sessionInfo->setVisible(false);
+
+	pics = new GalleryWidget(0, this);
+	viewl->addWidget(pics);
+	pics->setVisible(false);
+
+	viewl->addStretch();
+
 	timeline = new TimelineWidget(0);
 	timeline->setMaximumHeight(100);
+	timeline->setMinimumHeight(100);
 	viewl->addWidget(timeline);
 	timeline->setVisible(false);
+
+	QObject::connect(timeline, SIGNAL(markerPressed(RecordedEvent *)), this, SLOT(timelineMarkerPressed(RecordedEvent *)));
+	QObject::connect(timeline, SIGNAL(newTimeSelected(float)), this, SLOT(timelineTimeUpdated(float)));
 }
 
 void SessionViewer::monthSelectionChanged(QListWidgetItem *selected, QListWidgetItem *previous)
@@ -254,11 +271,10 @@ void SessionViewer::loadSelectedSession()
 	filename.append(".xml");
 
 	// Open the session
-	SessionReader r;
-	if(r.readSession(AutoFlight::getHomeDirectory() + "AutoFlightSaves/Sessions/" + filename))
+	if(_reader.readSession(AutoFlight::getHomeDirectory() + "AutoFlightSaves/Sessions/" + filename))
 	{
 		cout << "Opened session " << filename << endl;
-		vector<RecordedEvent> events = r.getEvents();
+		vector<RecordedEvent> events = _reader.getEvents();
 
 		timeline->removeEvents();
 		timeline->setTime((float) events.back().getTimeFromStart() / 1000.0f);
@@ -283,6 +299,20 @@ void SessionViewer::openedSession()
 	timeline->setVisible(true);
 	sessionTitle->setText(QString(daychooser->currentItem()->text()).append("/").append(monthchooser->currentItem()->text()).append(" ").append(timechooser->currentItem()->text()));
 	sessionTitle->setVisible(true);
+	sessionInfo->setText(tr("Session duration: ").append(QString::number(_reader.getSessionDuration(), 'f', 1)).append(tr(" | Total flight time: ")).append(QString::number(_reader.getFlightTime(), 'f', 1)).append(tr(" | Pictures taken: ")).append(QString::number(_reader.getPicturesCount(), 'f', 0)));
+	sessionInfo->setVisible(true);
+	pics->setImages(_reader.getPicturePaths());
+	pics->setVisible(true);
 
 	tabs->setCurrentIndex(1);
+}
+
+void SessionViewer::timelineMarkerPressed(RecordedEvent *e)
+{
+
+}
+
+void SessionViewer::timelineTimeUpdated(float newTime)
+{
+
 }

@@ -28,5 +28,8 @@
 		<file>resources/sessionviewer_picture.png</file>
 		<file>resources/sessionviewer_navdata.png</file>
 		<file>resources/sessionviewer_video.png</file>
+		<file>resources/sessionviewer_takeoff.png</file>
+		<file>resources/sessionviewer_land.png</file>
+		<file>resources/sessionviewer_emergency.png</file>
 	</qresource>
 </RCC>

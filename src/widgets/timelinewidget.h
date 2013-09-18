@@ -19,6 +19,10 @@ class TimelineWidget : public QWidget
 		void addEvent(RecordedEvent e);
 		void removeEvents();
 
+	Q_SIGNALS:
+		void markerPressed(RecordedEvent *e);
+		void newTimeSelected(float newTime);
+
 	protected:
 		void paintEvent(QPaintEvent *event);
 		void mouseMoveEvent(QMouseEvent *e);
@@ -29,7 +33,7 @@ class TimelineWidget : public QWidget
 		int _mouseX = 0;
 		float _currentTime = 0;
 
-		QImage pictureIcon, videoIcon, navdataIcon;
+		QImage pictureIcon, videoIcon, navdataIcon, takeoffIcon, landIcon, emergencyIcon;
 
 		std::vector<RecordedEvent> events;
 
@@ -40,6 +44,7 @@ class TimelineWidget : public QWidget
 
 		void addMarker(QImage marker, float time);
 		void drawMarkers(QPainter &painter);
+		void drawTooltips(QPainter &painter);
 };
 
 #endif

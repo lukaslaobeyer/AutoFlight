@@ -93,7 +93,7 @@ vector<string> SessionReader::getSessionSaves()
 
 vector<RecordedEvent> SessionReader::getEvents()
 {
-	vector<RecordedEvent> events;
+	events.clear();
 
 	long long startTime = 0;
 
@@ -136,4 +136,83 @@ vector<RecordedEvent> SessionReader::getEvents()
 	}
 
 	return events;
+}
+
+float SessionReader::getSessionDuration()
+{
+	if(events.empty())
+	{
+		return -1;
+	}
+
+	return ((float) events.back().getTimeFromStart()) / 1000.0f;
+}
+
+float SessionReader::getFlightTime()
+{
+	if(events.empty())
+	{
+		return -1;
+	}
+
+	float flightTime = 0;
+	float takeOffAt = -1;
+
+	for(RecordedEvent e : events)
+	{
+		if(e.getType() == "TakeOff")
+		{
+			takeOffAt = e.getTimeFromStart();
+		}
+		else if(e.getType() == "Land" || e.getType() == "Emergency")
+		{
+			if(takeOffAt >= 0)
+			{
+				flightTime += e.getTimeFromStart() - takeOffAt;
+				takeOffAt = -1;
+			}
+		}
+	}
+
+	return flightTime / 1000.0f;
+}
+
+int SessionReader::getPicturesCount()
+{
+	if(events.empty())
+	{
+		return -1;
+	}
+
+	int pictures = 0;
+
+	for(RecordedEvent e : events)
+	{
+		if(e.getType() == "PictureTaken")
+		{
+			pictures++;
+		}
+	}
+
+	return pictures;
+}
+
+vector<string> SessionReader::getPicturePaths()
+{
+	vector<string> paths;
+
+	if(events.empty())
+	{
+		return paths;
+	}
+
+	for(RecordedEvent e : events)
+	{
+		if(e.getType() == "PictureTaken")
+		{
+			paths.push_back(e.getContent());
+		}
+	}
+
+	return paths;
 }

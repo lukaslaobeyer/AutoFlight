@@ -14,6 +14,9 @@ TimelineWidget::TimelineWidget(float time, QWidget *parent) : QWidget(parent)
 	pictureIcon = QImage(":/resources/sessionviewer_picture.png", "png");
 	videoIcon = QImage(":/resources/sessionviewer_video.png", "png");
 	navdataIcon = QImage(":/resources/sessionviewer_navdata.png", "png");
+	takeoffIcon = QImage(":/resources/sessionviewer_takeoff.png", "png");
+	landIcon = QImage(":/resources/sessionviewer_land.png", "png");
+	emergencyIcon = QImage(":/resources/sessionviewer_emergency.png", "png");
 }
 
 void TimelineWidget::setTime(float time)
@@ -49,7 +52,7 @@ void TimelineWidget::paintEvent(QPaintEvent *e)
 
 	for(RecordedEvent e : events)
 	{
-		float eventTime = e.getTimeFromStart() / 1000;
+		float eventTime = ((float) e.getTimeFromStart()) / 1000.0f;
 
 		if(e.getType() == "PictureTaken")
 		{
@@ -84,6 +87,18 @@ void TimelineWidget::paintEvent(QPaintEvent *e)
 				painter.fillRect(startedRecordingVidAt * ((float) width() / _time), 0, (eventTime - startedRecordingVidAt) * ((float) width() / _time), height(), videoRecordingBrush);
 				startedRecordingVidAt = -1.0f;
 			}
+		}
+		else if(e.getType() == "TakeOff")
+		{
+			addMarker(takeoffIcon, eventTime);
+		}
+		else if(e.getType() == "Land")
+		{
+			addMarker(landIcon, eventTime);
+		}
+		else if(e.getType() == "Emergency")
+		{
+			addMarker(emergencyIcon, eventTime);
 		}
 	}
 
@@ -132,6 +147,7 @@ void TimelineWidget::paintEvent(QPaintEvent *e)
 
 	// Draw the event markers
 	drawMarkers(painter);
+	drawTooltips(painter);
 }
 
 void TimelineWidget::mouseMoveEvent(QMouseEvent *e)
@@ -143,6 +159,7 @@ void TimelineWidget::mouseMoveEvent(QMouseEvent *e)
 	if(QApplication::mouseButtons() == Qt::LeftButton)
 	{
 		_currentTime = (float) e->pos().x() / ((float) width() / (float) _time);
+		Q_EMIT newTimeSelected(_currentTime);
 	}
 	Q_EMIT update();
 }
@@ -154,6 +171,36 @@ void TimelineWidget::mouseReleaseEvent(QMouseEvent *e)
 	snapToMarkers(&_mouseX, 10);
 
 	_currentTime = (float) _mouseX / ((float) width() / (float) _time);
+
+	if(e->pos().y() >= height() - pictureIcon.height())
+	{
+		// Clicked on a marker
+
+		RecordedEvent *clicked = nullptr;
+
+		// Find out which one:
+		int closest = 1000000;
+
+		for(RecordedEvent e : events)
+		{
+			int eventValue = (e.getTimeFromStart() / 1000.0f) * ((float) width() / _time);
+
+			if(eventValue <= _mouseX + 12 && eventValue >= _mouseX - 12)
+			{
+				if(abs(eventValue - _mouseX) < closest)
+				{
+					clicked = &e;
+				}
+			}
+		}
+
+		if(clicked != nullptr)
+		{
+			Q_EMIT markerPressed(clicked);
+		}
+	}
+
+	Q_EMIT newTimeSelected(_currentTime);
 	Q_EMIT update();
 }
 
@@ -203,6 +250,67 @@ void TimelineWidget::snapToMarkers(int *value, int snapThreshold)
 			{
 				closest = abs(eventValue - *value);
 				*value = eventValue;
+			}
+		}
+	}
+}
+
+void TimelineWidget::drawTooltips(QPainter &painter)
+{
+	QBrush labelBg(QColor::fromRgb(0, 0, 0, 200));
+	QPen textPen(QColor::fromRgb(255, 255, 255));
+	QFont font;
+	font.setFamily(font.defaultFamily());
+	QFontMetrics fmetrics(font);
+
+	int closest = 1000000;
+
+	for(RecordedEvent e : events)
+	{
+		int eventValue = (e.getTimeFromStart() / 1000.0f) * ((float) width() / _time);
+
+		if(eventValue <= _mouseX + 12 && eventValue >= _mouseX - 12)
+		{
+			if(abs(eventValue - _mouseX) < closest)
+			{
+				QString label = "";
+
+				if(e.getType() == "TakeOff")
+				{
+					label = tr("Take Off");
+				}
+				else if(e.getType() == "Land")
+				{
+					label = tr("Landing");
+				}
+				else if(e.getType() == "Emergency")
+				{
+					label = tr("Emergency");
+				}
+				else if(e.getType() == "VideoRecordingStart")
+				{
+					label = tr("Start Recording Video");
+				}
+				else if(e.getType() == "NavdataRecordingStart")
+				{
+					label = tr("Start Recording Navdata");
+				}
+				else if(e.getType() == "PictureTaken")
+				{
+					label = tr("Picture");
+				}
+
+				if(label.length() > 0)
+				{
+					int lblw = fmetrics.width(label) + 10;
+					int lblh = fmetrics.height() + 6;
+
+					painter.setPen(textPen);
+					painter.setBrush(labelBg);
+
+					painter.fillRect(_mouseX - lblw / 2, height() - lblh - 35, lblw, lblh, labelBg);
+					painter.drawText(_mouseX - lblw / 2 + 5, height() - lblh/2 - 30, label);
+				}
 			}
 		}
 	}

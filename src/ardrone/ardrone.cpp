@@ -587,6 +587,7 @@ bool ARDrone::drone_emergency()
 	_commandmutex.unlock();
 
 	_flying = false;
+	_srec->addEvent("Emergency");
 
 	return true;
 }
@@ -646,6 +647,7 @@ bool ARDrone::drone_land()
 	_commandmutex.unlock();
 
 	_flying = false;
+	_srec->addEvent("Land");
 
 	return true;
 }
@@ -892,6 +894,7 @@ bool ARDrone::drone_takeOff()
 	_commandmutex.unlock();
 
 	_flying = true;
+	_srec->addEvent("TakeOff");
 
 	return true;
 }

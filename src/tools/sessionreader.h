@@ -32,9 +32,15 @@ class SessionReader
 		bool readSession(std::string path);
 		std::vector<RecordedEvent> getEvents();
 
+		float getSessionDuration();
+		float getFlightTime();
+		int getPicturesCount();
+		std::vector<std::string> getPicturePaths();
+
 		static std::vector<std::string> getSessionSaves();
 	private:
 		pugi::xml_node _root;
+		std::vector<RecordedEvent> events;
 };
 
 #endif
