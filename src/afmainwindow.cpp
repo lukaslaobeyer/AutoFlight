@@ -118,8 +118,10 @@ void AFMainWindow::createMenuBar() {
 		QAction *connectDrone = new QAction(tr("Connect to AR.Drone"), this);
 		drone->addAction(connectDrone);
 		
+		/* TODO: This
 		QAction *connectArduino = new QAction(tr("Connect to Arduino"), this);
 		drone->addAction(connectArduino);
+		*/
 		
 		drone->addSeparator();
 		
@@ -130,19 +132,19 @@ void AFMainWindow::createMenuBar() {
 		drone->addAction(calibMagneto);
 		
 		drone->addSeparator();
-		
+		/* TODO: This
 		QAction *pairDrone = new QAction(tr("Pair (Mac-Address coupling)"), this);
 		drone->addAction(pairDrone);
 		
 		QAction *unpairDrone = new QAction(tr("Unpair"), this);
 		drone->addAction(unpairDrone);
-		
+		*/
 	QMenu *tools = new QMenu(tr("Tools"));
 	menuBar()->addMenu(tools);
 	
 		QAction *controlConfig = new QAction(tr("Controller Configuration"), this);
 		tools->addAction(controlConfig);
-		
+		/* TODO: This
 		QAction *controlInfo = new QAction(tr("Controller Information"), this);
 		tools->addAction(controlInfo);
 		
@@ -155,10 +157,10 @@ void AFMainWindow::createMenuBar() {
 		
 		QAction *gpsViewer = new QAction(tr("GPS Viewer"), this);
 		tools->addAction(gpsViewer);
-	
-	QMenu *view = new QMenu(tr("View"));
-	menuBar()->addMenu(view);
-	
+		*/
+	/*QMenu *view = new QMenu(tr("View"));
+	menuBar()->addMenu(view);*/
+		/* TODO: This
 		QAction *toggleHUD = new QAction(tr("Head-Up Display [F1]"), this);
 		toggleHUD->setCheckable(true);
 		view->addAction(toggleHUD);
@@ -168,19 +170,25 @@ void AFMainWindow::createMenuBar() {
 		QAction *toggleFullscreen = new QAction(tr("Fullscreen"), this);
 		toggleFullscreen->setCheckable(true);
 		view->addAction(toggleFullscreen);
-	
+		*/
 	QMenu *help = new QMenu(tr("Help"));
 	menuBar()->addMenu(help);
-	
+		/* TODO: THis
 		QAction *onlineHelp = new QAction(tr("Online Help"), this);
 		help->addAction(onlineHelp);
 		
 		help->addSeparator();
-		
+		*/
 		QAction *about = new QAction(tr("About AutoFlight"), this);
 		help->addAction(about);
 
+	QWidget::connect(connectDrone, SIGNAL(triggered()), this, SLOT(attemptConnection()));
+	QWidget::connect(flatTrim, SIGNAL(triggered()), this, SLOT(flatTrimActionTriggered()));
+	QWidget::connect(calibMagneto, SIGNAL(triggered()), this, SLOT(calibrateMagnetometerActionTriggered()));
+
 	QWidget::connect(controlConfig, SIGNAL(triggered()), this, SLOT(showControlConfigDialog()));
+
+	QWidget::connect(about, SIGNAL(triggered()), this, SLOT(showAboutDialog()));
 }
 
 QWidget *AFMainWindow::createVerticalToolbar()
@@ -341,12 +349,12 @@ bool AFMainWindow::eventFilter(QObject *watched, QEvent* e)
 					// Take off or land
 					if(_af->ardrone()->drone_isFlying())
 					{
-						showMessage("Landing");
+						showMessage(tr("Landing").toStdString());
 						_af->ardrone()->drone_land();
 					}
 					else
 					{
-						showMessage("Taking off");
+						showMessage(tr("Taking off").toStdString());
 						_af->ardrone()->drone_takeOff();
 					}
 
@@ -354,14 +362,14 @@ bool AFMainWindow::eventFilter(QObject *watched, QEvent* e)
 				case Qt::Key_F:
 					if(!_confirmFlip)
 					{
-						showMessage("[Flip] Are you sure?");
+						showMessage(tr("[Flip] Are you sure?").toStdString());
 						QTimer::singleShot(CONFIRMATION_TIMEOUT, this, SLOT(clearConfirmationFlags()));
 						_confirmFlip = true;
 					}
 					else
 					{
 						hideMessages();
-						showMessage("Performing flip!");
+						showMessage(tr("Performing flip!").toStdString());
 						_af->ardrone()->drone_flip(ardrone::flip::LEFT);
 					}
 					// Flip
@@ -369,17 +377,17 @@ bool AFMainWindow::eventFilter(QObject *watched, QEvent* e)
 				case Qt::Key_P:
 					// Take Picture
 					_af->ardrone()->drone_takePicture();
-					showMessage("Picture saved");
+					showMessage(tr("Picture saved").toStdString());
 					break;
 				case Qt::Key_R:
 					// Start/stop Recording
 					if(_af->ardrone()->drone_isRecording())
 					{
-						showMessage("Stopped recording");
+						showMessage(tr("Stopped recording").toStdString());
 					}
 					else
 					{
-						showMessage("Recording");
+						showMessage(tr("Recording").toStdString());
 					}
 					_af->ardrone()->drone_toggleRecording();
 					break;
@@ -387,30 +395,30 @@ bool AFMainWindow::eventFilter(QObject *watched, QEvent* e)
 					// Start/stop Recording Sensor Data
 					if(_af->ardrone()->drone_isRecordingNavdata())
 					{
-						showMessage("Stopped recording sensor data");
+						showMessage(tr("Stopped recording sensor data").toStdString());
 					}
 					else
 					{
-						showMessage("Recording sensor data");
+						showMessage(tr("Recording sensor data").toStdString());
 					}
 					_af->ardrone()->drone_toggleRecordingNavdata();
 					break;
 				case Qt::Key_V:
 					// Change View
-					showMessage("Switching view");
+					showMessage(tr("Switching view").toStdString());
 					_af->ardrone()->drone_toggleView();
 					break;
 				case Qt::Key_Y:
 					if(!_confirmEmergency)
 					{
-						showMessage("[Emergency] Are you sure?");
+						showMessage(tr("[Emergency] Are you sure?").toStdString());
 						QTimer::singleShot(CONFIRMATION_TIMEOUT, this, SLOT(clearConfirmationFlags()));
 						_confirmEmergency = true;
 					}
 					else
 					{
 						hideMessages();
-						showMessage("Emergency command sent");
+						showMessage(tr("Emergency command sent").toStdString());
 						_af->ardrone()->drone_emergency();
 					}
 					// Emergency
@@ -522,4 +530,69 @@ void AFMainWindow::closeEvent(QCloseEvent *event)
 	_af->ardrone()->removeVideoListener(this);
 	_af->saveSession();
 	//TODO: exit confirmation dialog, etc.
+}
+
+void AFMainWindow::flatTrimActionTriggered()
+{
+	if(!_af->ardrone()->drone_flattrim())
+	{
+		showMessage(tr("Not connected").toStdString());
+	}
+	else
+	{
+		showMessage(tr("Performing Flat Trim").toStdString());
+	}
+}
+
+void AFMainWindow::calibrateMagnetometerActionTriggered()
+{
+	if(!_af->ardrone()->drone_calibmagneto())
+	{
+		showMessage(tr("Not connected").toStdString());
+	}
+	else
+	{
+		showMessage(tr("Calibrating Magnetometer").toStdString());
+	}
+}
+
+void AFMainWindow::showAboutDialog()
+{
+	QDialog aboutDialog(this);
+	aboutDialog.setWindowTitle(tr("About AutoFlight"));
+	aboutDialog.setMinimumHeight(200);
+
+	QHBoxLayout *l = new QHBoxLayout();
+	aboutDialog.setLayout(l);
+
+	QVBoxLayout *left = new QVBoxLayout();
+	left->setAlignment(Qt::AlignTop);
+	l->addLayout(left);
+
+	QLabel *icon = new QLabel();
+	icon->setPixmap(QPixmap::fromImage(QImage(":/resources/icon.png").scaled(75, 75)));
+	icon->setFixedSize(75, 75);
+	left->addWidget(icon);
+
+	QVBoxLayout *right = new QVBoxLayout();
+	l->addLayout(right);
+
+	QLabel *autoflight = new QLabel(tr("About AutoFlight"));
+	autoflight->setStyleSheet("font-size: 24px");
+	right->addWidget(autoflight);
+
+	QLabel *version = new QLabel(tr("Version ").append(QString::fromStdString(autoflight::SOFTWARE_VERSION)));
+	right->addWidget(version);
+
+	right->addStretch();
+
+	QChar copyrightSymbol(0x00A9);
+	QLabel *copyright = new QLabel(QString("Copyright ").append(copyrightSymbol).append(" 2013 Lukas Lao Beyer"));
+	right->addWidget(copyright);
+
+	QLabel *website = new QLabel(QString("<a href=\"http://lbpclabs.com/autoflight\">lbpclabs.com/autoflight</a>"));
+	website->setOpenExternalLinks(true);
+	right->addWidget(website);
+
+	aboutDialog.exec();
 }

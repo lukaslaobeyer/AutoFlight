@@ -17,6 +17,7 @@ class GalleryWidget : public QWidget
 		GalleryWidget(QWidget *parent = 0, QWidget *dialogParent = 0);
 
 		void setImages(std::vector<std::string> paths);
+		void showImage(std::string imageUrl);
 
 	private Q_SLOTS:
 		void thumbnailClicked();

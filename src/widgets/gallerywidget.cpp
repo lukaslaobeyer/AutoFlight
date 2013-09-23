@@ -89,3 +89,18 @@ void GalleryWidget::thumbnailClicked()
 	imageDialog.setLayout(l);
 	imageDialog.exec();
 }
+
+void GalleryWidget::showImage(string imageUrl)
+{
+	QDialog imageDialog(_dialogParent);
+	imageDialog.setWindowTitle(tr("Picture"));
+
+	QLabel *image = new QLabel();
+	image->setPixmap(QPixmap::fromImage(QImage(QString::fromStdString(imageUrl))));
+
+	QVBoxLayout *l = new QVBoxLayout();
+	l->addWidget(image);
+
+	imageDialog.setLayout(l);
+	imageDialog.exec();
+}

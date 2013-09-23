@@ -20,7 +20,7 @@ class TimelineWidget : public QWidget
 		void removeEvents();
 
 	Q_SIGNALS:
-		void markerPressed(RecordedEvent *e);
+		void markerPressed(std::string type, std::string content, float time);
 		void newTimeSelected(float newTime);
 
 	protected:

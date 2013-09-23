@@ -176,7 +176,9 @@ void TimelineWidget::mouseReleaseEvent(QMouseEvent *e)
 	{
 		// Clicked on a marker
 
-		RecordedEvent *clicked = nullptr;
+		string clickedType = "";
+		string clickedContent = "";
+		float clickedTime = -1;
 
 		// Find out which one:
 		int closest = 1000000;
@@ -189,14 +191,17 @@ void TimelineWidget::mouseReleaseEvent(QMouseEvent *e)
 			{
 				if(abs(eventValue - _mouseX) < closest)
 				{
-					clicked = &e;
+					closest = abs(eventValue - _mouseX);
+					clickedType = e.getType();
+					clickedContent = e.getContent();
+					clickedTime = (float) e.getTimeFromStart() * 1000.0f;
 				}
 			}
 		}
 
-		if(clicked != nullptr)
+		if(clickedTime >= 0.0f)
 		{
-			Q_EMIT markerPressed(clicked);
+			Q_EMIT markerPressed(clickedType, clickedContent, clickedTime);
 		}
 	}
 

@@ -10,6 +10,7 @@
 #include "../tools/sessionreader.h"
 #include "../widgets/timelinewidget.h"
 #include "../widgets/gallerywidget.h"
+#include "../widgets/sensordataviewer.h"
 
 class SessionViewer : public QMainWindow
 {
@@ -26,7 +27,7 @@ class SessionViewer : public QMainWindow
 		void loadSelectedSession();
 
 		void timelineTimeUpdated(float newTime);
-		void timelineMarkerPressed(RecordedEvent *e);
+		void timelineMarkerPressed(std::string type, std::string content, float time);
 	private:
 		QTabWidget *tabs;
 		QListWidget *monthchooser;
@@ -40,6 +41,7 @@ class SessionViewer : public QMainWindow
 		TimelineWidget *timeline;
 
 		GalleryWidget *pics;
+		SensorDataViewer *sensorviewer;
 
 		SessionReader _reader;
 

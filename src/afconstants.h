@@ -3,6 +3,11 @@
 
 #include <string>
 
+namespace autoflight
+{
+	const std::string SOFTWARE_VERSION = "Alpha 0.1 (Preview)";
+}
+
 namespace ardrone
 {
 	const std::string DEFAULT_IP   = "192.168.1.1";

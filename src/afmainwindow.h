@@ -32,6 +32,9 @@ class AFMainWindow : public QMainWindow, public INavdataListener, public IVideoL
 		void showMessage(std::string msg);
 	public Q_SLOTS:
 		void hideMessages();
+		void flatTrimActionTriggered();
+		void calibrateMagnetometerActionTriggered();
+		void showAboutDialog();
 	protected:
 		bool eventFilter(QObject *sender, QEvent *e);
 	private:

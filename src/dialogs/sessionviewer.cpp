@@ -147,7 +147,8 @@ SessionViewer::SessionViewer(QWidget *parent) : QMainWindow(parent)
 	viewl->addWidget(pics);
 	pics->setVisible(false);
 
-	viewl->addStretch();
+	sensorviewer = new SensorDataViewer();
+	viewl->addWidget(sensorviewer);
 
 	timeline = new TimelineWidget(0);
 	timeline->setMaximumHeight(100);
@@ -155,7 +156,7 @@ SessionViewer::SessionViewer(QWidget *parent) : QMainWindow(parent)
 	viewl->addWidget(timeline);
 	timeline->setVisible(false);
 
-	QObject::connect(timeline, SIGNAL(markerPressed(RecordedEvent *)), this, SLOT(timelineMarkerPressed(RecordedEvent *)));
+	QObject::connect(timeline, SIGNAL(markerPressed(std::string, std::string, float)), this, SLOT(timelineMarkerPressed(std::string, std::string, float)));
 	QObject::connect(timeline, SIGNAL(newTimeSelected(float)), this, SLOT(timelineTimeUpdated(float)));
 }
 
@@ -307,9 +308,12 @@ void SessionViewer::openedSession()
 	tabs->setCurrentIndex(1);
 }
 
-void SessionViewer::timelineMarkerPressed(RecordedEvent *e)
+void SessionViewer::timelineMarkerPressed(string type, string content, float time)
 {
-
+	if(type == "PictureTaken")
+	{
+		pics->showImage(content);
+	}
 }
 
 void SessionViewer::timelineTimeUpdated(float newTime)
