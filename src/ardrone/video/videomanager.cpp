@@ -802,7 +802,7 @@ void VideoManager::decodePacket()
 			}
 			else
 			{
-				cerr << "Could not decode frame" << endl;
+				cerr << "Could not decode frame: Error #" << frameFinished << endl;
 			}
 
 			_previous_width = _pave[i]->encoded_stream_width;

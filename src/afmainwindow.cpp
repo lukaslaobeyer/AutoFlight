@@ -59,11 +59,16 @@ AFMainWindow::AFMainWindow(AutoFlight *af, QWidget *parent) : QMainWindow(parent
 	msg->setStyleSheet("background: rgba(30, 30, 30, 0.85); font-size: 24px; color: #FFFFFF; border-radius: 10px;");
 	msg->hide();
 
-	videoPanel = new QLabel();
+	videoPanel = new VideoDisplay();
+	//videoPanel->setAlignment(Qt::AlignCenter);
+	grid->addWidget(videoPanel, 0, 0, 1, 1);
+
+	videoPanel->setCurrentFrame(QImage(":/resources/autoflight.png"));
+	/*videoPanel = new QLabel();
 	videoPanel->setPixmap(QPixmap(":/resources/autoflight.png"));
 	videoPanel->setStyleSheet("font-size: 100px;");
 	videoPanel->setAlignment(Qt::AlignCenter);
-	grid->addWidget(videoPanel, 0, 0, 1, 1);
+	grid->addWidget(videoPanel, 0, 0, 1, 1);*/
 
 	grid->addWidget(createHorizontalToolbar(), 1, 0, 1, 1);
 	grid->addWidget(createVerticalToolbar(), 0, 1, 2, 1);
@@ -108,7 +113,7 @@ void AFMainWindow::videoFrameAvailable(cv::Mat f)
 
 void AFMainWindow::videoFrameAvailable(QImage f)
 {
-	videoPanel->setPixmap(QPixmap::fromImage(f));
+	videoPanel->setCurrentFrame(f);
 }
 
 void AFMainWindow::createMenuBar() {

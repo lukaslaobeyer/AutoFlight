@@ -17,6 +17,7 @@
 #include "ardrone/video/ivideolistener.h"
 #include "ardrone/video/qvideolistener.h"
 #include "ardrone/navdata/navdatakeys.h"
+#include "widgets/videodisplay.h"
 #include "asmainwindow.h"
 
 class AFMainWindow : public QMainWindow, public INavdataListener, public IVideoListener, public QVideoListener
@@ -44,7 +45,7 @@ class AFMainWindow : public QMainWindow, public INavdataListener, public IVideoL
 		QWidget *createVerticalToolbar();
 		QWidget *createHorizontalToolbar();
 
-		QLabel *videoPanel;
+		VideoDisplay *videoPanel;
 		QLabel *msg;
 
 		QTimer *_messageTimer = NULL;
