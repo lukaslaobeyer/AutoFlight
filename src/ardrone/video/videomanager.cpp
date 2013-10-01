@@ -258,7 +258,7 @@ void VideoManager::packetReceived(const boost::system::error_code &error, size_t
 					// Copy frame into it's buffer
 					copy(_reconstructionFrameBuffer, _reconstructionFrameBuffer + _reconstructionPaVE->payload_size, _rawFrame[_availableFrames]);
 
-					reconstructed_frame_write_position = -1; // Set this to a negative value to make clear there's nothing that has to be reconstructed
+					reconstructed_frame_write_position = -1; // Set this to a negative value to make clear there's nothing that has to be reconstructed anymore
 					readOffset +=_reconstructionPaVE->payload_size - reconstructed_frame_write_position;
 
 					_availableFrames++;

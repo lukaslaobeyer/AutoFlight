@@ -15,6 +15,7 @@
 #include "video/ivideolistener.h"
 #include "atcommands/atcommand.h"
 #include "input/controllerconfiguration.h"
+#include "input/icontrollerinputlistener.h"
 #include "../tools/sessionrecorder.h"
 
 class NotConnectedException : public std::runtime_error
@@ -41,6 +42,8 @@ class ARDrone
 		void removeNavdataListener(INavdataListener *listener);
 		void addVideoListener(IVideoListener *listener);
 		void removeVideoListener(IVideoListener *listener);
+		void addControllerInputListener(IControllerInputListener *listener);
+		void removeControllerInputListener(IControllerInputListener *listener);
 		void startUpdateLoop();
 		void stopUpdateLoop();
 		void setControllerConfiguration(ControllerConfiguration *config);
@@ -101,6 +104,7 @@ class ARDrone
 		NavdataRecorder _ndrecorder;
 		std::vector<INavdataListener *> _ndlisteners;
 		std::vector<IVideoListener *> _vlisteners;
+		std::vector<IControllerInputListener *> _ctrllisteners;
 		ControllerConfiguration *_controllerconfig = NULL;
 		int _currentView;
 		bool _isRecording = false;

@@ -85,7 +85,7 @@ int ARDrone::connect()
 			// Wait for the AR.Drone to process the commands
 			boost::this_thread::sleep_for(boost::chrono::milliseconds(50));
 		
-			drone_setConfiguration(ardrone::config::VIDEO_CODEC, ardrone::config::codec::MP4_360P);
+			drone_setConfiguration(ardrone::config::VIDEO_CODEC, ardrone::config::codec::H264_720P);
 
 			// Init navdata manager
 			_nm.init(_ip, _io_service);
@@ -157,6 +157,16 @@ void ARDrone::addVideoListener(IVideoListener *listener)
 void ARDrone::removeVideoListener(IVideoListener *listener)
 {
 	_vlisteners.erase(remove(_vlisteners.begin(), _vlisteners.end(), listener), _vlisteners.end());
+}
+
+void ARDrone::addControllerInputListener(IControllerInputListener *listener)
+{
+	_ctrllisteners.push_back(listener);
+}
+
+void ARDrone::removeControllerInputListener(IControllerInputListener *listener)
+{
+	_ctrllisteners.erase(remove(_ctrllisteners.begin(), _ctrllisteners.end(), listener), _ctrllisteners.end());
 }
 
 void ARDrone::setControllerConfiguration(ControllerConfiguration *config)
@@ -261,6 +271,9 @@ void ARDrone::processControllerInput()
 {
 	if(_controllerconfig != NULL)
 	{
+		ControllerInput *in = new ControllerInput;
+		*in = {0, 0, 0, 0, false, false, false, false, false, false, false, false};
+
 		Gamepad_device *device = Gamepad_deviceAtIndex(_controllerconfig->deviceID);
 		bool slow = false;
 
@@ -269,6 +282,7 @@ void ARDrone::processControllerInput()
 			if(device->buttonStates[_controllerconfig->takeoff])
 			{
 				drone_takeOff();
+				in->takeOff = true;
 			}
 		}
 		if(_controllerconfig->land >= 0)
@@ -276,6 +290,7 @@ void ARDrone::processControllerInput()
 			if(device->buttonStates[_controllerconfig->land])
 			{
 				drone_land();
+				in->land = true;
 			}
 		}
 		if(_controllerconfig->zap >= 0)
@@ -283,6 +298,7 @@ void ARDrone::processControllerInput()
 			if(device->buttonStates[_controllerconfig->zap])
 			{
 				drone_toggleView();
+				in->toggleView = true;
 			}
 		}
 		if(_controllerconfig->photo >= 0)
@@ -290,27 +306,31 @@ void ARDrone::processControllerInput()
 			if(device->buttonStates[_controllerconfig->photo])
 			{
 				drone_takePicture();
+				in->takePicture = true;
 			}
 		}
-		if(_controllerconfig->takeoff >= 0)
+		if(_controllerconfig->recording >= 0)
 		{
 			if(device->buttonStates[_controllerconfig->recording])
 			{
 				drone_toggleRecording();
+				in->toggleRecording = true;
 			}
 		}
-		if(_controllerconfig->takeoff >= 0)
+		if(_controllerconfig->flip >= 0)
 		{
 			if(device->buttonStates[_controllerconfig->flip])
 			{
 				drone_flip(ardrone::flip::LEFT);
+				in->flip = true;
 			}
 		}
-		if(_controllerconfig->takeoff >= 0)
+		if(_controllerconfig->slow >= 0)
 		{
 			if(device->buttonStates[_controllerconfig->slow])
 			{
 				slow = true;
+				in->slowMode = true;
 			}
 		}
 
@@ -373,6 +393,18 @@ void ARDrone::processControllerInput()
 		{
 			drone_move(phi, theta, gaz, yaw);
 		}
+
+		in->altitude = gaz;
+		in->yaw = yaw;
+		in->pitch = theta;
+		in->roll = phi;
+
+		for(IControllerInputListener *l : _ctrllisteners)
+		{
+			l->controllerInputAvailable(in);
+		}
+
+		delete in;
 	}
 }
 

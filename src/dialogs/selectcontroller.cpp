@@ -14,10 +14,17 @@ SelectController::SelectController(QWidget *parent) : QDialog(parent)
 	controllerListWidget = new QListWidget();
 	QListWidgetItem *controllerItem[Gamepad_numDevices()];
 
+	int device_i = 0;
+
 	for(unsigned int i = 0; i < Gamepad_numDevices(); i++)
 	{
-		controllerItem[i] = new QListWidgetItem(Gamepad_deviceAtIndex(i)->description, controllerListWidget);
-		controllerList.push_back(Gamepad_deviceAtIndex(i));
+		if(Gamepad_deviceAtIndex(i) != NULL)
+		{
+			controllerItem[device_i] = new QListWidgetItem(Gamepad_deviceAtIndex(i)->description, controllerListWidget);
+			controllerList.push_back(Gamepad_deviceAtIndex(i));
+
+			device_i++;
+		}
 	}
 
 	layout->addWidget(controllerListWidget, 0, 0);

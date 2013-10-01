@@ -1,4 +1,5 @@
 #include "videodisplay.h"
+#include <cmath>
 
 VideoDisplay::VideoDisplay(QWidget *parent) : QGLWidget(parent)
 {
@@ -11,7 +12,31 @@ void VideoDisplay::setCurrentFrame(const QImage &img)
 	Q_EMIT update();
 }
 
-void VideoDisplay::setCurrentData(double pyaw, double ppitch, double proll, double paltitude, double pcharge, double pspeed, double prollInput, double ppitchInput, double paltitudeInput, double pyawInput)
+void VideoDisplay::navdataAvailable(AFNavdata *nd)
+{
+	yaw = nd->psi;
+	pitch = nd->theta;
+	roll = nd->phi;
+
+	altitude = nd->altitude;
+	charge = nd->vbatpercentage;
+	speed = sqrt(nd->vx * nd->vx + nd->vy * nd->vy);
+}
+
+void VideoDisplay::controllerInputAvailable(ControllerInput *in)
+{
+	setInputData(in->roll, in->pitch, in->altitude, in->yaw);
+}
+
+void VideoDisplay::setInputData(double prollInput, double ppitchInput, double paltitudeInput, double pyawInput)
+{
+	rollInput = prollInput;
+	pitchInput = ppitchInput;
+	altitudeInput = paltitudeInput;
+	yawInput = pyawInput;
+}
+
+void VideoDisplay::setNavdata(double pyaw, double ppitch, double proll, double paltitude, double pcharge, double pspeed)
 {
 	yaw = pyaw;
 	pitch = ppitch;
@@ -19,20 +44,18 @@ void VideoDisplay::setCurrentData(double pyaw, double ppitch, double proll, doub
 	altitude = paltitude;
 	charge = pcharge;
 	speed = pspeed;
-	rollInput = prollInput;
-	pitchInput = ppitchInput;
-	altitudeInput = paltitudeInput;
-	yawInput = pyawInput;
 }
 
 void VideoDisplay::setMaximized(bool maximize)
 {
 	_maximize = maximize;
+	Q_EMIT update();
 }
 
 void VideoDisplay::showHUD(bool show)
 {
 	_hud = show;
+	Q_EMIT update();
 }
 
 void VideoDisplay::paintEvent(QPaintEvent *)
@@ -181,11 +204,11 @@ void VideoDisplay::paintEvent(QPaintEvent *)
 
 		// Draw the ALTITUDE ladder
 
-		int alt_diff = 80; // Pixels between longer green lines
+		double alt_diff = 80; // Pixels between longer green lines
 
-		int units_per_step = 40;
+		double units_per_step = 40;
 
-		int altimeter_width = 50;
+		double altimeter_width = 50;
 
 		p.setPen(thickPen);
 
@@ -196,7 +219,6 @@ void VideoDisplay::paintEvent(QPaintEvent *)
 		p.setPen(normalPen);
 
 		int small_ticks = 5;
-
 
 		for(int i = 0; i < (screenheight)/2; i++)
 		{

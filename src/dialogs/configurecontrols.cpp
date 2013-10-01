@@ -5,16 +5,31 @@
 
 using namespace std;
 
-ConfigureControls::ConfigureControls(unsigned int deviceID,ControllerConfiguration *config, QWidget *parent) : QDialog(parent)
+ConfigureControls::ConfigureControls(unsigned int deviceID, ControllerConfiguration *config, QWidget *parent) : QDialog(parent)
 {
 	int *configArray = NULL;
+
+	// The device ID passed to this constructor is not the same as the device index expected by the Gamepad_deviceAtIndex function,
+	// so change the deviceID variable to the correct index
+
+	for(unsigned int i = 0; i < Gamepad_numDevices(); i++)
+	{
+		if(Gamepad_deviceAtIndex(i) != NULL)
+		{
+			if(Gamepad_deviceAtIndex(i)->deviceID == deviceID)
+			{
+				_deviceID = i;
+				break;
+			}
+		}
+	}
 
 	if(config == NULL)
 	{
 		cc = new ControllerConfiguration;
 
-		cc->productID = Gamepad_deviceAtIndex(deviceID)->productID;
-		cc->vendorID = Gamepad_deviceAtIndex(deviceID)->vendorID;
+		cc->productID = Gamepad_deviceAtIndex(_deviceID)->productID;
+		cc->vendorID = Gamepad_deviceAtIndex(_deviceID)->vendorID;
 		cc->deviceID = deviceID;
 		cc->emergency = -1;
 		cc->flip = -1;
@@ -34,8 +49,6 @@ ConfigureControls::ConfigureControls(unsigned int deviceID,ControllerConfigurati
 		cc = config;
 		configArray = ControllerConfiguration_getControlsArray(config);
 	}
-
-	_deviceID = deviceID;
 
 	setWindowTitle(tr("Configure Controls"));
 
@@ -89,8 +102,10 @@ ConfigureControls::ConfigureControls(unsigned int deviceID,ControllerConfigurati
 			showModeSwitch = true; // Axis / Buttons
 			axisButtons.push_back(new QPushButton(tr("Click to set up")));
 			axisButtons.push_back(new QPushButton(tr("Click to set down")));
+			connect(axisButtons[i*2], SIGNAL(clicked()), this, SLOT(setButton()));
+			connect(axisButtons[i*2+1], SIGNAL(clicked()), this, SLOT(setButton()));
 			axisButtons[i*2]->setCheckable(true);
-			axisButtons[i*2+1]->setChecked(false);
+			axisButtons[i*2+1]->setCheckable(true);
 			row[i]->addWidget(axisButtons[i*2]);
 			row[i]->addWidget(axisButtons[i*2+1]);
 			axisButtons[i*2]->hide();
@@ -100,8 +115,10 @@ ConfigureControls::ConfigureControls(unsigned int deviceID,ControllerConfigurati
 			showModeSwitch = true; // Axis / Buttons
 			axisButtons.push_back(new QPushButton(tr("Click to set left")));
 			axisButtons.push_back(new QPushButton(tr("Click to set right")));
+			connect(axisButtons[i*2], SIGNAL(clicked()), this, SLOT(setButton()));
+			connect(axisButtons[i*2+1], SIGNAL(clicked()), this, SLOT(setButton()));
 			axisButtons[i*2]->setCheckable(true);
-			axisButtons[i*2+1]->setChecked(false);
+			axisButtons[i*2+1]->setCheckable(true);
 			row[i]->addWidget(axisButtons[i*2]);
 			row[i]->addWidget(axisButtons[i*2+1]);
 			axisButtons[i*2]->hide();
@@ -111,8 +128,10 @@ ConfigureControls::ConfigureControls(unsigned int deviceID,ControllerConfigurati
 			showModeSwitch = true; // Axis / Buttons
 			axisButtons.push_back(new QPushButton(tr("Click to set forward")));
 			axisButtons.push_back(new QPushButton(tr("Click to set backward")));
+			connect(axisButtons[i*2], SIGNAL(clicked()), this, SLOT(setButton()));
+			connect(axisButtons[i*2+1], SIGNAL(clicked()), this, SLOT(setButton()));
 			axisButtons[i*2]->setCheckable(true);
-			axisButtons[i*2+1]->setChecked(false);
+			axisButtons[i*2+1]->setCheckable(true);
 			row[i]->addWidget(axisButtons[i*2]);
 			row[i]->addWidget(axisButtons[i*2+1]);
 			axisButtons[i*2]->hide();
@@ -122,8 +141,10 @@ ConfigureControls::ConfigureControls(unsigned int deviceID,ControllerConfigurati
 			showModeSwitch = true; // Axis / Buttons
 			axisButtons.push_back(new QPushButton(tr("Click to set left")));
 			axisButtons.push_back(new QPushButton(tr("Click to set right")));
+			connect(axisButtons[i*2], SIGNAL(clicked()), this, SLOT(setButton()));
+			connect(axisButtons[i*2+1], SIGNAL(clicked()), this, SLOT(setButton()));
 			axisButtons[i*2]->setCheckable(true);
-			axisButtons[i*2+1]->setChecked(false);
+			axisButtons[i*2+1]->setCheckable(true);
 			row[i]->addWidget(axisButtons[i*2]);
 			row[i]->addWidget(axisButtons[i*2+1]);
 			axisButtons[i*2]->hide();
@@ -439,7 +460,7 @@ void ConfigureControls::setButton()
 		else
 		{
 			// axisButton
-			senderID -= 11;
+			senderID -= 12;
 
 			if(selectedButtonID >= 0)
 			{
@@ -475,7 +496,8 @@ void ConfigureControls::setButton()
 					break;
 				}
 			}
-			buttons[senderID]->setChecked(false);
+
+			axisButtons[senderID]->setChecked(false);
 		}
 	}
 }

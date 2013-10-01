@@ -6,6 +6,7 @@
 #include <QWidget>
 #include <QEvent>
 #include <QTimer>
+#include <QGridLayout>
 #include <vector>
 #include <string>
 #include <opencv2/opencv.hpp>
@@ -17,10 +18,12 @@
 #include "ardrone/video/ivideolistener.h"
 #include "ardrone/video/qvideolistener.h"
 #include "ardrone/navdata/navdatakeys.h"
+#include "ardrone/input/controllerinput.h"
+#include "ardrone/input/icontrollerinputlistener.h"
 #include "widgets/videodisplay.h"
 #include "asmainwindow.h"
 
-class AFMainWindow : public QMainWindow, public INavdataListener, public IVideoListener, public QVideoListener
+class AFMainWindow : public QMainWindow, public INavdataListener, public IVideoListener, public IControllerInputListener, public QVideoListener
 {
 	Q_OBJECT
 	
@@ -29,6 +32,7 @@ class AFMainWindow : public QMainWindow, public INavdataListener, public IVideoL
 
 		void navdataAvailable(AFNavdata *nd);
 		void videoFrameAvailable(cv::Mat f);
+		void controllerInputAvailable(ControllerInput *in);
 
 		void showMessage(std::string msg);
 	public Q_SLOTS:
@@ -44,6 +48,11 @@ class AFMainWindow : public QMainWindow, public INavdataListener, public IVideoL
 		void createMenuBar();
 		QWidget *createVerticalToolbar();
 		QWidget *createHorizontalToolbar();
+
+		QGridLayout *grid;
+
+		QWidget *verticalToolbar;
+		QWidget *horizontalToolbar;
 
 		VideoDisplay *videoPanel;
 		QLabel *msg;
@@ -62,11 +71,13 @@ class AFMainWindow : public QMainWindow, public INavdataListener, public IVideoL
 		void showControlConfigDialog();
 		void videoFrameAvailable(QImage f);
 		void clearConfirmationFlags(); // Called after a timeout to clear the flags used by the confirmation mechanism for performing a flip/sending emergency commands
+		void toggleHUD(bool showHUD);
 		void launchAutoScriptIDE();
 		void launchSessionViewerDialog();
 	Q_SIGNALS:
 		void navdataAvailableSignal(AFNavdata *nd);
 		void videoFrameAvailableSignal(QImage frame);
+		void controllerInputAvailableSignal(ControllerInput *in);
 };
 
 #endif

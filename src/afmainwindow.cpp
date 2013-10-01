@@ -46,7 +46,7 @@ AFMainWindow::AFMainWindow(AutoFlight *af, QWidget *parent) : QMainWindow(parent
 	QWidget *main = new QWidget();
 	setCentralWidget(main);
 	
-	QGridLayout *grid = new QGridLayout();
+	grid = new QGridLayout();
 	main->setLayout(grid);
 	
 	setWindowAttributes();
@@ -64,19 +64,20 @@ AFMainWindow::AFMainWindow(AutoFlight *af, QWidget *parent) : QMainWindow(parent
 	grid->addWidget(videoPanel, 0, 0, 1, 1);
 
 	videoPanel->setCurrentFrame(QImage(":/resources/autoflight.png"));
-	/*videoPanel = new QLabel();
-	videoPanel->setPixmap(QPixmap(":/resources/autoflight.png"));
-	videoPanel->setStyleSheet("font-size: 100px;");
-	videoPanel->setAlignment(Qt::AlignCenter);
-	grid->addWidget(videoPanel, 0, 0, 1, 1);*/
 
-	grid->addWidget(createHorizontalToolbar(), 1, 0, 1, 1);
-	grid->addWidget(createVerticalToolbar(), 0, 1, 2, 1);
+	horizontalToolbar = createHorizontalToolbar();
+	verticalToolbar = createVerticalToolbar();
+
+	grid->addWidget(horizontalToolbar, 1, 0, 1, 1);
+	grid->addWidget(verticalToolbar, 0, 1, 2, 1);
 
 	_af->ardrone()->addNavdataListener(this);
 	_af->ardrone()->addVideoListener(this);
+	_af->ardrone()->addControllerInputListener(this);
 
 	QObject::connect(this, SIGNAL(videoFrameAvailableSignal(QImage)), this, SLOT(videoFrameAvailable(QImage)));
+	QObject::connect(this, SIGNAL(navdataAvailableSignal(AFNavdata *)), videoPanel, SLOT(navdataAvailable(AFNavdata *)));
+	QObject::connect(this, SIGNAL(controllerInputAvailableSignal(ControllerInput *)), videoPanel, SLOT(controllerInputAvailable(ControllerInput *)));
 
 	installEventFilter(this);
 }
@@ -111,8 +112,14 @@ void AFMainWindow::videoFrameAvailable(cv::Mat f)
 	Q_EMIT videoFrameAvailableSignal(img);
 }
 
+void AFMainWindow::controllerInputAvailable(ControllerInput *in)
+{
+	Q_EMIT controllerInputAvailableSignal(in);
+}
+
 void AFMainWindow::videoFrameAvailable(QImage f)
 {
+	videoPanel->setMaximized(true);
 	videoPanel->setCurrentFrame(f);
 }
 
@@ -163,13 +170,14 @@ void AFMainWindow::createMenuBar() {
 		QAction *gpsViewer = new QAction(tr("GPS Viewer"), this);
 		tools->addAction(gpsViewer);
 		*/
-	/*QMenu *view = new QMenu(tr("View"));
-	menuBar()->addMenu(view);*/
-		/* TODO: This
-		QAction *toggleHUD = new QAction(tr("Head-Up Display [F1]"), this);
+	QMenu *view = new QMenu(tr("View"));
+	menuBar()->addMenu(view);
+		QAction *toggleHUD = new QAction(tr("Head-Up Display"), this);
 		toggleHUD->setCheckable(true);
+		toggleHUD->setShortcut(QKeySequence::fromString("F5"));
 		view->addAction(toggleHUD);
 		
+		/* TODO: This
 		view->addSeparator();
 		
 		QAction *toggleFullscreen = new QAction(tr("Fullscreen"), this);
@@ -178,7 +186,7 @@ void AFMainWindow::createMenuBar() {
 		*/
 	QMenu *help = new QMenu(tr("Help"));
 	menuBar()->addMenu(help);
-		/* TODO: THis
+		/* TODO: This
 		QAction *onlineHelp = new QAction(tr("Online Help"), this);
 		help->addAction(onlineHelp);
 		
@@ -192,6 +200,8 @@ void AFMainWindow::createMenuBar() {
 	QWidget::connect(calibMagneto, SIGNAL(triggered()), this, SLOT(calibrateMagnetometerActionTriggered()));
 
 	QWidget::connect(controlConfig, SIGNAL(triggered()), this, SLOT(showControlConfigDialog()));
+
+	QWidget::connect(toggleHUD, SIGNAL(triggered(bool)), this, SLOT(toggleHUD(bool)));
 
 	QWidget::connect(about, SIGNAL(triggered()), this, SLOT(showAboutDialog()));
 }
@@ -267,6 +277,29 @@ void AFMainWindow::attemptConnection()
 	{
 		QMessageBox::warning(this, tr("Could not connect"), tr("AutoFlight could not connect to the AR.Drone. Please make sure that you are connected to it over WiFi and try again."));
 	}
+}
+
+void AFMainWindow::toggleHUD(bool showHUD)
+{
+	videoPanel->showHUD(showHUD);
+
+	if(showHUD)
+	{
+		grid->removeWidget(videoPanel);
+		grid->removeWidget(horizontalToolbar);
+		grid->removeWidget(verticalToolbar);
+		grid->addWidget(videoPanel, 0, 0, 2, 2);
+	}
+	else
+	{
+		grid->removeWidget(videoPanel);
+		grid->addWidget(horizontalToolbar, 1, 0, 1, 1);
+		grid->addWidget(videoPanel, 0, 0, 1, 1);
+		grid->addWidget(verticalToolbar, 0, 1, 2, 1);
+	}
+
+	horizontalToolbar->setVisible(!showHUD);
+	verticalToolbar->setVisible(!showHUD);
 }
 
 void AFMainWindow::launchAutoScriptIDE()
@@ -533,6 +566,7 @@ void AFMainWindow::closeEvent(QCloseEvent *event)
 
 	_af->ardrone()->removeNavdataListener(this);
 	_af->ardrone()->removeVideoListener(this);
+	_af->ardrone()->removeControllerInputListener(this);
 	_af->saveSession();
 	//TODO: exit confirmation dialog, etc.
 }
