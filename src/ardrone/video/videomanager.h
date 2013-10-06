@@ -65,7 +65,7 @@ class VideoManager
 		bool _recording = false;
 		bool _recording_got_first_iframe = false;
 		int _recording_status = READY;
-		AVFormatContext *_recording_ctx = nullptr;
+		AVFormatContext *_recording_ctx = NULL;
 		boost::asio::ip::tcp::socket *recordingSocket = nullptr;
 		char *_recording_receivedDataBuffer = nullptr;
 		PaVE *_recording_pave;

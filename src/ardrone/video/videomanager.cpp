@@ -81,9 +81,15 @@ void VideoManager::update()
 
 bool VideoManager::startRecording(string savePath)
 {
+	static bool already_registered = false;
+
 	if(_decodedPackets >= 1)
 	{
-		av_register_all();
+		if(!already_registered)
+		{
+			av_register_all();
+			already_registered = true;
+		}
 
 		avformat_alloc_output_context2(&_recording_ctx, NULL, "mp4", savePath.c_str());
 		if(_recording_ctx == NULL)
@@ -92,9 +98,24 @@ bool VideoManager::startRecording(string savePath)
 		}
 
 		// Add a video stream
-		AVStream *vstream = NULL;
-		vstream = avformat_new_stream(_recording_ctx, cfg.pCodecH264);
-		vstream->codec = cfg.pCodecCtxH264;
+		AVCodec *codec = avcodec_find_decoder(CODEC_ID_H264);
+		AVCodecContext *codecctx = avcodec_alloc_context3(codec);
+
+		codecctx->pix_fmt = PIX_FMT_YUV420P;
+		codecctx->skip_frame = AVDISCARD_DEFAULT;
+		codecctx->error_concealment = FF_EC_GUESS_MVS | FF_EC_DEBLOCK;
+		codecctx->err_recognition = AV_EF_CAREFUL;
+		codecctx->skip_loop_filter = AVDISCARD_DEFAULT;
+		codecctx->workaround_bugs = FF_BUG_AUTODETECT;
+		codecctx->codec_type = AVMEDIA_TYPE_VIDEO;
+		codecctx->codec_id = CODEC_ID_H264;
+		codecctx->skip_idct = AVDISCARD_DEFAULT;
+		codecctx->width = 1280;
+		codecctx->height = 720;
+
+		AVStream *vstream = nullptr;
+		vstream = avformat_new_stream(_recording_ctx, codec);
+		vstream->codec = codecctx;
 		vstream->codec->time_base.den = 30; // 30 fps
 		vstream->codec->time_base.num = 1;
 
@@ -343,7 +364,7 @@ bool VideoManager::initializeDecoder()
 
 	cfg.pCodecMP4 = avcodec_find_decoder(CODEC_ID_MPEG4);
 	cfg.pCodecH264 = avcodec_find_decoder(CODEC_ID_H264);
-	if(NULL == cfg.pCodecMP4 || NULL == cfg.pCodecH264)
+	if(nullptr == cfg.pCodecMP4 || nullptr == cfg.pCodecH264)
 	{
 		cout << "Needed codecs are not supported!" << endl;
 		return false;
@@ -351,7 +372,7 @@ bool VideoManager::initializeDecoder()
 
 	cfg.pCodecCtxMP4 = avcodec_alloc_context3(cfg.pCodecMP4);
 	cfg.pCodecCtxH264 = avcodec_alloc_context3(cfg.pCodecH264);
-	if(NULL == cfg.pCodecCtxMP4 || NULL == cfg.pCodecCtxH264)
+	if(nullptr == cfg.pCodecCtxMP4 || nullptr == cfg.pCodecCtxH264)
 	{
 		cout << "Could not allocate codec context!" << endl;
 		return false;
@@ -394,7 +415,7 @@ bool VideoManager::initializeDecoder()
 	cfg.pFrameOutput = avcodec_alloc_frame();
 	cfg.pFrame = avcodec_alloc_frame();
 
-	if(NULL == cfg.pFrameOutput || NULL == cfg.pFrame)
+	if(nullptr == cfg.pFrameOutput || nullptr == cfg.pFrame)
 	{
 		cout << "Could not allocate frames" << endl;
 		return false;
@@ -494,7 +515,7 @@ void VideoManager::decodePacket()
 		}
 		else
 		{
-			cerr << "Could not decode frame: Error #" << frameFinished << endl;
+			cerr << "[Error] Could not decode frame: Error #" << frameFinished << endl;
 		}
 	}
 

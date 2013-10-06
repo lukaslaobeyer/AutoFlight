@@ -115,7 +115,7 @@ int ARDrone::connect()
 		}
 		catch(const boost::system::system_error &e)
 		{
-			cout << "Error: " << e.what() << endl;
+			cerr << "Error: " << e.what() << endl;
 			if(e.code().value() != 1)
 			{
 				try
@@ -1022,7 +1022,7 @@ bool ARDrone::drone_startRecording()
 	}
 	catch(runtime_error &e)
 	{
-		cout << "Error: " << e.what() << endl;
+		cerr << "Error: " << e.what() << endl;
 	}
 
 	if(_isRecording && _srec != NULL)
