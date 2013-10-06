@@ -40,49 +40,38 @@ class VideoManager
 		void packetReceived(const boost::system::error_code &error, size_t bytes_transferred);
 		void recording_packetReceived(const boost::system::error_code &error, size_t bytes_transferred);
 		void recording_writeFrame();
-		PaVE *parsePaVE(char *frame, unsigned int offset = 0);
-		bool frameHasPaVE(char *frame, unsigned int offset = 0);
 		void decodePacket();
 		bool initializeDecoder();
 		void closeDecoder();
 
 		bool decoderInitialized = false;
 		CodecConfig cfg;
-		boost::asio::ip::tcp::socket *socket = NULL;
+		boost::asio::ip::tcp::socket *socket = nullptr;
 		cv::Mat _frame;
 		int _previous_width = -1; // Width of the previous received frame, needed to see if the size changed
-		int _allocatedFrames = 0;
-		char *_receivedDataBuffer = NULL;
-		int _availableFrames = 0;
-		std::vector<char *> _rawFrame;
-		std::vector<PaVE *> _pave;
-		char *_reconstructionFrameBuffer = NULL;
-		PaVE *_reconstructionPaVE = NULL;
-		unsigned int _recording_frame_size = -1;
+		char *_receivedDataBuffer = nullptr;
+		char *_rawFrame = nullptr;
+		PaVE * _pave = nullptr;
+
 		AVPacket _packet; // Received data is stored into this, and then decoded.
-		bool _got_first_iframe = false; // Needed so we don't feed P-frames to the decoder before we have an I-frame
-		bool _recording_got_first_iframe = false;
-		uint8_t *_decode_buffer = NULL;
+		uint8_t *_decode_buffer = nullptr;
 		int _decode_buffer_size;
 		int _status = READY; // Either READY or PROCESSING (defined above)
 		unsigned long _decodedPackets = 0;
 
+		unsigned int _recording_frame_size = -1;
 		bool _start_recording_requested = false;
 		bool _stop_recording_requested = false;
 		bool _recording = false;
-		int _recording_status;
-		int _recording_allocatedFrames = 0;
-		AVFormatContext *_recording_ctx = NULL;
-		boost::asio::ip::tcp::socket *recordingSocket = NULL;
-		char *_recording_receivedDataBuffer = NULL;
-		char *_recording_reconstructionFrameBuffer = NULL;
-		std::vector<PaVE *> _recording_pave;
-		std::vector<char *> _recording_rawFrame;
-		PaVE *_recording_reconstructionPaVE = NULL;
-		int _recording_availableFrames = 0;
+		bool _recording_got_first_iframe = false;
+		int _recording_status = READY;
+		AVFormatContext *_recording_ctx = nullptr;
+		boost::asio::ip::tcp::socket *recordingSocket = nullptr;
+		char *_recording_receivedDataBuffer = nullptr;
+		PaVE *_recording_pave;
+		char *_recording_rawFrame;
 		int _recording_decodedPackets = 0;
 		bool recording_frame_ready = false;
-		int recording_reconstructed_frame_write_position = -1;
 };
 
 #endif

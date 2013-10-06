@@ -31,4 +31,29 @@ typedef struct // Parrot video encapsulation, see official documentation
 	uint8_t reserved3[12];  // Unused
 } __attribute__ ((packed)) PaVE;
 
+inline bool frameHasPaVE(char *frame, unsigned int offset = 0)
+{
+	if((uint8_t) frame[offset] == 'P' && (uint8_t) frame[offset + 1] == 'a' && (uint8_t) frame[offset + 2] == 'V' && (uint8_t) frame[offset + 3] == 'E')
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+inline PaVE *parsePaVE(char *frame, unsigned int offset = 0)
+{
+	PaVE *p = (PaVE *) (frame + offset);
+	if(p->signature[0] == 'P' && p->signature[1] == 'a' && p->signature[2] == 'V' && p->signature[3] == 'E')
+	{
+		return p;
+	}
+	else
+	{
+		return nullptr;
+	}
+}
+
 #endif
