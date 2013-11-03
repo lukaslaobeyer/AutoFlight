@@ -221,9 +221,14 @@ QWidget *AFMainWindow::createVerticalToolbar()
 	
 	layout->addStretch();
 	
+	QPushButton *launchMap = new QPushButton("Map View");
+	//launchMap->setIconSize(QSize(200, 50));
+	QObject::connect(launchMap, SIGNAL(clicked()), this, SLOT(launch3DMapView()));
+	layout->addWidget(launchMap);
+
 	QPushButton *launchSessionViewer = new QPushButton("Session Viewer");
 	//launchSessionViewer->setIcon(QIcon(QPixmap::fromImage(QImage(":/resources/sessionviewer.png"))));
-	launchSessionViewer->setIconSize(QSize(200, 50));
+	//launchSessionViewer->setIconSize(QSize(200, 50));
 	QObject::connect(launchSessionViewer, SIGNAL(clicked()), this, SLOT(launchSessionViewerDialog()));
 	layout->addWidget(launchSessionViewer);
 
@@ -310,6 +315,16 @@ void AFMainWindow::launchAutoScriptIDE()
 	}
 
 	_asWindow->show();
+}
+
+void AFMainWindow::launch3DMapView()
+{
+	if(_map == NULL)
+	{
+		_map = new Map3D();
+		QObject::connect(this, SIGNAL(navdataAvailableSignal(AFNavdata *)), _map, SLOT(navdataAvailable(AFNavdata *)));
+	}
+	_map->show();
 }
 
 void AFMainWindow::launchSessionViewerDialog()

@@ -20,6 +20,7 @@
 #include "ardrone/navdata/navdatakeys.h"
 #include "ardrone/input/controllerinput.h"
 #include "ardrone/input/icontrollerinputlistener.h"
+#include "widgets/map3d.h"
 #include "widgets/videodisplay.h"
 #include "asmainwindow.h"
 
@@ -66,6 +67,7 @@ class AFMainWindow : public QMainWindow, public INavdataListener, public IVideoL
 
 		ASMainWindow *_asWindow = NULL;
 		SessionViewer *_sessionViewerWindow = NULL;
+		Map3D *_map = NULL;
 	private Q_SLOTS:
 		void attemptConnection();
 		void showControlConfigDialog();
@@ -74,6 +76,7 @@ class AFMainWindow : public QMainWindow, public INavdataListener, public IVideoL
 		void toggleHUD(bool showHUD);
 		void launchAutoScriptIDE();
 		void launchSessionViewerDialog();
+		void launch3DMapView();
 	Q_SIGNALS:
 		void navdataAvailableSignal(AFNavdata *nd);
 		void videoFrameAvailableSignal(QImage frame);

@@ -4,7 +4,7 @@
 
 #define ORIENTATION_WIDGET_HEIGHT 215
 
-Connection::Connection(QWidget *parent): QWidget(parent)
+Connection::Connection(QWidget *parent) : QWidget(parent)
 {
 	QHBoxLayout *layout = new QHBoxLayout();
 	layout->setSpacing(0);

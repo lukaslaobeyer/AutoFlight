@@ -44,6 +44,10 @@ find_package(ZLIB REQUIRED)
 find_package(PythonLibs REQUIRED)
 include_directories(${PYTHON_INCLUDE_DIRS})
 
+# Find OpenGL
+find_package(OpenGL REQUIRED)
+include_directories(${OPENGL_INCLUDE_DIRS})
+
 file(GLOB AutoFlight_SRC
     "../src/*.h"
     "../src/*.cpp"
@@ -68,6 +72,8 @@ file(GLOB AutoFlight_SRC
     "../lib/include/qcustomplot/*.cpp"
     "../lib/include/pugixml/*.hpp"
     "../lib/include/pugixml/*.cpp"
+    "../lib/include/glm/*.hpp"
+    "../lib/include/glm/core/*.hpp"
 )
 
 # Add the resources
@@ -81,6 +87,7 @@ target_link_libraries(AutoFlight ${OpenCV_LIBS})
 target_link_libraries(AutoFlight ${FFMPEG_LIBRARIES})
 target_link_libraries(AutoFlight ${ZLIB_LIBRARIES})
 target_link_libraries(AutoFlight ${PYTHON_LIBRARIES})
+target_link_libraries(AutoFlight ${OPENGL_LIBRARIES})
 target_link_libraries(AutoFlight x264 va faac mp3lame fdk-aac swscale)
 
 # Link libraries in ../lib
