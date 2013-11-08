@@ -5,7 +5,10 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <fstream>
 #include <locale>
+#include <boost/algorithm/string.hpp>
+#include <glm/glm.hpp>
 
 using namespace std;
 
@@ -147,8 +150,11 @@ SessionViewer::SessionViewer(QWidget *parent) : QMainWindow(parent)
 	viewl->addWidget(pics);
 	pics->setVisible(false);
 
-	sensorviewer = new SensorDataViewer();
-	viewl->addWidget(sensorviewer);
+	map = new Map3D();
+	viewl->addWidget(map);
+	map->hide();
+	//sensorviewer = new SensorDataViewer();
+	//viewl->addWidget(sensorviewer);
 
 	timeline = new TimelineWidget(0);
 	timeline->setMaximumHeight(100);
@@ -285,6 +291,8 @@ void SessionViewer::loadSelectedSession()
 			timeline->addEvent(event);
 		}
 
+		calcPositions(events);
+
 		openedSession();
 	}
 	else
@@ -305,6 +313,8 @@ void SessionViewer::openedSession()
 	pics->setImages(_reader.getPicturePaths());
 	pics->setVisible(true);
 
+	map->show();
+
 	tabs->setCurrentIndex(1);
 }
 
@@ -316,7 +326,159 @@ void SessionViewer::timelineMarkerPressed(string type, string content, float tim
 	}
 }
 
+void SessionViewer::calcPositions(vector<RecordedEvent> &events)
+{
+	// Calculate the position of the drone if data is available
+
+	string file = "";
+
+	for(RecordedEvent e : events)
+	{
+		if(e.getType() == "NavdataRecordingStart")
+		{
+			file = e.getContent();
+			_path_starttime = e.getTimeFromStart();
+			break;
+		}
+	}
+
+	if(file.length() <= 0)
+	{
+		return;
+	}
+	else
+	{
+		try
+		{
+			stringstream buffer;
+			ifstream ifs(file);
+			buffer << ifs.rdbuf();
+			string data = buffer.str();
+
+			vector<string> lines;
+			boost::split(lines, data, boost::is_any_of("\n"), boost::token_compress_on);
+
+			lines.erase(lines.begin());
+			lines.erase(lines.end());
+
+			float x = 0;
+			float y = 0;
+			float alt = 0;
+			long long previousT = 0;
+			long long tFromStart = 0;
+
+			for(string line : lines)
+			{
+				vector<string> navdata;
+				boost::split(navdata, line, boost::is_any_of(";"), boost::token_compress_on);
+
+				boost::posix_time::ptime p_time = boost::date_time::parse_delimited_time<boost::posix_time::ptime>(navdata[0], 'T');
+				static boost::posix_time::ptime epoch = boost::date_time::parse_delimited_time<boost::posix_time::ptime>("1970-01-01T00:00:00.000", 'T');
+
+				boost::posix_time::time_duration diff = p_time - epoch;
+				long long t = diff.total_milliseconds();
+
+				if(previousT != 0)
+				{
+					navdata[7].erase(navdata[7].begin());
+					float vx = boost::lexical_cast<float>(navdata[7]);
+					navdata[8].erase(navdata[8].begin());
+					float vy = boost::lexical_cast<float>(navdata[8]);
+					navdata[3].erase(navdata[3].begin());
+					alt = boost::lexical_cast<float>(navdata[3]);
+					navdata[4].erase(navdata[4].begin());
+					float yaw = boost::lexical_cast<float>(navdata[4]);
+					navdata[5].erase(navdata[5].begin());
+					float pitch = boost::lexical_cast<float>(navdata[5]);
+					navdata[6].erase(navdata[6].begin());
+					float roll = boost::lexical_cast<float>(navdata[6]);
+
+					long long dT = t - previousT;
+
+					tFromStart += dT;
+
+					// Calculate position using speed and direction data
+					float translateX = vx * 0.001 * dT;
+					float translateY = vy * 0.001 * dT;
+					x = x + cos(M_PI/180 * (yaw-90)) * translateY + cos(M_PI/180 * (90-(yaw-90))) * translateX;
+					y = y + sin(M_PI/180 * (yaw-90)) * translateY + sin(M_PI/180 * (90-(yaw-90))) * translateX;
+
+					if(path.size() >= 1)
+					{
+						if((abs(x - path[path.size() - 1]->x) >= 0.05f) || (abs(y - path[path.size() - 1]->y) >= 0.05f))
+						{
+							path.push_back(new glm::vec3(-x, -y, alt));
+						}
+					}
+					else
+					{
+						path.push_back(new glm::vec3(-x, -y, alt));
+					}
+
+					float *attitude = new float[7];
+					attitude[0] = tFromStart;
+					attitude[1] = x;
+					attitude[2] = y;
+					attitude[3] = alt;
+					attitude[4] = yaw;
+					attitude[5] = pitch;
+					attitude[6] = roll;
+					_drone_attitude.push_back(attitude);
+				}
+
+				previousT = t;
+			}
+
+			map->setDronePath(&path);
+			_mapAvailable = true;
+		}
+		catch(exception &e)
+		{
+			cerr << "Could not read navdata file: " << e.what() << endl;
+			return;
+		}
+	}
+}
+
+int SessionViewer::getIndexFromTime(long long time)
+{
+	long long t = (time - _path_starttime);
+
+	if(t < _drone_attitude[0][0] || t > _drone_attitude[_drone_attitude.size()-1][0])
+	{
+		return -1;
+	}
+
+	unsigned int i;
+
+	for(i = 0; i < _drone_attitude.size() - 1; i++)
+	{
+		if(_drone_attitude[i][0] <= t && _drone_attitude[i+1][0] >= t)
+		{
+			// Found index for time
+			break;
+		}
+	}
+
+	return i;
+}
+
 void SessionViewer::timelineTimeUpdated(float newTime)
 {
+	if(_mapAvailable)
+	{
+		long long time_in_ms = newTime * 1000.0f;
+		int i = getIndexFromTime(time_in_ms);
 
+		if(i < 0)
+		{
+
+		}
+		else
+		{
+			map->setDronePosition(_drone_attitude[i][1], _drone_attitude[i][2]);
+			map->setDroneAttitude(-_drone_attitude[i][4], 0, 0, _drone_attitude[i][3]);
+			//-, -_drone_attitude[i][5], -_drone_attitude[i][6]
+		}
+	}
 }

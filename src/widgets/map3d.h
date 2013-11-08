@@ -21,12 +21,20 @@ class Map3D : public QGLWidget, public QNavdataListener
 		QSize sizeHint() const;
 
 		void requestUpdateGL();
+
+		void setDroneAttitude(float yaw, float pitch, float roll, float altitude);
+		void setDronePosition(float x, float y);
+		void setDronePath(std::vector<glm::vec3 *> *path);
 	public Q_SLOTS:
 		void navdataAvailable(AFNavdata *nd);
 	protected:
 	    void initializeGL();
 	    void paintGL();
 	    void resizeGL(int width, int height);
+
+	    void resetUserTransform();
+
+	    void draw2D(QPainter &p);
 
 	    long long deltaT(); // Returns ms since last call to this function
 
@@ -39,6 +47,8 @@ class Map3D : public QGLWidget, public QNavdataListener
 
 	    void mousePressEvent(QMouseEvent *event);
 	    void mouseMoveEvent(QMouseEvent *event);
+	    void keyPressEvent(QKeyEvent *event);
+	    void keyReleaseEvent(QKeyEvent *event);
 	private:
 	    float rotationX = 0.0f;
 	    float rotationY = 25.0f;
@@ -56,9 +66,13 @@ class Map3D : public QGLWidget, public QNavdataListener
 	    float droneRoll = 0;
 	    float droneYaw = 0;
 
+	    bool _sessionViewer = false;
+
 	    QPoint lastPos; // Used for user rotation control with mouse
 
 	    std::vector<glm::vec3 *> _path;
+
+	    bool _showHelp = false;
 };
 
 #endif

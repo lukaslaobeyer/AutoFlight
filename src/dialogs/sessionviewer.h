@@ -11,6 +11,8 @@
 #include "../widgets/timelinewidget.h"
 #include "../widgets/gallerywidget.h"
 #include "../widgets/sensordataviewer.h"
+#include "../widgets/map3d.h"
+#include <glm/glm.hpp>
 
 class SessionViewer : public QMainWindow
 {
@@ -42,10 +44,18 @@ class SessionViewer : public QMainWindow
 
 		GalleryWidget *pics;
 		SensorDataViewer *sensorviewer;
+		Map3D *map;
 
 		SessionReader _reader;
 
+		std::vector<glm::vec3 *> path;
+		bool _mapAvailable = false;
+		int _path_starttime;
+		std::vector<float *> _drone_attitude;
+
 		void openedSession();
+		int getIndexFromTime(long long time);
+		void calcPositions(std::vector<RecordedEvent> &e);
 };
 
 #endif

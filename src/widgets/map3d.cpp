@@ -8,7 +8,9 @@ using namespace std;
 
 Map3D::Map3D(QWidget *parent) : QGLWidget(parent)
 {
-
+	setWindowTitle(tr("Map View"));
+	setAutoFillBackground(false);
+	setFocusPolicy(Qt::StrongFocus);
 }
 
 Map3D::~Map3D()
@@ -23,12 +25,12 @@ Map3D::~Map3D()
 
 QSize Map3D::minimumSizeHint() const
 {
-	return QSize(50, 50);
+	return QSize(600, 400);
 }
 
 QSize Map3D::sizeHint() const
 {
-    return QSize(600, 400);
+    return QSize(700, 500);
 }
 
 long long Map3D::deltaT()
@@ -83,6 +85,43 @@ void Map3D::navdataAvailable(AFNavdata *nd)
 	requestUpdateGL();
 }
 
+void Map3D::setDroneAttitude(float yaw, float pitch, float roll, float altitude)
+{
+	droneYaw = yaw;
+	dronePitch = pitch;
+	droneRoll = roll;
+	droneAlt = altitude;
+	requestUpdateGL();
+}
+
+void Map3D::setDronePosition(float x, float y)
+{
+	dronePosX = x;
+	dronePosY = y;
+	requestUpdateGL();
+}
+
+void Map3D::setDronePath(vector<glm::vec3 *> *path)
+{
+	// Free memory of existing path
+	for(glm::vec3 *vec : _path)
+	{
+		delete vec;
+	}
+
+	_path.clear();
+
+	// Hard copy the vector
+	for(glm::vec3 *vec : *path)
+	{
+		_path.push_back(new glm::vec3(vec->x, vec->y, vec->z));
+	}
+
+	_sessionViewer = true;
+
+	requestUpdateGL();
+}
+
 void Map3D::initializeGL()
 {
 	// Antialiasing for smooth lines and edges
@@ -130,6 +169,12 @@ void Map3D::resizeGL(int width, int height)
 
 void Map3D::paintGL()
 {
+	// Disabled 2D stuff because of performance impact
+
+	// Needed to revert configuration made to be able to use QPainter
+	//initializeGL();
+	//resizeGL(width(), height());
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
@@ -140,11 +185,77 @@ void Map3D::paintGL()
 
 	// Automatic following "camera"
 	glRotatef((float) droneYaw, 0.0f, 1.0f, 0.0f);
-	glTranslatef((float) -dronePosX, 0.0f, (float) -dronePosY);
+	if(_sessionViewer)
+	{
+		glTranslatef((float) dronePosX, 0.0f, (float) dronePosY);
+	}
+	else
+	{
+		glTranslatef((float) -dronePosX, 0.0f, (float) -dronePosY);
+	}
 
 	drawGrid(10.0f, 10.0f);
 	drawPath(-dronePosX, -dronePosY, droneAlt);
 	drawDrone(-dronePosX, -dronePosY, droneAlt, -droneYaw, -dronePitch, -droneRoll);
+
+	// Paint 2D stuff
+	/*glShadeModel(GL_FLAT);
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_LIGHTING);
+	glMatrixMode(GL_MODELVIEW);
+	QPainter painter(this);
+	painter.setRenderHint(QPainter::Antialiasing);
+	draw2D(painter);
+	painter.end();*/
+}
+
+void Map3D::draw2D(QPainter &p)
+{
+	 if(!_showHelp)
+	 {
+		 QString text = tr("Press 'H' for help");
+		 QFontMetrics metrics = QFontMetrics(font());
+		 int border = qMax(4, metrics.leading());
+
+		 QRect rect = metrics.boundingRect(0, 0, width() - 2*border, int(height()*0.125), Qt::AlignCenter | Qt::TextWordWrap, text);
+		 p.setRenderHint(QPainter::TextAntialiasing);
+		 p.setPen(Qt::white);
+		 p.fillRect(QRect(0, height() - rect.height() - border * 2, width(), rect.height() + 2*border), QColor(0, 0, 0, 127));
+		 p.drawText((width() - rect.width())/2, height() - rect.height() - border, rect.width(), rect.height(), Qt::AlignCenter | Qt::TextWordWrap, text);
+	 }
+	 else
+	 {
+		 int w = 500;
+		 int h = 170;
+
+		 // Draw help panel
+		 QRect helpRect(width() / 2 - w/2, height() / 2 - h/2, w, h);
+		 p.setPen(QPen());
+		 p.setBrush(QBrush(QColor(0, 0, 0, 180)));
+		 p.drawRoundedRect(helpRect, 2.0, 2.0);
+
+		 QFont titleFont("Sans Serif", 16, QFont::Bold);
+		 QFont commandFont("Sans Serif", 12, QFont::Bold);
+		 QFont descriptionFont("Sans Serif", 12, QFont::Normal);
+		 QString title = tr("Navigation");
+		 QFontMetrics metrics = QFontMetrics(titleFont);
+		 p.setPen(Qt::white);
+		 p.setFont(titleFont);
+		 p.drawText(QPoint(width() / 2 - metrics.width(title) / 2, height() / 2 - h/2 + metrics.height() + 10), title);
+
+		 p.setFont(commandFont);
+		 p.drawText(QPoint(width() / 2 - w/2 + 20, height()/2 - h/2 + 70), tr("Rotation"));
+		 p.drawText(QPoint(width() / 2 - w/2 + 20, height()/2 - h/2 + 70 + 20), tr("Pan"));
+		 p.drawText(QPoint(width() / 2 - w/2 + 20, height()/2 - h/2 + 70 + 20 + 20), tr("Zoom"));
+		 p.drawText(QPoint(width() / 2 - w/2 + 20, height()/2 - h/2 + 70 + 20 + 20 + 20), tr("Reset View"));
+
+		 p.setFont(descriptionFont);
+		 p.drawText(QPoint(width() / 2 - w/2 + 150, height()/2 - h/2 + 70), tr("Click with left mouse button and drag"));
+		 p.drawText(QPoint(width() / 2 - w/2 + 150, height()/2 - h/2 + 70 + 20), tr("Click with middle mouse button and drag"));
+		 p.drawText(QPoint(width() / 2 - w/2 + 150, height()/2 - h/2 + 70 + 20 + 20), tr("Click with right mouse button and drag"));
+		 p.drawText(QPoint(width() / 2 - w/2 + 150, height()/2 - h/2 + 70 + 20 + 20 + 20), tr("Press 'R'"));
+	 }
 }
 
 void Map3D::drawGrid(float gridWidth, float gridHeight)
@@ -235,18 +346,21 @@ void Map3D::drawDrone(float x, float y, float z, float heading, float pitch, flo
 
 void Map3D::drawPath(float x, float y, float z) {
 	// Add segment to path if drone moved more than 0.05 meter
-	if(_path.size() >= 1)
+	if(!_sessionViewer)
 	{
-		if((abs(x - _path[_path.size() - 1]->x) >= 0.05f) || (abs(y - _path[_path.size() - 1]->y) >= 0.05f))
+		if(_path.size() >= 1)
+		{
+			if((abs(x - _path[_path.size() - 1]->x) >= 0.05f) || (abs(y - _path[_path.size() - 1]->y) >= 0.05f))
+			{
+				glm::vec3 *v = new glm::vec3(x, y, z);
+				_path.push_back(v);
+			}
+		}
+		else
 		{
 			glm::vec3 *v = new glm::vec3(x, y, z);
 			_path.push_back(v);
 		}
-	}
-	else
-	{
-		glm::vec3 *v = new glm::vec3(x, y, z);
-		_path.push_back(v);
 	}
 
 	// Draw path
@@ -259,6 +373,45 @@ void Map3D::drawPath(float x, float y, float z) {
 		}
 	glEnd();
 	glLineWidth(1.0f);
+}
+
+void Map3D::resetUserTransform()
+{
+	rotationX = 0.0f;
+	rotationY = 25.0f;
+	offsetX = 0.0f;
+	offsetY = 0.0f;
+	zoom = -10.0f;
+
+	requestUpdateGL();
+}
+
+void Map3D::keyPressEvent(QKeyEvent *e)
+{
+	if(!e->isAutoRepeat())
+	{
+		if(e->key() == Qt::Key_H)
+		{
+			_showHelp = true;
+			requestUpdateGL();
+		}
+		else if(e->key() == Qt::Key_R)
+		{
+			resetUserTransform();
+		}
+	}
+}
+
+void Map3D::keyReleaseEvent(QKeyEvent *e)
+{
+	if(!e->isAutoRepeat())
+	{
+		if(e->key() == Qt::Key_H)
+		{
+			_showHelp = false;
+			requestUpdateGL();
+		}
+	}
 }
 
 void Map3D::mousePressEvent(QMouseEvent *e)
