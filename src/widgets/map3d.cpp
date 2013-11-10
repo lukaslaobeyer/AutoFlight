@@ -154,7 +154,7 @@ void Map3D::initializeGL()
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lModelAmbient); // global ambient lights
 	glEnable(GL_LIGHTING); // enables lighting
 	glEnable(GL_LIGHT0); // enables light0
-	glEnable(GL_COLOR_MATERIAL); // enables opengl to use glColor3f to define material color
+	glEnable(GL_COLOR_MATERIAL); // enables OpenGL to use glColor3f to define material color
 	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE); // tell opengl glColor3f effects the ambient and diffuse properties of material
 }
 

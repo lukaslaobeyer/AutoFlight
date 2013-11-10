@@ -156,6 +156,10 @@ void AFMainWindow::createMenuBar() {
 	
 		QAction *controlConfig = new QAction(tr("Controller Configuration"), this);
 		tools->addAction(controlConfig);
+
+		QAction *imgProcEdit = new QAction(tr("Image Processing Pipeline Editor"), this);
+		tools->addAction(imgProcEdit);
+
 		/* TODO: This
 		QAction *controlInfo = new QAction(tr("Controller Information"), this);
 		tools->addAction(controlInfo);
@@ -200,6 +204,7 @@ void AFMainWindow::createMenuBar() {
 	QWidget::connect(calibMagneto, SIGNAL(triggered()), this, SLOT(calibrateMagnetometerActionTriggered()));
 
 	QWidget::connect(controlConfig, SIGNAL(triggered()), this, SLOT(showControlConfigDialog()));
+	QWidget::connect(imgProcEdit, SIGNAL(triggered()), this, SLOT(launchImageProcessingPipelineEditor()));
 
 	QWidget::connect(toggleHUD, SIGNAL(triggered(bool)), this, SLOT(toggleHUD(bool)));
 
@@ -335,6 +340,16 @@ void AFMainWindow::launchSessionViewerDialog()
 	}
 
 	_sessionViewerWindow->show();
+}
+
+void AFMainWindow::launchImageProcessingPipelineEditor()
+{
+	if(_imgProc == NULL)
+	{
+		_imgProc = new ImgProcMainWindow(this);
+	}
+
+	_imgProc->show();
 }
 
 void AFMainWindow::showControlConfigDialog()

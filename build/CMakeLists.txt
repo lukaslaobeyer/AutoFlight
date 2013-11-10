@@ -67,6 +67,10 @@ file(GLOB AutoFlight_SRC
     "../src/autoscript/*.cpp"
     "../src/tools/*.h"
     "../src/tools/*.cpp"
+    "../src/imgprocui/*.h"
+    "../src/imgprocui/*.cpp"
+    "../src/imgprocui/nodeseditor/*.h"
+    "../src/imgprocui/nodeseditor/*.cpp"
     
     "../lib/include/qcustomplot/*.h"
     "../lib/include/qcustomplot/*.cpp"

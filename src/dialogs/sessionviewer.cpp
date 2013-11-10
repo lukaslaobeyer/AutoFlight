@@ -405,7 +405,7 @@ void SessionViewer::calcPositions(vector<RecordedEvent> &events)
 
 					if(path.size() >= 1)
 					{
-						if((abs(x - path[path.size() - 1]->x) >= 0.05f) || (abs(y - path[path.size() - 1]->y) >= 0.05f))
+						if((abs(x - path[path.size() - 1]->x) >= 0.1f) || (abs(y - path[path.size() - 1]->y) >= 0.1f))
 						{
 							path.push_back(new glm::vec3(-x, -y, alt));
 						}
@@ -477,8 +477,7 @@ void SessionViewer::timelineTimeUpdated(float newTime)
 		else
 		{
 			map->setDronePosition(_drone_attitude[i][1], _drone_attitude[i][2]);
-			map->setDroneAttitude(-_drone_attitude[i][4], 0, 0, _drone_attitude[i][3]);
-			//-, -_drone_attitude[i][5], -_drone_attitude[i][6]
+			map->setDroneAttitude(-_drone_attitude[i][4], -_drone_attitude[i][5], -_drone_attitude[i][6], _drone_attitude[i][3]);
 		}
 	}
 }

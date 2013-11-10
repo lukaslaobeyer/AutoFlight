@@ -11,6 +11,7 @@
 #include <string>
 #include <opencv2/opencv.hpp>
 #include "autoflight.h"
+#include "imgprocui/imgprocmainwindow.h"
 #include "dialogs/sessionviewer.h"
 #include "ardrone/ardrone.h"
 #include "ardrone/navdata/inavdatalistener.h"
@@ -68,6 +69,7 @@ class AFMainWindow : public QMainWindow, public INavdataListener, public IVideoL
 		ASMainWindow *_asWindow = NULL;
 		SessionViewer *_sessionViewerWindow = NULL;
 		Map3D *_map = NULL;
+		ImgProcMainWindow *_imgProc = NULL;
 	private Q_SLOTS:
 		void attemptConnection();
 		void showControlConfigDialog();
@@ -77,6 +79,7 @@ class AFMainWindow : public QMainWindow, public INavdataListener, public IVideoL
 		void launchAutoScriptIDE();
 		void launchSessionViewerDialog();
 		void launch3DMapView();
+		void launchImageProcessingPipelineEditor();
 	Q_SIGNALS:
 		void navdataAvailableSignal(AFNavdata *nd);
 		void videoFrameAvailableSignal(QImage frame);
