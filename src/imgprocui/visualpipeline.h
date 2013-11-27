@@ -12,8 +12,15 @@ class VisualPipeline : public QGraphicsView
 	Q_OBJECT
 
 	public:
+		enum BlockType {test};
+
+	public:
 		explicit VisualPipeline(QWidget *parent = 0);
+
+		void addBlock(BlockType type, int x = 0, int y = 0);
 	private:
+		QGraphicsScene *s = NULL;
+
 		QNEBlock *imgIn = NULL;
 		QNEBlock *dummy = NULL;
 		QNEBlock *imgDisp = NULL;

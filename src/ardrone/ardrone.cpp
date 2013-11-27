@@ -218,50 +218,57 @@ void ARDrone::runUpdateLoop()
 {
 	cout << "Update loop started" << endl;
 
-	while(!_stop_flag)
+	try
 	{
-		boost::this_thread::sleep_for(boost::chrono::milliseconds(25));
-
-		// Process received packets (if any): Important!
-		_io_service.poll();
-
-		// Get newest navdata
-		_navdatamutex.lock();
-		_nd = _nm.getNavdata();
-		if(_nd != NULL)
+		while(!_stop_flag)
 		{
-			for(INavdataListener *i : _ndlisteners)
+			boost::this_thread::sleep_for(boost::chrono::milliseconds(25));
+
+			// Process received packets (if any): Important!
+			_io_service.poll();
+
+			// Get newest navdata
+			_navdatamutex.lock();
+			_nd = _nm.getNavdata();
+			if(_nd != NULL)
 			{
-				i->navdataAvailable(_nd);
+				for(INavdataListener *i : _ndlisteners)
+				{
+					i->navdataAvailable(_nd);
+				}
+			}
+			_navdatamutex.unlock();
+
+			processControllerInput();
+
+			// Process command queue
+			_commandmutex.lock();
+			if((_phi == 0.0f) && (_theta == 0.0f) && (_gaz == 0.0f) && (_yaw == 0.0f))
+			{
+				_commandqueue.push_back(HoverCommand());
+			}
+			else
+			{
+				_commandqueue.push_back(AttitudeCommand(_phi, _theta, _gaz, _yaw));
+			}
+			_cl.sendATCommands(_commandqueue);
+			_commandqueue.clear();
+			_commandmutex.unlock();
+
+			// Get newest video frame
+			_frame = _vm.getVideoFrame();
+			if(!_frame.empty())
+			{
+				for(IVideoListener *i : _vlisteners)
+				{
+					i->videoFrameAvailable(_frame);
+				}
 			}
 		}
-		_navdatamutex.unlock();
-
-		processControllerInput();
-
-		// Process command queue
-		_commandmutex.lock();
-		if((_phi == 0.0f) && (_theta == 0.0f) && (_gaz == 0.0f) && (_yaw == 0.0f))
-		{
-			_commandqueue.push_back(HoverCommand());
-		}
-		else
-		{
-			_commandqueue.push_back(AttitudeCommand(_phi, _theta, _gaz, _yaw));
-		}
-		_cl.sendATCommands(_commandqueue);
-		_commandqueue.clear();
-		_commandmutex.unlock();
-
-		// Get newest video frame
-		_frame = _vm.getVideoFrame();
-		if(!_frame.empty())
-		{
-			for(IVideoListener *i : _vlisteners)
-			{
-				i->videoFrameAvailable(_frame);
-			}
-		}
+	}
+	catch(const std::exception &e)
+	{
+		cerr << "[FATAL] Unexpected exception occurred: " << e.what() << endl;
 	}
 
 	cout << "Update loop stopped" << endl;
@@ -646,6 +653,7 @@ bool ARDrone::drone_flip(int direction)
 	}
 
 	_commandmutex.lock();
+	_commandqueue.push_back(ConfigIDSCommand());
 	_commandqueue.push_back(FlipCommand(direction));
 	_commandmutex.unlock();
 

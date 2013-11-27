@@ -165,11 +165,11 @@ void QNEBlock::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	Q_UNUSED(widget)
 
 	if (isSelected()) {
-		painter->setPen(QPen(Qt::darkYellow));
-		painter->setBrush(Qt::yellow);
+		painter->setPen(QPen(Qt::darkGray));
+		painter->setBrush(QColor::fromRgb(135, 160, 158, 240));
 	} else {
-		painter->setPen(QPen(Qt::darkGreen));
-		painter->setBrush(Qt::green);
+		painter->setPen(QPen(Qt::darkGray));
+		painter->setBrush(QColor::fromRgb(135, 160, 158, 170));
 	}
 
 	painter->drawPath(path());

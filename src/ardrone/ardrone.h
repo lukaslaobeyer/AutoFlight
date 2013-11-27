@@ -106,7 +106,7 @@ class ARDrone
 		std::vector<IVideoListener *> _vlisteners;
 		std::vector<IControllerInputListener *> _ctrllisteners;
 		ControllerConfiguration *_controllerconfig = NULL;
-		int _currentView;
+		int _currentView = ardrone::camera::FRONT;
 		bool _isRecording = false;
 		bool _isRecordingNavdata = false;
 		bool _stop_flag = false;

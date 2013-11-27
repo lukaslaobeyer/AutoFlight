@@ -438,7 +438,7 @@ bool AFMainWindow::eventFilter(QObject *watched, QEvent* e)
 					{
 						hideMessages();
 						showMessage(tr("Performing flip!").toStdString());
-						_af->ardrone()->drone_flip(ardrone::flip::LEFT);
+						_af->ardrone()->drone_flip(ardrone::flip::BEHIND);
 					}
 					// Flip
 					break;

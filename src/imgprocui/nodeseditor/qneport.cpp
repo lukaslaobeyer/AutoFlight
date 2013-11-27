@@ -44,8 +44,7 @@ QNEPort::QNEPort(QGraphicsItem *parent):
 	p.addEllipse(-radius_, -radius_, 2*radius_, 2*radius_);
 	setPath(p);
 
-	setPen(QPen(Qt::darkRed));
-	setBrush(Qt::red);
+	setPen(QPen(Qt::darkGray));
 
 	setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
 
@@ -80,6 +79,15 @@ void QNEPort::setIsOutput(bool o)
 		label->setPos(-radius_ - margin - label->boundingRect().width(), -label->boundingRect().height()/2);
 	else
 		label->setPos(radius_ + margin, -label->boundingRect().height()/2);
+
+	if(isOutput_)
+	{
+		setBrush(QColor::fromRgb(50, 140, 70, 200));
+	}
+	else
+	{
+		setBrush(QColor::fromRgb(50, 70, 140, 200));
+	}
 }
 
 int QNEPort::radius()
