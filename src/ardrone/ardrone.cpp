@@ -77,11 +77,13 @@ int ARDrone::connect()
 			// Initialize communication with AR.Drone
 			_cl.init(_ip, _io_service);
 		
-			// Needed for the AR.Drone to send full navigation data and accept commands
+			// Needed for the AR.Drone to send full navigation data and accept commands (Somewhat like described in the dev guide in section 7.1.2)
 			_cl.setAppID();
 			boost::this_thread::sleep_for(boost::chrono::milliseconds(250)); // Wait until the drone has performed its configuration switch (important)
+			_cl.sendATCommands(vector<ATCommand>{ConfigIDSCommand(), ConfigCommand("general:navdata_demo", "TRUE"), ControlCommand(0)});
+			boost::this_thread::sleep_for(boost::chrono::milliseconds(250));
 			_cl.sendATCommands(vector<ATCommand>{ConfigIDSCommand(), ConfigCommand("general:navdata_demo", "FALSE"), ConfigIDSCommand(), ConfigCommand("general:navdata_options", "268435455"), ControlCommand(5)});
-		
+
 			// Wait for the AR.Drone to process the commands
 			boost::this_thread::sleep_for(boost::chrono::milliseconds(50));
 		

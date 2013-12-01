@@ -16,11 +16,11 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../release_linux)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ".")
 
 # Tell cmake where Qt is
-set(CMAKE_PREFIX_PATH "/usr/local/Qt-5.1.2")
+set(CMAKE_PREFIX_PATH "/home/lukas/workspace/libs/qt5/qtbase")
 
 # Include libraries in the ../lib folder
-include_directories("/home/user/AutoFlight/lib/include/gamepad")
-include_directories("/home/user/AutoFlight/lib/include/")
+include_directories("../lib/include/gamepad")
+include_directories("../lib/include/")
 
 # Find the QtWidgets library
 add_definitions(-DQT_NO_KEYWORDS)
@@ -43,10 +43,6 @@ find_package(ZLIB REQUIRED)
 # Find Python
 find_package(PythonLibs REQUIRED)
 include_directories(${PYTHON_INCLUDE_DIRS})
-
-# Find OpenGL
-find_package(OpenGL REQUIRED)
-include_directories(${OPENGL_INCLUDE_DIRS})
 
 file(GLOB AutoFlight_SRC
     "../src/*.h"
@@ -91,12 +87,11 @@ target_link_libraries(AutoFlight ${OpenCV_LIBS})
 target_link_libraries(AutoFlight ${FFMPEG_LIBRARIES})
 target_link_libraries(AutoFlight ${ZLIB_LIBRARIES})
 target_link_libraries(AutoFlight ${PYTHON_LIBRARIES})
-target_link_libraries(AutoFlight ${OPENGL_LIBRARIES})
-target_link_libraries(AutoFlight x264 va faac mp3lame fdk-aac swscale)
+target_link_libraries(AutoFlight GL x264 va swscale)
 
 # Link libraries in ../lib
-target_link_libraries(AutoFlight "/home/user/AutoFlight/lib/release-linux64/libstem_gamepad.a")
-target_link_libraries(AutoFlight "/home/user/AutoFlight/lib/release-linux64/libqscintilla2.a")
+target_link_libraries(AutoFlight "/home/lukas/workspace/AutoFlight/lib/release-linux64/libstem_gamepad.a")
+target_link_libraries(AutoFlight "/home/lukas/workspace/AutoFlight/lib/release-linux64/libqscintilla2.a")
 
 # Use the Widgets module from Qt 5
 qt5_use_modules(AutoFlight Widgets PrintSupport WebKit WebKitWidgets)
