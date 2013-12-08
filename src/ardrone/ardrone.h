@@ -8,6 +8,7 @@
 #include <opencv2/opencv.hpp>
 #include "../afconstants.h"
 #include "controllink.h"
+#include "iconnectionstatuslistener.h"
 #include "navdata/navdatamanager.h"
 #include "navdata/inavdatalistener.h"
 #include "navdata/navdatarecorder.h"
@@ -40,6 +41,8 @@ class ARDrone
 		bool isConnected();
 		void addNavdataListener(INavdataListener *listener);
 		void removeNavdataListener(INavdataListener *listener);
+		void addConnectionStatusListener(IConnectionStatusListener *listener);
+		void removeConnectionStatusListener(IConnectionStatusListener *listener);
 		void addVideoListener(IVideoListener *listener);
 		void removeVideoListener(IVideoListener *listener);
 		void addControllerInputListener(IControllerInputListener *listener);
@@ -95,7 +98,7 @@ class ARDrone
 		void processControllerInput();
 
 		std::string _ip;
-		boost::asio::io_service _io_service;
+		boost::asio::io_service *_io_service = nullptr;
 		std::string _saveDir;
 		SessionRecorder *_srec = NULL;
 		ControlLink _cl;
@@ -103,6 +106,7 @@ class ARDrone
 		VideoManager _vm;
 		NavdataRecorder _ndrecorder;
 		std::vector<INavdataListener *> _ndlisteners;
+		std::vector<IConnectionStatusListener *> _cslisteners;
 		std::vector<IVideoListener *> _vlisteners;
 		std::vector<IControllerInputListener *> _ctrllisteners;
 		ControllerConfiguration *_controllerconfig = NULL;

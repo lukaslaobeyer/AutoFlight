@@ -74,8 +74,13 @@ int ARDrone::connect()
 	{
 		try
 		{
+			if(_io_service == nullptr)
+			{
+				_io_service = new boost::asio::io_service;
+			}
+
 			// Initialize communication with AR.Drone
-			_cl.init(_ip, _io_service);
+			_cl.init(_ip, *_io_service);
 		
 			// Needed for the AR.Drone to send full navigation data and accept commands (Somewhat like described in the dev guide in section 7.1.2)
 			_cl.setAppID();
@@ -90,7 +95,7 @@ int ARDrone::connect()
 			drone_setConfiguration(ardrone::config::VIDEO_CODEC, ardrone::config::codec::H264_720P);
 
 			// Init navdata manager
-			_nm.init(_ip, _io_service);
+			_nm.init(_ip, *_io_service);
 
 			// Wait for navdata packets to be received
 			boost::this_thread::sleep_for(boost::chrono::milliseconds(100));
@@ -103,8 +108,13 @@ int ARDrone::connect()
 
 			if(_connected)
 			{
-				_vm.init(_ip, _io_service);
+				_vm.init(_ip, *_io_service);
 				_vm.update();
+
+				for(IConnectionStatusListener *cslistener : _cslisteners)
+				{
+					cslistener->connectionEstablished();
+				}
 
 				return ardrone::connection::CONNECTION_ESTABLISHED;
 			}
@@ -151,6 +161,16 @@ void ARDrone::removeNavdataListener(INavdataListener *listener)
 	_ndlisteners.erase(remove(_ndlisteners.begin(), _ndlisteners.end(), listener), _ndlisteners.end());
 }
 
+void ARDrone::addConnectionStatusListener(IConnectionStatusListener *listener)
+{
+	_cslisteners.push_back(listener);
+}
+
+void ARDrone::removeConnectionStatusListener(IConnectionStatusListener *listener)
+{
+	_cslisteners.erase(remove(_cslisteners.begin(), _cslisteners.end(), listener), _cslisteners.end());
+}
+
 void ARDrone::addVideoListener(IVideoListener *listener)
 {
 	_vlisteners.push_back(listener);
@@ -195,6 +215,14 @@ void ARDrone::startUpdateLoop()
 			throw NotConnectedException();
 		}
 	}
+	else if(_connected)
+	{
+		// When the connection is lost the _updater thread still exists. If it is reestablished, the it needs to be killed.
+
+		stopUpdateLoop();
+		_connected = true;
+		startUpdateLoop();
+	}
 }
 
 void ARDrone::stopUpdateLoop()
@@ -220,6 +248,9 @@ void ARDrone::runUpdateLoop()
 {
 	cout << "Update loop started" << endl;
 
+	int zero_packets_counter = 0; // Counts number of times the io_service.poll() function returns 0
+	                              // Used to detect connection loss
+
 	try
 	{
 		while(!_stop_flag)
@@ -227,11 +258,47 @@ void ARDrone::runUpdateLoop()
 			boost::this_thread::sleep_for(boost::chrono::milliseconds(25));
 
 			// Process received packets (if any): Important!
-			_io_service.poll();
+			int packets = _io_service->poll();
+			if(packets == 0)
+			{
+				zero_packets_counter++;
+
+				if(zero_packets_counter == 15)
+				{
+					// Definitely lost connection
+					cout << "[WARNING] Lost connection to AR.Drone!" << endl;
+
+					// Reset state to unconnected
+					_vm.stopRecording();
+
+					_vm.close();
+					_nm.close();
+					_cl.close();
+
+					_io_service->stop();
+					delete _io_service;
+					_io_service = nullptr;
+
+					for(IConnectionStatusListener *cslistener : _cslisteners)
+					{
+						cslistener->connectionLost();
+					}
+
+					_stop_flag = true;
+					_connected = false;
+
+					break;
+				}
+			}
+			else
+			{
+				zero_packets_counter = 0;
+			}
 
 			// Get newest navdata
 			_navdatamutex.lock();
 			_nd = _nm.getNavdata();
+
 			if(_nd != NULL)
 			{
 				for(INavdataListener *i : _ndlisteners)

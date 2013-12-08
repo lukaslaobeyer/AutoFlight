@@ -74,8 +74,10 @@ AFMainWindow::AFMainWindow(AutoFlight *af, QWidget *parent) : QMainWindow(parent
 	_af->ardrone()->addNavdataListener(this);
 	_af->ardrone()->addVideoListener(this);
 	_af->ardrone()->addControllerInputListener(this);
+	_af->ardrone()->addConnectionStatusListener(this);
 
 	QObject::connect(this, SIGNAL(videoFrameAvailableSignal(QImage)), this, SLOT(videoFrameAvailable(QImage)));
+	QObject::connect(this, SIGNAL(connectionLostSignal()), this, SLOT(handleConnectionLost()));
 	QObject::connect(this, SIGNAL(navdataAvailableSignal(AFNavdata *)), videoPanel, SLOT(navdataAvailable(AFNavdata *)));
 	QObject::connect(this, SIGNAL(controllerInputAvailableSignal(ControllerInput *)), videoPanel, SLOT(controllerInputAvailable(ControllerInput *)));
 
@@ -101,6 +103,16 @@ void AFMainWindow::hideMessages()
 void AFMainWindow::navdataAvailable(AFNavdata *nd)
 {
 	Q_EMIT navdataAvailableSignal(nd);
+}
+
+void AFMainWindow::connectionLost()
+{
+	Q_EMIT connectionLostSignal();
+}
+
+void AFMainWindow::connectionEstablished()
+{
+
 }
 
 void AFMainWindow::videoFrameAvailable(cv::Mat f)
@@ -287,6 +299,11 @@ void AFMainWindow::attemptConnection()
 	{
 		QMessageBox::warning(this, tr("Could not connect"), tr("AutoFlight could not connect to the AR.Drone. Please make sure that you are connected to it over WiFi and try again."));
 	}
+}
+
+void AFMainWindow::handleConnectionLost()
+{
+	videoPanel->connectionLost();
 }
 
 void AFMainWindow::toggleHUD(bool showHUD)

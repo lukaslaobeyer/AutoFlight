@@ -13,9 +13,8 @@ ControlLink::ControlLink()
 
 ControlLink::~ControlLink()
 {
-	if(socket != NULL)
+	if(socket != nullptr)
 	{
-		socket->close();
 		delete socket;
 	}
 }
@@ -82,5 +81,6 @@ void ControlLink::sendATCommands(vector<ATCommand> cmds)
 
 void ControlLink::close()
 {
-	socket->close();
+	delete socket;
+	socket = nullptr;
 }

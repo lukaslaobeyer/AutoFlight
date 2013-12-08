@@ -51,7 +51,7 @@ class VideoManager
 		int _previous_width = -1; // Width of the previous received frame, needed to see if the size changed
 		char *_receivedDataBuffer = nullptr;
 		char *_rawFrame = nullptr;
-		PaVE * _pave = nullptr;
+		PaVE *_pave = nullptr;
 
 		AVPacket _packet; // Received data is stored into this, and then decoded.
 		uint8_t *_decode_buffer = nullptr;

@@ -13,9 +13,8 @@ NavdataManager::NavdataManager()
 
 NavdataManager::~NavdataManager()
 {
-	if(socket != NULL)
+	if(socket != nullptr)
 	{
-		socket->close();
 		delete socket;
 	}
 }
@@ -25,19 +24,20 @@ void NavdataManager::init(std::string ip, boost::asio::io_service &io_service)
 	udp::resolver resolver(io_service);
 	udp::resolver::query query(udp::v4(), ip, to_string(ardrone::NAVDATA_PORT));
 	udp::endpoint receiver_endpoint = *resolver.resolve(query);
-	
+
 	socket = new udp::socket(io_service);
 	socket->open(udp::v4());
 	socket->bind(udp::endpoint(udp::v4(), ardrone::NAVDATA_PORT));
-	
+
 	// Send some data to the navdata port so we start receiving navdata
-	
 	unsigned char data[4] = {0x01, 0x00, 0x00, 0x00};
 	
 	socket->send_to(boost::asio::buffer(data), receiver_endpoint);
 	
+	last_seqNum = 0;
+	navdataAvailable = false;
+
 	// Set up navdata reception
-	
 	startReceive();
 }
 
@@ -87,7 +87,7 @@ bool NavdataManager::parseNavdata(char data[], int receivedbytes)
 	memcpy(&header, data + position, sizeof(uint32_t));
 	position += sizeof(uint32_t);
 	
-	if(header != 0x55667788) // Magic number :P (Header must always be 0x55667788, as stated in the documentation)
+	if(header != 0x55667788) // Magic number (Header must always be 0x55667788, as stated in the documentation)
 	{
 		return false;
 	}
@@ -203,5 +203,6 @@ bool NavdataManager::parseNavdata(char data[], int receivedbytes)
 
 void NavdataManager::close()
 {
-	socket->close();
+	delete socket;
+	socket = nullptr;
 }

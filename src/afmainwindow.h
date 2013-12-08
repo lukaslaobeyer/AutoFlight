@@ -25,7 +25,7 @@
 #include "widgets/videodisplay.h"
 #include "asmainwindow.h"
 
-class AFMainWindow : public QMainWindow, public INavdataListener, public IVideoListener, public IControllerInputListener, public QVideoListener
+class AFMainWindow : public QMainWindow, public INavdataListener, public IConnectionStatusListener, public IVideoListener, public IControllerInputListener, public QVideoListener
 {
 	Q_OBJECT
 	
@@ -35,6 +35,8 @@ class AFMainWindow : public QMainWindow, public INavdataListener, public IVideoL
 		void navdataAvailable(AFNavdata *nd);
 		void videoFrameAvailable(cv::Mat f);
 		void controllerInputAvailable(ControllerInput *in);
+		void connectionLost();
+		void connectionEstablished();
 
 		void showMessage(std::string msg);
 	public Q_SLOTS:
@@ -80,10 +82,12 @@ class AFMainWindow : public QMainWindow, public INavdataListener, public IVideoL
 		void launchSessionViewerDialog();
 		void launch3DMapView();
 		void launchImageProcessingPipelineEditor();
+		void handleConnectionLost();
 	Q_SIGNALS:
 		void navdataAvailableSignal(AFNavdata *nd);
 		void videoFrameAvailableSignal(QImage frame);
 		void controllerInputAvailableSignal(ControllerInput *in);
+		void connectionLostSignal();
 };
 
 #endif

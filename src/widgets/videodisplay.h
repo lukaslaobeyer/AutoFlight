@@ -21,6 +21,7 @@ class VideoDisplay : public QGLWidget
 
 		void setMaximized(bool maximize);
 		void showHUD(bool show);
+		void connectionLost();
 
 	public Q_SLOTS:
 		void navdataAvailable(AFNavdata *nd);
@@ -36,6 +37,7 @@ class VideoDisplay : public QGLWidget
 		QImage _img;
 		bool _maximize = false;
 		bool _hud = false;
+		bool _connectionLost = false;
 
 		double yaw = 0, pitch = 0, roll = 0, altitude = 0, charge = 0, speed = 0, rollInput = 0, pitchInput = 0, altitudeInput = 0, yawInput = 0;
 };

@@ -8,6 +8,7 @@ VideoDisplay::VideoDisplay(QWidget *parent) : QGLWidget(parent)
 
 void VideoDisplay::setCurrentFrame(const QImage &img)
 {
+	_connectionLost = false;
 	_img = img;
 	Q_EMIT update();
 }
@@ -55,6 +56,12 @@ void VideoDisplay::setMaximized(bool maximize)
 void VideoDisplay::showHUD(bool show)
 {
 	_hud = show;
+	Q_EMIT update();
+}
+
+void VideoDisplay::connectionLost()
+{
+	_connectionLost = true;
 	Q_EMIT update();
 }
 
@@ -302,6 +309,28 @@ void VideoDisplay::paintEvent(QPaintEvent *)
 		p.translate(-25, -25);*/
 
 		p.translate(-offsetX, -offsetY);
+    }
+
+    if(_connectionLost)
+    {
+    	p.setPen(Qt::transparent);
+    	QBrush b = QColor::fromRgb(0, 0, 0, 175);
+    	p.fillRect(imgRect, b);
+
+    	p.setPen(Qt::white);
+
+    	QFont f1("Sans Serif", 28, QFont::Bold);
+    	QString text1 = tr("Connection to AR.Drone lost");
+    	QFontMetrics fm1(f1);
+
+    	QFont f2("Sans Serif", 14, QFont::Bold);
+    	QString text2 = tr("Once you are in the AR.Drone's WiFi range, you can click 'Connect to AR.Drone' again.");
+    	QFontMetrics fm2(f2);
+
+    	p.setFont(f1);
+    	p.drawText(QPoint(imgRect.width() / 2 - fm1.width(text1) / 2 + imgRect.x(), imgRect.height() / 2 - fm1.height() + imgRect.y()), text1);
+    	p.setFont(f2);
+    	p.drawText(QPoint(imgRect.width() / 2 - fm2.width(text2) / 2 + imgRect.x(), imgRect.height() / 2 + fm2.height() / 2 + imgRect.y()), text2);
     }
 }
 

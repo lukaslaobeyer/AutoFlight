@@ -32,13 +32,11 @@ VideoManager::~VideoManager()
 
 	if(socket != nullptr)
 	{
-		socket->close();
 		delete socket;
 	}
 
 	if(recordingSocket != nullptr)
 	{
-		recordingSocket->close();
 		delete recordingSocket;
 	}
 
@@ -549,5 +547,8 @@ bool VideoManager::takePicture(string savePath)
 
 void VideoManager::close()
 {
-	socket->close();
+	delete socket;
+	delete recordingSocket;
+	socket = nullptr;
+	recordingSocket = nullptr;
 }
