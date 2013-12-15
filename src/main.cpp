@@ -20,6 +20,7 @@ int main(int argc, char *argv[])
 	std::cout << "Starting AutoFlight...\n";
 	
 	Gamepad_init();
+	Gamepad_detectDevices();
 
 	AutoFlight af;
 

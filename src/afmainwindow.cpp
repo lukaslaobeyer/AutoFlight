@@ -12,6 +12,8 @@
 #include "dialogs/selectcontroller.h"
 #include "dialogs/configurecontrols.h"
 
+#include "tools/controllerconfigurationfileio.h"
+
 #include <QtWidgets>
 
 #include <opencv2/opencv.hpp>
@@ -82,6 +84,12 @@ AFMainWindow::AFMainWindow(AutoFlight *af, QWidget *parent) : QMainWindow(parent
 	QObject::connect(this, SIGNAL(controllerInputAvailableSignal(ControllerInput *)), videoPanel, SLOT(controllerInputAvailable(ControllerInput *)));
 
 	installEventFilter(this);
+
+	ControllerConfiguration *cc = ControllerConfigurationFileIO::loadControllerConfiguration();
+	if(cc != nullptr)
+	{
+		_af->ardrone()->setControllerConfiguration(cc);
+	}
 }
 
 void AFMainWindow::showMessage(string message)
@@ -401,13 +409,14 @@ void AFMainWindow::showControlConfigDialog()
 
 	if(!cancel)
 	{
-		ConfigureControls cc(controllerID, NULL, this);
+		ConfigureControls cc(controllerID, _af->ardrone()->getControllerConfiguration(), this);
 		cc.exec();
 
 		if(cc.result() == QDialog::Accepted)
 		{
 			//TODO: Check configuration
 			_af->ardrone()->setControllerConfiguration(cc.getControllerConfiguration());
+			ControllerConfigurationFileIO::saveControllerConfiguration(cc.getControllerConfiguration());
 		}
 	}
 }

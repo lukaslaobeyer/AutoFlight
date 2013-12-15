@@ -50,6 +50,7 @@ class ARDrone
 		void startUpdateLoop();
 		void stopUpdateLoop();
 		void setControllerConfiguration(ControllerConfiguration *config);
+		ControllerConfiguration *getControllerConfiguration();
 
 		ardrone::orientation drone_getOrientation();
 		float drone_getRelativeHeading(bool clockwise = true);

@@ -43,6 +43,14 @@ ConfigureControls::ConfigureControls(unsigned int deviceID, ControllerConfigurat
 		cc->takeoff = -1;
 		cc->yaw = -1;
 		cc->zap = -1;
+		cc->yawM = -1;
+		cc->yawP = -1;
+		cc->heightM = -1;
+		cc->heightP = -1;
+		cc->pitchM = -1;
+		cc->pitchP = -1;
+		cc->rollM = -1;
+		cc->rollP = -1;
 	}
 	else
 	{
@@ -163,11 +171,11 @@ ConfigureControls::ConfigureControls(unsigned int deviceID, ControllerConfigurat
 
 			if(config != NULL)
 			{
-				if(configArray[i + 11] >= 0)
+				if(configArray[i*2 + 12] >= 0)
 				{
 					switchControlMode(i);
-					axisButtons[i*2]->setText(tr("Button %1").arg(configArray[11 + i*2]));
-					axisButtons[i*2+1]->setText(tr("Button %1").arg(configArray[11 + i*2+1]));
+					axisButtons[i*2]->setText(tr("Button %1").arg(configArray[12 + i*2]));
+					axisButtons[i*2+1]->setText(tr("Button %1").arg(configArray[12 + i*2+1]));
 				}
 			}
 		}
@@ -182,7 +190,14 @@ ConfigureControls::ConfigureControls(unsigned int deviceID, ControllerConfigurat
 		{
 			if(configArray[i] >= 0)
 			{
-				buttons[i]->setText(tr("Button %1").arg(configArray[i]));
+				if(i < 4)
+				{
+					buttons[i]->setText(tr("Axis %1").arg(configArray[i]));
+				}
+				else
+				{
+					buttons[i]->setText(tr("Button %1").arg(configArray[i]));
+				}
 			}
 		}
 

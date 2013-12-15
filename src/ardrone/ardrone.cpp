@@ -193,12 +193,12 @@ void ARDrone::removeControllerInputListener(IControllerInputListener *listener)
 
 void ARDrone::setControllerConfiguration(ControllerConfiguration *config)
 {
-	if(config != NULL)
-	{
-		delete _controllerconfig;
-	}
-
 	_controllerconfig = config;
+}
+
+ControllerConfiguration *ARDrone::getControllerConfiguration()
+{
+	return _controllerconfig;
 }
 
 void ARDrone::startUpdateLoop()
