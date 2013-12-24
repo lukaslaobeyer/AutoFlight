@@ -24,7 +24,7 @@ class NavdataManager
 		bool navdataAvailable = false;
 		AFNavdata navdata;
 		uint32_t last_seqNum = 0;
-		char _receivedDataBuffer[2048];
+		char _receivedDataBuffer[4096];
 };
 
 #endif
