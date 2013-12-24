@@ -258,7 +258,9 @@ void ARDrone::runUpdateLoop()
 			boost::this_thread::sleep_for(boost::chrono::milliseconds(25));
 
 			// Process received packets (if any): Important!
+			_io_service->reset();
 			int packets = _io_service->poll();
+
 			if(packets == 0)
 			{
 				zero_packets_counter++;
@@ -345,68 +347,108 @@ void ARDrone::runUpdateLoop()
 
 void ARDrone::processControllerInput()
 {
+	static const int N_CYCLES = 16;
+	static const int N_COUNTERS = 8;
+	static int cyclesToWait[] = { // Update loop cycles to wait for each action before accepting new commands:
+			0, // 0 Takeoff          Needed to ensure that actions do not trigger multiple times on somewhat longer button presses.
+			0, // 1 Land             When an action is triggered, the corresponding cycle counter is set to N_CYCLES and decremented
+			0, // 2 Zap              by one every cycle until the counter reaches 0.
+			0, // 3 Photo
+			0, // 4 Recording
+			0, // 5 Flip
+			0, // 6 Slow mode
+			0, // 7 Emergency
+	};
+
+	static ControllerInput *in = new ControllerInput;
+	// TODO: Cleanup!
+
 	if(_controllerconfig != NULL)
 	{
-		ControllerInput *in = new ControllerInput;
 		*in = {0, 0, 0, 0, false, false, false, false, false, false, false, false};
 
 		Gamepad_device *device = Gamepad_deviceAtIndex(_controllerconfig->deviceID);
 		bool slow = false;
 
-		if(_controllerconfig->takeoff >= 0)
+		// Decrement cyclesToWait counters if needed
+		for(int i = 0; i < N_COUNTERS; i++)
+		{
+			if(cyclesToWait[i] > 0)
+			{
+				cyclesToWait[i]--;
+			}
+		}
+
+		if(_controllerconfig->takeoff >= 0 && cyclesToWait[0] == 0)
 		{
 			if(device->buttonStates[_controllerconfig->takeoff])
 			{
 				drone_takeOff();
 				in->takeOff = true;
+				cyclesToWait[0] = N_CYCLES;
 			}
 		}
-		if(_controllerconfig->land >= 0)
+		if(_controllerconfig->land >= 0 && cyclesToWait[1] == 0)
 		{
 			if(device->buttonStates[_controllerconfig->land])
 			{
 				drone_land();
 				in->land = true;
+				cyclesToWait[1] = N_CYCLES;
 			}
 		}
-		if(_controllerconfig->zap >= 0)
+		if(_controllerconfig->zap >= 0 && cyclesToWait[2] == 0)
 		{
 			if(device->buttonStates[_controllerconfig->zap])
 			{
 				drone_toggleView();
 				in->toggleView = true;
+				cyclesToWait[2] = N_CYCLES;
 			}
 		}
-		if(_controllerconfig->photo >= 0)
+		if(_controllerconfig->photo >= 0 && cyclesToWait[3] == 0)
 		{
 			if(device->buttonStates[_controllerconfig->photo])
 			{
 				drone_takePicture();
 				in->takePicture = true;
+				cyclesToWait[3] = N_CYCLES;
 			}
 		}
-		if(_controllerconfig->recording >= 0)
+		if(_controllerconfig->recording >= 0 && cyclesToWait[4] == 0)
 		{
 			if(device->buttonStates[_controllerconfig->recording])
 			{
 				drone_toggleRecording();
 				in->toggleRecording = true;
+				cyclesToWait[4] = N_CYCLES;
 			}
 		}
-		if(_controllerconfig->flip >= 0)
+		if(_controllerconfig->flip >= 0 && cyclesToWait[5] == 0)
 		{
 			if(device->buttonStates[_controllerconfig->flip])
 			{
 				drone_flip(ardrone::flip::LEFT);
 				in->flip = true;
+				cyclesToWait[5] = N_CYCLES;
 			}
 		}
-		if(_controllerconfig->slow >= 0)
+		if(_controllerconfig->slow >= 0 && cyclesToWait[6] == 0)
 		{
 			if(device->buttonStates[_controllerconfig->slow])
 			{
 				slow = true;
 				in->slowMode = true;
+				cyclesToWait[6] = N_CYCLES;
+			}
+		}
+		if(_controllerconfig->emergency >= 0 && cyclesToWait[7] == 0)
+		{
+			if(device->buttonStates[_controllerconfig->emergency])
+			{
+				drone_emergency();
+				in->emergency = true;
+				cyclesToWait[7] = N_CYCLES;
 			}
 		}
 
@@ -427,7 +469,7 @@ void ARDrone::processControllerInput()
 			theta += device->buttonStates[_controllerconfig->pitchP];
 			theta -= device->buttonStates[_controllerconfig->pitchM];
 		}
-		else if(_controllerconfig->roll >= 0)
+		else if(_controllerconfig->pitch >= 0)
 		{
 			theta = device->axisStates[_controllerconfig->pitch];
 		}
@@ -437,9 +479,9 @@ void ARDrone::processControllerInput()
 			gaz += device->buttonStates[_controllerconfig->heightP];
 			gaz -= device->buttonStates[_controllerconfig->heightM];
 		}
-		else if(_controllerconfig->roll >= 0)
+		else if(_controllerconfig->height >= 0)
 		{
-			gaz = device->axisStates[_controllerconfig->height];
+			gaz = -device->axisStates[_controllerconfig->height];
 		}
 
 		if(_controllerconfig->yawM >= 0 && _controllerconfig->yawP >= 0)
@@ -447,7 +489,7 @@ void ARDrone::processControllerInput()
 			yaw += device->buttonStates[_controllerconfig->yawP];
 			yaw -= device->buttonStates[_controllerconfig->yawM];
 		}
-		else if(_controllerconfig->roll >= 0)
+		else if(_controllerconfig->yaw >= 0)
 		{
 			yaw = device->axisStates[_controllerconfig->yaw];
 		}
@@ -460,15 +502,26 @@ void ARDrone::processControllerInput()
 			yaw *= 0.5f;
 		}
 
-		if(abs(phi) < 0.1f || abs(theta) < 0.1f || abs(gaz) < 0.1f || abs(yaw) < 0.1f)
+		// Ignore very small values
+		if(abs(phi) < 0.1f)
 		{
-			// Ignore very small values
-			drone_hover();
+			phi = 0;
 		}
-		else
+		if(abs(theta) < 0.1f)
 		{
-			drone_move(phi, theta, gaz, yaw);
+			theta = 0;
 		}
+		if(abs(gaz) < 0.1f)
+		{
+			gaz = 0;
+		}
+		if(abs(yaw) < 0.1f)
+		{
+			yaw = 0;
+		}
+
+
+		drone_move(phi, theta, gaz, yaw);
 
 		in->altitude = gaz;
 		in->yaw = yaw;
@@ -479,8 +532,6 @@ void ARDrone::processControllerInput()
 		{
 			l->controllerInputAvailable(in);
 		}
-
-		delete in;
 	}
 }
 

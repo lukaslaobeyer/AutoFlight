@@ -282,7 +282,7 @@ void VideoDisplay::paintEvent(QPaintEvent *)
 		p.drawLine(border + 3, screenheight/2, border + input_width - 3, screenheight/2);
 
 		drawTriangle(p, input_width/2, border + input_width/2, (int) (screenheight/2 - (altitudeInput * ((float) size/2))), 0);
-		drawTriangle(p, input_width/2, border + input_width/2, (int) (screenheight/2 - (pitchInput * ((float) size/2))), 180);
+		drawTriangle(p, input_width/2, border + input_width/2, (int) (screenheight/2 - (-pitchInput * ((float) size/2))), 180);
 
 
 		p.drawLine(screenwidth/2 - size/2, screenheight - (border + input_width/2), screenwidth/2 + size/2, screenheight - (border + input_width/2));

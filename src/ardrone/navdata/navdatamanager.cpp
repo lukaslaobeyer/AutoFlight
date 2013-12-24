@@ -196,7 +196,7 @@ bool NavdataManager::parseNavdata(char data[], int receivedbytes)
 		position += size - (position - previous_position) - 4;
 		//                                                  ^ Substract the size of 'id' and 'size'
 	}
-	
+
 	navdataAvailable = true;
 	return true;
 }

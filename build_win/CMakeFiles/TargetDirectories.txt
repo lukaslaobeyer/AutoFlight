@@ -1,0 +1,2 @@
+C:/AutoFlight/build_win/CMakeFiles/AutoFlight.dir
+C:/AutoFlight/build_win/CMakeFiles/AutoFlight_automoc.dir

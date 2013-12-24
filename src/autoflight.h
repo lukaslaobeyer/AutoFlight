@@ -3,6 +3,9 @@
 
 #include <string>
 #include <pugixml/pugixml.hpp>
+#ifdef __MINGW32__
+#include <winsock2.h>
+#endif
 #include <boost/date_time.hpp>
 #include "ardrone/ardrone.h"
 #include "autoscript/asengine.h"

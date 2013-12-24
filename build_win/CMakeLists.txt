@@ -31,7 +31,7 @@ find_package(Qt5WebKitWidgets)
 
 # Find the Boost libraries
 set(Python_ADDITIONAL_VERSIONS 3)
-find_package(Boost 1.53 COMPONENTS python python3 system thread chrono date_time REQUIRED)
+find_package(Boost 1.53 COMPONENTS python python3 system filesystem thread chrono date_time REQUIRED)
 include_directories(${Boost_INCLUDE_DIR})
 
 # Needed on Windows
@@ -76,11 +76,17 @@ file(GLOB AutoFlight_SRC
     "../src/autoscript/*.cpp"
     "../src/tools/*.h"
     "../src/tools/*.cpp"
+    "../src/imgprocui/*.h"
+    "../src/imgprocui/*.cpp"
+    "../src/imgprocui/nodeseditor/*.h"
+    "../src/imgprocui/nodeseditor/*.cpp"
     
     "../lib/include/qcustomplot/*.h"
     "../lib/include/qcustomplot/*.cpp"
     "../lib/include/pugixml/*.hpp"
     "../lib/include/pugixml/*.cpp"
+    "../lib/include/glm/*.hpp"
+    "../lib/include/glm/core/*.hpp"
 )
 
 # Add the resources
@@ -94,7 +100,7 @@ target_link_libraries(AutoFlight ${Boost_LIBRARIES})
 target_link_libraries(AutoFlight ${OpenCV_LIBS})
 target_link_libraries(AutoFlight ${FFMPEG_LIBRARIES})
 target_link_libraries(AutoFlight ${PYTHON_LIBRARIES})
-target_link_libraries(AutoFlight wsock32 ws2_32)
+target_link_libraries(AutoFlight opengl32 wsock32 ws2_32)
 
 # Link libraries in ../lib
 target_link_libraries(AutoFlight "C:/AutoFlight/lib/release-win32/libstem_gamepad.a" winmm)
