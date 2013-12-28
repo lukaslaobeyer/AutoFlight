@@ -11,12 +11,15 @@
 
 #include "dialogs/selectcontroller.h"
 #include "dialogs/configurecontrols.h"
+#include "dialogs/welcomedialog.h"
 
 #include "tools/controllerconfigurationfileio.h"
 
 #include <QtWidgets>
 
 #include <opencv2/opencv.hpp>
+
+#include <boost/filesystem.hpp>
 
 // When on a netbook with limited space, use these values as minimum screen size:
 #define MIN_WIDTH 1024
@@ -90,6 +93,23 @@ AFMainWindow::AFMainWindow(AutoFlight *af, QWidget *parent) : QMainWindow(parent
 	{
 		_af->ardrone()->setControllerConfiguration(cc);
 	}
+
+	showFirstRunInfoIfRequired();
+}
+
+void AFMainWindow::showFirstRunInfoIfRequired()
+{
+	// Check if this is the first run: If the AutoFlightSaves directory exists, AutoFlight was already run
+	string savesDir = AutoFlight::getHomeDirectory();
+	savesDir += "AutoFlightSaves";
+	bool exists = boost::filesystem::exists(savesDir);
+
+	if(!exists)
+	{
+		// Show first run info
+		WelcomeDialog welcome(this);
+		welcome.exec();
+	}
 }
 
 void AFMainWindow::showMessage(string message)
@@ -144,10 +164,10 @@ void AFMainWindow::videoFrameAvailable(QImage f)
 }
 
 void AFMainWindow::createMenuBar() {
-	QMenu *drone = new QMenu(tr("AR.Drone"));
+	QMenu *drone = new QMenu(tr("&AR.Drone"));
 	menuBar()->addMenu(drone);
 		
-		QAction *connectDrone = new QAction(tr("Connect to AR.Drone"), this);
+		QAction *connectDrone = new QAction(tr("&Connect to AR.Drone"), this);
 		drone->addAction(connectDrone);
 		
 		/* TODO: This
@@ -157,10 +177,10 @@ void AFMainWindow::createMenuBar() {
 		
 		drone->addSeparator();
 		
-		QAction *flatTrim = new QAction(tr("Flat Trim"), this);
+		QAction *flatTrim = new QAction(tr("&Flat Trim"), this);
 		drone->addAction(flatTrim);
 		
-		QAction *calibMagneto = new QAction(tr("Calibrate Magnetometer"), this);
+		QAction *calibMagneto = new QAction(tr("Calibrate &Magnetometer"), this);
 		drone->addAction(calibMagneto);
 		
 		drone->addSeparator();
@@ -171,13 +191,13 @@ void AFMainWindow::createMenuBar() {
 		QAction *unpairDrone = new QAction(tr("Unpair"), this);
 		drone->addAction(unpairDrone);
 		*/
-	QMenu *tools = new QMenu(tr("Tools"));
+	QMenu *tools = new QMenu(tr("&Tools"));
 	menuBar()->addMenu(tools);
 	
-		QAction *controlConfig = new QAction(tr("Controller Configuration"), this);
+		QAction *controlConfig = new QAction(tr("&Controller Configuration"), this);
 		tools->addAction(controlConfig);
 
-		QAction *imgProcEdit = new QAction(tr("Image Processing Pipeline Editor"), this);
+		QAction *imgProcEdit = new QAction(tr("&Image Processing Pipeline Editor"), this);
 		tools->addAction(imgProcEdit);
 
 		/* TODO: This
@@ -194,9 +214,9 @@ void AFMainWindow::createMenuBar() {
 		QAction *gpsViewer = new QAction(tr("GPS Viewer"), this);
 		tools->addAction(gpsViewer);
 		*/
-	QMenu *view = new QMenu(tr("View"));
+	QMenu *view = new QMenu(tr("&View"));
 	menuBar()->addMenu(view);
-		QAction *toggleHUD = new QAction(tr("Head-Up Display"), this);
+		QAction *toggleHUD = new QAction(tr("Head-&Up Display"), this);
 		toggleHUD->setCheckable(true);
 		toggleHUD->setShortcut(QKeySequence::fromString("F5"));
 		view->addAction(toggleHUD);
@@ -208,7 +228,7 @@ void AFMainWindow::createMenuBar() {
 		toggleFullscreen->setCheckable(true);
 		view->addAction(toggleFullscreen);
 		*/
-	QMenu *help = new QMenu(tr("Help"));
+	QMenu *help = new QMenu(tr("&Help"));
 	menuBar()->addMenu(help);
 		/* TODO: This
 		QAction *onlineHelp = new QAction(tr("Online Help"), this);
@@ -216,7 +236,7 @@ void AFMainWindow::createMenuBar() {
 		
 		help->addSeparator();
 		*/
-		QAction *about = new QAction(tr("About AutoFlight"), this);
+		QAction *about = new QAction(tr("About Auto&Flight"), this);
 		help->addAction(about);
 
 	QWidget::connect(connectDrone, SIGNAL(triggered()), this, SLOT(attemptConnection()));

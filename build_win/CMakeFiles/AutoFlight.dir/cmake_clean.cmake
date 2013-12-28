@@ -22,6 +22,7 @@ FILE(REMOVE_RECURSE
   "CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/configurecontrols.cpp.obj"
   "CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/selectcontroller.cpp.obj"
   "CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/sessionviewer.cpp.obj"
+  "CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/welcomedialog.cpp.obj"
   "CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/ardrone.cpp.obj"
   "CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/controllink.cpp.obj"
   "CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/atcommands/atcommand.cpp.obj"

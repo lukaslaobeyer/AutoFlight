@@ -50,6 +50,7 @@ class AFMainWindow : public QMainWindow, public INavdataListener, public IConnec
 		void setWindowAttributes();
 		void closeEvent(QCloseEvent *);
 		void createMenuBar();
+		void showFirstRunInfoIfRequired();
 		QWidget *createVerticalToolbar();
 		QWidget *createHorizontalToolbar();
 

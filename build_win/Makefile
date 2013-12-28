@@ -582,6 +582,30 @@ C_/AutoFlight/src/dialogs/sessionviewer.cpp.s:
 	$(MAKE) -f CMakeFiles\AutoFlight.dir\build.make CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/sessionviewer.cpp.s
 .PHONY : C_/AutoFlight/src/dialogs/sessionviewer.cpp.s
 
+C_/AutoFlight/src/dialogs/welcomedialog.obj: C_/AutoFlight/src/dialogs/welcomedialog.cpp.obj
+.PHONY : C_/AutoFlight/src/dialogs/welcomedialog.obj
+
+# target to build an object file
+C_/AutoFlight/src/dialogs/welcomedialog.cpp.obj:
+	$(MAKE) -f CMakeFiles\AutoFlight.dir\build.make CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/welcomedialog.cpp.obj
+.PHONY : C_/AutoFlight/src/dialogs/welcomedialog.cpp.obj
+
+C_/AutoFlight/src/dialogs/welcomedialog.i: C_/AutoFlight/src/dialogs/welcomedialog.cpp.i
+.PHONY : C_/AutoFlight/src/dialogs/welcomedialog.i
+
+# target to preprocess a source file
+C_/AutoFlight/src/dialogs/welcomedialog.cpp.i:
+	$(MAKE) -f CMakeFiles\AutoFlight.dir\build.make CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/welcomedialog.cpp.i
+.PHONY : C_/AutoFlight/src/dialogs/welcomedialog.cpp.i
+
+C_/AutoFlight/src/dialogs/welcomedialog.s: C_/AutoFlight/src/dialogs/welcomedialog.cpp.s
+.PHONY : C_/AutoFlight/src/dialogs/welcomedialog.s
+
+# target to generate assembly for a file
+C_/AutoFlight/src/dialogs/welcomedialog.cpp.s:
+	$(MAKE) -f CMakeFiles\AutoFlight.dir\build.make CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/welcomedialog.cpp.s
+.PHONY : C_/AutoFlight/src/dialogs/welcomedialog.cpp.s
+
 C_/AutoFlight/src/imgprocui/imgprocmainwindow.obj: C_/AutoFlight/src/imgprocui/imgprocmainwindow.cpp.obj
 .PHONY : C_/AutoFlight/src/imgprocui/imgprocmainwindow.obj
 
@@ -1249,6 +1273,9 @@ help:
 	@echo ... C_/AutoFlight/src/dialogs/sessionviewer.obj
 	@echo ... C_/AutoFlight/src/dialogs/sessionviewer.i
 	@echo ... C_/AutoFlight/src/dialogs/sessionviewer.s
+	@echo ... C_/AutoFlight/src/dialogs/welcomedialog.obj
+	@echo ... C_/AutoFlight/src/dialogs/welcomedialog.i
+	@echo ... C_/AutoFlight/src/dialogs/welcomedialog.s
 	@echo ... C_/AutoFlight/src/imgprocui/imgprocmainwindow.obj
 	@echo ... C_/AutoFlight/src/imgprocui/imgprocmainwindow.i
 	@echo ... C_/AutoFlight/src/imgprocui/imgprocmainwindow.s

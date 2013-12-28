@@ -75,6 +75,7 @@ qrc_resources.cpp: C:/AutoFlight/src/resources/sessionviewer_video.png
 qrc_resources.cpp: C:/AutoFlight/src/resources/sessionviewer_takeoff.png
 qrc_resources.cpp: C:/AutoFlight/src/resources/sessionviewer_land.png
 qrc_resources.cpp: C:/AutoFlight/src/resources/sessionviewer_emergency.png
+qrc_resources.cpp: C:/AutoFlight/src/resources/welcome.png
 qrc_resources.cpp: __/src/resources.qrc.depends
 qrc_resources.cpp: C:/AutoFlight/src/resources.qrc
 	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_1)
@@ -585,10 +586,34 @@ CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/sessionviewer.cpp.obj.provid
 
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/sessionviewer.cpp.obj.provides.build: CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/sessionviewer.cpp.obj
 
+CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/welcomedialog.cpp.obj: CMakeFiles/AutoFlight.dir/flags.make
+CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/welcomedialog.cpp.obj: CMakeFiles/AutoFlight.dir/includes_CXX.rsp
+CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/welcomedialog.cpp.obj: C:/AutoFlight/src/dialogs/welcomedialog.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_23)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/welcomedialog.cpp.obj"
+	C:\Qt\Tools\mingw48_32\bin\g++.exe   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles\AutoFlight.dir\C_\AutoFlight\src\dialogs\welcomedialog.cpp.obj -c C:\AutoFlight\src\dialogs\welcomedialog.cpp
+
+CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/welcomedialog.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/welcomedialog.cpp.i"
+	C:\Qt\Tools\mingw48_32\bin\g++.exe  $(CXX_DEFINES) $(CXX_FLAGS) -E C:\AutoFlight\src\dialogs\welcomedialog.cpp > CMakeFiles\AutoFlight.dir\C_\AutoFlight\src\dialogs\welcomedialog.cpp.i
+
+CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/welcomedialog.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/welcomedialog.cpp.s"
+	C:\Qt\Tools\mingw48_32\bin\g++.exe  $(CXX_DEFINES) $(CXX_FLAGS) -S C:\AutoFlight\src\dialogs\welcomedialog.cpp -o CMakeFiles\AutoFlight.dir\C_\AutoFlight\src\dialogs\welcomedialog.cpp.s
+
+CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/welcomedialog.cpp.obj.requires:
+.PHONY : CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/welcomedialog.cpp.obj.requires
+
+CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/welcomedialog.cpp.obj.provides: CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/welcomedialog.cpp.obj.requires
+	$(MAKE) -f CMakeFiles\AutoFlight.dir\build.make CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/welcomedialog.cpp.obj.provides.build
+.PHONY : CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/welcomedialog.cpp.obj.provides
+
+CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/welcomedialog.cpp.obj.provides.build: CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/welcomedialog.cpp.obj
+
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/ardrone.cpp.obj: CMakeFiles/AutoFlight.dir/flags.make
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/ardrone.cpp.obj: CMakeFiles/AutoFlight.dir/includes_CXX.rsp
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/ardrone.cpp.obj: C:/AutoFlight/src/ardrone/ardrone.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_23)
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_24)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/ardrone.cpp.obj"
 	C:\Qt\Tools\mingw48_32\bin\g++.exe   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles\AutoFlight.dir\C_\AutoFlight\src\ardrone\ardrone.cpp.obj -c C:\AutoFlight\src\ardrone\ardrone.cpp
 
@@ -612,7 +637,7 @@ CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/ardrone.cpp.obj.provides.bui
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/controllink.cpp.obj: CMakeFiles/AutoFlight.dir/flags.make
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/controllink.cpp.obj: CMakeFiles/AutoFlight.dir/includes_CXX.rsp
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/controllink.cpp.obj: C:/AutoFlight/src/ardrone/controllink.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_24)
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_25)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/controllink.cpp.obj"
 	C:\Qt\Tools\mingw48_32\bin\g++.exe   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles\AutoFlight.dir\C_\AutoFlight\src\ardrone\controllink.cpp.obj -c C:\AutoFlight\src\ardrone\controllink.cpp
 
@@ -636,7 +661,7 @@ CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/controllink.cpp.obj.provides
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/atcommands/atcommand.cpp.obj: CMakeFiles/AutoFlight.dir/flags.make
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/atcommands/atcommand.cpp.obj: CMakeFiles/AutoFlight.dir/includes_CXX.rsp
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/atcommands/atcommand.cpp.obj: C:/AutoFlight/src/ardrone/atcommands/atcommand.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_25)
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_26)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/atcommands/atcommand.cpp.obj"
 	C:\Qt\Tools\mingw48_32\bin\g++.exe   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles\AutoFlight.dir\C_\AutoFlight\src\ardrone\atcommands\atcommand.cpp.obj -c C:\AutoFlight\src\ardrone\atcommands\atcommand.cpp
 
@@ -660,7 +685,7 @@ CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/atcommands/atcommand.cpp.obj
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/navdata/navdatamanager.cpp.obj: CMakeFiles/AutoFlight.dir/flags.make
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/navdata/navdatamanager.cpp.obj: CMakeFiles/AutoFlight.dir/includes_CXX.rsp
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/navdata/navdatamanager.cpp.obj: C:/AutoFlight/src/ardrone/navdata/navdatamanager.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_26)
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_27)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/navdata/navdatamanager.cpp.obj"
 	C:\Qt\Tools\mingw48_32\bin\g++.exe   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles\AutoFlight.dir\C_\AutoFlight\src\ardrone\navdata\navdatamanager.cpp.obj -c C:\AutoFlight\src\ardrone\navdata\navdatamanager.cpp
 
@@ -684,7 +709,7 @@ CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/navdata/navdatamanager.cpp.o
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/navdata/navdatarecorder.cpp.obj: CMakeFiles/AutoFlight.dir/flags.make
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/navdata/navdatarecorder.cpp.obj: CMakeFiles/AutoFlight.dir/includes_CXX.rsp
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/navdata/navdatarecorder.cpp.obj: C:/AutoFlight/src/ardrone/navdata/navdatarecorder.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_27)
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_28)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/navdata/navdatarecorder.cpp.obj"
 	C:\Qt\Tools\mingw48_32\bin\g++.exe   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles\AutoFlight.dir\C_\AutoFlight\src\ardrone\navdata\navdatarecorder.cpp.obj -c C:\AutoFlight\src\ardrone\navdata\navdatarecorder.cpp
 
@@ -708,7 +733,7 @@ CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/navdata/navdatarecorder.cpp.
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/video/framereconstructor.cpp.obj: CMakeFiles/AutoFlight.dir/flags.make
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/video/framereconstructor.cpp.obj: CMakeFiles/AutoFlight.dir/includes_CXX.rsp
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/video/framereconstructor.cpp.obj: C:/AutoFlight/src/ardrone/video/framereconstructor.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_28)
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_29)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/video/framereconstructor.cpp.obj"
 	C:\Qt\Tools\mingw48_32\bin\g++.exe   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles\AutoFlight.dir\C_\AutoFlight\src\ardrone\video\framereconstructor.cpp.obj -c C:\AutoFlight\src\ardrone\video\framereconstructor.cpp
 
@@ -732,7 +757,7 @@ CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/video/framereconstructor.cpp
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/video/videomanager.cpp.obj: CMakeFiles/AutoFlight.dir/flags.make
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/video/videomanager.cpp.obj: CMakeFiles/AutoFlight.dir/includes_CXX.rsp
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/video/videomanager.cpp.obj: C:/AutoFlight/src/ardrone/video/videomanager.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_29)
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_30)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/video/videomanager.cpp.obj"
 	C:\Qt\Tools\mingw48_32\bin\g++.exe   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles\AutoFlight.dir\C_\AutoFlight\src\ardrone\video\videomanager.cpp.obj -c C:\AutoFlight\src\ardrone\video\videomanager.cpp
 
@@ -756,7 +781,7 @@ CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/video/videomanager.cpp.obj.p
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/autoscript/asengine.cpp.obj: CMakeFiles/AutoFlight.dir/flags.make
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/autoscript/asengine.cpp.obj: CMakeFiles/AutoFlight.dir/includes_CXX.rsp
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/autoscript/asengine.cpp.obj: C:/AutoFlight/src/autoscript/asengine.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_30)
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_31)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/autoscript/asengine.cpp.obj"
 	C:\Qt\Tools\mingw48_32\bin\g++.exe   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles\AutoFlight.dir\C_\AutoFlight\src\autoscript\asengine.cpp.obj -c C:\AutoFlight\src\autoscript\asengine.cpp
 
@@ -780,7 +805,7 @@ CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/autoscript/asengine.cpp.obj.provides
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/autoscript/asioredirector.cpp.obj: CMakeFiles/AutoFlight.dir/flags.make
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/autoscript/asioredirector.cpp.obj: CMakeFiles/AutoFlight.dir/includes_CXX.rsp
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/autoscript/asioredirector.cpp.obj: C:/AutoFlight/src/autoscript/asioredirector.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_31)
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_32)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/autoscript/asioredirector.cpp.obj"
 	C:\Qt\Tools\mingw48_32\bin\g++.exe   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles\AutoFlight.dir\C_\AutoFlight\src\autoscript\asioredirector.cpp.obj -c C:\AutoFlight\src\autoscript\asioredirector.cpp
 
@@ -804,7 +829,7 @@ CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/autoscript/asioredirector.cpp.obj.pr
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/autoscript/asmodules.cpp.obj: CMakeFiles/AutoFlight.dir/flags.make
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/autoscript/asmodules.cpp.obj: CMakeFiles/AutoFlight.dir/includes_CXX.rsp
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/autoscript/asmodules.cpp.obj: C:/AutoFlight/src/autoscript/asmodules.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_32)
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_33)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/autoscript/asmodules.cpp.obj"
 	C:\Qt\Tools\mingw48_32\bin\g++.exe   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles\AutoFlight.dir\C_\AutoFlight\src\autoscript\asmodules.cpp.obj -c C:\AutoFlight\src\autoscript\asmodules.cpp
 
@@ -828,7 +853,7 @@ CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/autoscript/asmodules.cpp.obj.provide
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/tools/controllerconfigurationfileio.cpp.obj: CMakeFiles/AutoFlight.dir/flags.make
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/tools/controllerconfigurationfileio.cpp.obj: CMakeFiles/AutoFlight.dir/includes_CXX.rsp
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/tools/controllerconfigurationfileio.cpp.obj: C:/AutoFlight/src/tools/controllerconfigurationfileio.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_33)
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_34)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/tools/controllerconfigurationfileio.cpp.obj"
 	C:\Qt\Tools\mingw48_32\bin\g++.exe   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles\AutoFlight.dir\C_\AutoFlight\src\tools\controllerconfigurationfileio.cpp.obj -c C:\AutoFlight\src\tools\controllerconfigurationfileio.cpp
 
@@ -852,7 +877,7 @@ CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/tools/controllerconfigurationfileio.
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/tools/sessionreader.cpp.obj: CMakeFiles/AutoFlight.dir/flags.make
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/tools/sessionreader.cpp.obj: CMakeFiles/AutoFlight.dir/includes_CXX.rsp
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/tools/sessionreader.cpp.obj: C:/AutoFlight/src/tools/sessionreader.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_34)
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_35)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/tools/sessionreader.cpp.obj"
 	C:\Qt\Tools\mingw48_32\bin\g++.exe   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles\AutoFlight.dir\C_\AutoFlight\src\tools\sessionreader.cpp.obj -c C:\AutoFlight\src\tools\sessionreader.cpp
 
@@ -876,7 +901,7 @@ CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/tools/sessionreader.cpp.obj.provides
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/tools/sessionrecorder.cpp.obj: CMakeFiles/AutoFlight.dir/flags.make
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/tools/sessionrecorder.cpp.obj: CMakeFiles/AutoFlight.dir/includes_CXX.rsp
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/tools/sessionrecorder.cpp.obj: C:/AutoFlight/src/tools/sessionrecorder.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_35)
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_36)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/tools/sessionrecorder.cpp.obj"
 	C:\Qt\Tools\mingw48_32\bin\g++.exe   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles\AutoFlight.dir\C_\AutoFlight\src\tools\sessionrecorder.cpp.obj -c C:\AutoFlight\src\tools\sessionrecorder.cpp
 
@@ -900,7 +925,7 @@ CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/tools/sessionrecorder.cpp.obj.provid
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/imgprocmainwindow.cpp.obj: CMakeFiles/AutoFlight.dir/flags.make
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/imgprocmainwindow.cpp.obj: CMakeFiles/AutoFlight.dir/includes_CXX.rsp
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/imgprocmainwindow.cpp.obj: C:/AutoFlight/src/imgprocui/imgprocmainwindow.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_36)
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_37)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/imgprocmainwindow.cpp.obj"
 	C:\Qt\Tools\mingw48_32\bin\g++.exe   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles\AutoFlight.dir\C_\AutoFlight\src\imgprocui\imgprocmainwindow.cpp.obj -c C:\AutoFlight\src\imgprocui\imgprocmainwindow.cpp
 
@@ -924,7 +949,7 @@ CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/imgprocmainwindow.cpp.obj.
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/visualpipeline.cpp.obj: CMakeFiles/AutoFlight.dir/flags.make
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/visualpipeline.cpp.obj: CMakeFiles/AutoFlight.dir/includes_CXX.rsp
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/visualpipeline.cpp.obj: C:/AutoFlight/src/imgprocui/visualpipeline.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_37)
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_38)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/visualpipeline.cpp.obj"
 	C:\Qt\Tools\mingw48_32\bin\g++.exe   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles\AutoFlight.dir\C_\AutoFlight\src\imgprocui\visualpipeline.cpp.obj -c C:\AutoFlight\src\imgprocui\visualpipeline.cpp
 
@@ -948,7 +973,7 @@ CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/visualpipeline.cpp.obj.pro
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/nodeseditor/qneblock.cpp.obj: CMakeFiles/AutoFlight.dir/flags.make
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/nodeseditor/qneblock.cpp.obj: CMakeFiles/AutoFlight.dir/includes_CXX.rsp
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/nodeseditor/qneblock.cpp.obj: C:/AutoFlight/src/imgprocui/nodeseditor/qneblock.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_38)
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_39)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/nodeseditor/qneblock.cpp.obj"
 	C:\Qt\Tools\mingw48_32\bin\g++.exe   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles\AutoFlight.dir\C_\AutoFlight\src\imgprocui\nodeseditor\qneblock.cpp.obj -c C:\AutoFlight\src\imgprocui\nodeseditor\qneblock.cpp
 
@@ -972,7 +997,7 @@ CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/nodeseditor/qneblock.cpp.o
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/nodeseditor/qneconnection.cpp.obj: CMakeFiles/AutoFlight.dir/flags.make
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/nodeseditor/qneconnection.cpp.obj: CMakeFiles/AutoFlight.dir/includes_CXX.rsp
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/nodeseditor/qneconnection.cpp.obj: C:/AutoFlight/src/imgprocui/nodeseditor/qneconnection.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_39)
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_40)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/nodeseditor/qneconnection.cpp.obj"
 	C:\Qt\Tools\mingw48_32\bin\g++.exe   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles\AutoFlight.dir\C_\AutoFlight\src\imgprocui\nodeseditor\qneconnection.cpp.obj -c C:\AutoFlight\src\imgprocui\nodeseditor\qneconnection.cpp
 
@@ -996,7 +1021,7 @@ CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/nodeseditor/qneconnection.
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/nodeseditor/qneport.cpp.obj: CMakeFiles/AutoFlight.dir/flags.make
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/nodeseditor/qneport.cpp.obj: CMakeFiles/AutoFlight.dir/includes_CXX.rsp
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/nodeseditor/qneport.cpp.obj: C:/AutoFlight/src/imgprocui/nodeseditor/qneport.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_40)
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_41)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/nodeseditor/qneport.cpp.obj"
 	C:\Qt\Tools\mingw48_32\bin\g++.exe   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles\AutoFlight.dir\C_\AutoFlight\src\imgprocui\nodeseditor\qneport.cpp.obj -c C:\AutoFlight\src\imgprocui\nodeseditor\qneport.cpp
 
@@ -1020,7 +1045,7 @@ CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/nodeseditor/qneport.cpp.ob
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/nodeseditor/qnodeseditor.cpp.obj: CMakeFiles/AutoFlight.dir/flags.make
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/nodeseditor/qnodeseditor.cpp.obj: CMakeFiles/AutoFlight.dir/includes_CXX.rsp
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/nodeseditor/qnodeseditor.cpp.obj: C:/AutoFlight/src/imgprocui/nodeseditor/qnodeseditor.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_41)
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_42)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/nodeseditor/qnodeseditor.cpp.obj"
 	C:\Qt\Tools\mingw48_32\bin\g++.exe   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles\AutoFlight.dir\C_\AutoFlight\src\imgprocui\nodeseditor\qnodeseditor.cpp.obj -c C:\AutoFlight\src\imgprocui\nodeseditor\qnodeseditor.cpp
 
@@ -1044,7 +1069,7 @@ CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/nodeseditor/qnodeseditor.c
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/lib/include/qcustomplot/qcustomplot.cpp.obj: CMakeFiles/AutoFlight.dir/flags.make
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/lib/include/qcustomplot/qcustomplot.cpp.obj: CMakeFiles/AutoFlight.dir/includes_CXX.rsp
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/lib/include/qcustomplot/qcustomplot.cpp.obj: C:/AutoFlight/lib/include/qcustomplot/qcustomplot.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_42)
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_43)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/AutoFlight.dir/C_/AutoFlight/lib/include/qcustomplot/qcustomplot.cpp.obj"
 	C:\Qt\Tools\mingw48_32\bin\g++.exe   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles\AutoFlight.dir\C_\AutoFlight\lib\include\qcustomplot\qcustomplot.cpp.obj -c C:\AutoFlight\lib\include\qcustomplot\qcustomplot.cpp
 
@@ -1068,7 +1093,7 @@ CMakeFiles/AutoFlight.dir/C_/AutoFlight/lib/include/qcustomplot/qcustomplot.cpp.
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/lib/include/pugixml/pugixml.cpp.obj: CMakeFiles/AutoFlight.dir/flags.make
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/lib/include/pugixml/pugixml.cpp.obj: CMakeFiles/AutoFlight.dir/includes_CXX.rsp
 CMakeFiles/AutoFlight.dir/C_/AutoFlight/lib/include/pugixml/pugixml.cpp.obj: C:/AutoFlight/lib/include/pugixml/pugixml.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_43)
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_44)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/AutoFlight.dir/C_/AutoFlight/lib/include/pugixml/pugixml.cpp.obj"
 	C:\Qt\Tools\mingw48_32\bin\g++.exe   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles\AutoFlight.dir\C_\AutoFlight\lib\include\pugixml\pugixml.cpp.obj -c C:\AutoFlight\lib\include\pugixml\pugixml.cpp
 
@@ -1092,7 +1117,7 @@ CMakeFiles/AutoFlight.dir/C_/AutoFlight/lib/include/pugixml/pugixml.cpp.obj.prov
 CMakeFiles/AutoFlight.dir/qrc_resources.cpp.obj: CMakeFiles/AutoFlight.dir/flags.make
 CMakeFiles/AutoFlight.dir/qrc_resources.cpp.obj: CMakeFiles/AutoFlight.dir/includes_CXX.rsp
 CMakeFiles/AutoFlight.dir/qrc_resources.cpp.obj: qrc_resources.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_44)
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_45)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/AutoFlight.dir/qrc_resources.cpp.obj"
 	C:\Qt\Tools\mingw48_32\bin\g++.exe   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles\AutoFlight.dir\qrc_resources.cpp.obj -c C:\AutoFlight\build_win\qrc_resources.cpp
 
@@ -1116,7 +1141,7 @@ CMakeFiles/AutoFlight.dir/qrc_resources.cpp.obj.provides.build: CMakeFiles/AutoF
 CMakeFiles/AutoFlight.dir/AutoFlight_automoc.cpp.obj: CMakeFiles/AutoFlight.dir/flags.make
 CMakeFiles/AutoFlight.dir/AutoFlight_automoc.cpp.obj: CMakeFiles/AutoFlight.dir/includes_CXX.rsp
 CMakeFiles/AutoFlight.dir/AutoFlight_automoc.cpp.obj: AutoFlight_automoc.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_45)
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\AutoFlight\build_win\CMakeFiles $(CMAKE_PROGRESS_46)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/AutoFlight.dir/AutoFlight_automoc.cpp.obj"
 	C:\Qt\Tools\mingw48_32\bin\g++.exe   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles\AutoFlight.dir\AutoFlight_automoc.cpp.obj -c C:\AutoFlight\build_win\AutoFlight_automoc.cpp
 
@@ -1160,6 +1185,7 @@ AutoFlight_OBJECTS = \
 "CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/configurecontrols.cpp.obj" \
 "CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/selectcontroller.cpp.obj" \
 "CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/sessionviewer.cpp.obj" \
+"CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/welcomedialog.cpp.obj" \
 "CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/ardrone.cpp.obj" \
 "CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/controllink.cpp.obj" \
 "CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/atcommands/atcommand.cpp.obj" \
@@ -1208,6 +1234,7 @@ C:/AutoFlight/release_windows/AutoFlight.exe: CMakeFiles/AutoFlight.dir/C_/AutoF
 C:/AutoFlight/release_windows/AutoFlight.exe: CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/configurecontrols.cpp.obj
 C:/AutoFlight/release_windows/AutoFlight.exe: CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/selectcontroller.cpp.obj
 C:/AutoFlight/release_windows/AutoFlight.exe: CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/sessionviewer.cpp.obj
+C:/AutoFlight/release_windows/AutoFlight.exe: CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/welcomedialog.cpp.obj
 C:/AutoFlight/release_windows/AutoFlight.exe: CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/ardrone.cpp.obj
 C:/AutoFlight/release_windows/AutoFlight.exe: CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/controllink.cpp.obj
 C:/AutoFlight/release_windows/AutoFlight.exe: CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/atcommands/atcommand.cpp.obj
@@ -1308,6 +1335,7 @@ CMakeFiles/AutoFlight.dir/requires: CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/
 CMakeFiles/AutoFlight.dir/requires: CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/configurecontrols.cpp.obj.requires
 CMakeFiles/AutoFlight.dir/requires: CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/selectcontroller.cpp.obj.requires
 CMakeFiles/AutoFlight.dir/requires: CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/sessionviewer.cpp.obj.requires
+CMakeFiles/AutoFlight.dir/requires: CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/welcomedialog.cpp.obj.requires
 CMakeFiles/AutoFlight.dir/requires: CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/ardrone.cpp.obj.requires
 CMakeFiles/AutoFlight.dir/requires: CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/controllink.cpp.obj.requires
 CMakeFiles/AutoFlight.dir/requires: CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/ardrone/atcommands/atcommand.cpp.obj.requires

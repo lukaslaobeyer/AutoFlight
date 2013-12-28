@@ -5,6 +5,7 @@
 #include "moc_configurecontrols.cpp"
 #include "moc_selectcontroller.cpp"
 #include "moc_sessionviewer.cpp"
+#include "moc_welcomedialog.cpp"
 #include "moc_imgprocmainwindow.cpp"
 #include "moc_qnodeseditor.cpp"
 #include "moc_visualpipeline.cpp"

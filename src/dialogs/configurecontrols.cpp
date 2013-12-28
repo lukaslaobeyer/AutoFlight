@@ -278,6 +278,7 @@ void ConfigureControls::setAxis()
 	{
 		for(unsigned int j = 0; j < Gamepad_deviceAtIndex(_deviceID)->numAxes; j++)
 		{
+			Gamepad_processEvents();
 			if(Gamepad_deviceAtIndex(_deviceID)->axisStates[j] >= 0.5f || Gamepad_deviceAtIndex(_deviceID)->axisStates[j] <= -0.5f)
 			{
 				selectedAxisID = j;
@@ -344,6 +345,7 @@ void ConfigureControls::setButton()
 	{
 		for(unsigned int j = 0; j < Gamepad_deviceAtIndex(_deviceID)->numButtons; j++)
 		{
+			Gamepad_processEvents();
 			if(Gamepad_deviceAtIndex(_deviceID)->buttonStates[j] == true)
 			{
 				selectedButtonID = j;

@@ -23,6 +23,7 @@ SET(CMAKE_DEPENDS_CHECK_CXX
   "C:/AutoFlight/src/dialogs/configurecontrols.cpp" "C:/AutoFlight/build_win/CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/configurecontrols.cpp.obj"
   "C:/AutoFlight/src/dialogs/selectcontroller.cpp" "C:/AutoFlight/build_win/CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/selectcontroller.cpp.obj"
   "C:/AutoFlight/src/dialogs/sessionviewer.cpp" "C:/AutoFlight/build_win/CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/sessionviewer.cpp.obj"
+  "C:/AutoFlight/src/dialogs/welcomedialog.cpp" "C:/AutoFlight/build_win/CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/dialogs/welcomedialog.cpp.obj"
   "C:/AutoFlight/src/imgprocui/imgprocmainwindow.cpp" "C:/AutoFlight/build_win/CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/imgprocmainwindow.cpp.obj"
   "C:/AutoFlight/src/imgprocui/nodeseditor/qneblock.cpp" "C:/AutoFlight/build_win/CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/nodeseditor/qneblock.cpp.obj"
   "C:/AutoFlight/src/imgprocui/nodeseditor/qneconnection.cpp" "C:/AutoFlight/build_win/CMakeFiles/AutoFlight.dir/C_/AutoFlight/src/imgprocui/nodeseditor/qneconnection.cpp.obj"

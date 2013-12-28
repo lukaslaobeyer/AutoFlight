@@ -31,5 +31,7 @@
 		<file>resources/sessionviewer_takeoff.png</file>
 		<file>resources/sessionviewer_land.png</file>
 		<file>resources/sessionviewer_emergency.png</file>
+		
+		<file>resources/welcome.png</file>
 	</qresource>
 </RCC>

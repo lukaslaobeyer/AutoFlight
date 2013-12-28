@@ -368,6 +368,7 @@ void ARDrone::processControllerInput()
 		*in = {0, 0, 0, 0, false, false, false, false, false, false, false, false};
 
 		Gamepad_device *device = Gamepad_deviceAtIndex(_controllerconfig->deviceID);
+		Gamepad_processEvents();
 		bool slow = false;
 
 		// Decrement cyclesToWait counters if needed
