@@ -31,11 +31,9 @@
     <ROW Directory="__pycache___1_Dir" Directory_Parent="encodings_Dir" DefaultDir="__PYCA~1|__pycache__"/>
     <ROW Directory="__pycache___2_Dir" Directory_Parent="Lib_Dir" DefaultDir="__PYCA~1|__pycache__"/>
     <ROW Directory="__pycache___Dir" Directory_Parent="collections_Dir" DefaultDir="__PYCA~1|__pycache__"/>
-    <ROW Directory="_images_Dir" Directory_Parent="AutoScript_Dir" DefaultDir="_images"/>
     <ROW Directory="_sources_Dir" Directory_Parent="AutoScript_Dir" DefaultDir="_sources"/>
     <ROW Directory="_static_Dir" Directory_Parent="AutoScript_Dir" DefaultDir="_static"/>
     <ROW Directory="a_test_Dir" Directory_Parent="module_and_namespace_package_Dir" DefaultDir="a_test"/>
-    <ROW Directory="armstrong_Dir" Directory_Parent="_sources_Dir" DefaultDir="ARMSTR~1|armstrong"/>
     <ROW Directory="both_portions_Dir" Directory_Parent="namespace_pkgs_Dir" DefaultDir="BOTH_P~1|both_portions"/>
     <ROW Directory="builtin_Dir" Directory_Parent="test_importlib_Dir" DefaultDir="builtin"/>
     <ROW Directory="capath_Dir" Directory_Parent="test_2_Dir" DefaultDir="capath"/>
@@ -150,7 +148,6 @@
     <ROW Component="Qt5WebKit.dll" ComponentId="{287062C3-A4AB-4E2A-A605-EB2437455EF1}" Directory_="APPDIR" Attributes="0" KeyPath="Qt5WebKit.dll"/>
     <ROW Component="Qt5WebKitWidgets.dll" ComponentId="{9CD005B5-DFD2-43A4-951A-1525B91D4211}" Directory_="APPDIR" Attributes="0" KeyPath="Qt5WebKitWidgets.dll"/>
     <ROW Component="Qt5Widgets.dll" ComponentId="{B9BD9488-A43B-407A-85BC-461C345BC78A}" Directory_="APPDIR" Attributes="0" KeyPath="Qt5Widgets.dll"/>
-    <ROW Component="README.txt" ComponentId="{E14946C9-0ED2-40BE-B42B-1775C25BBDEA}" Directory_="armstrong_Dir" Attributes="0" KeyPath="README.txt" Type="0"/>
     <ROW Component="README.txt_1" ComponentId="{FEAD9772-46A0-496C-B77E-027E3411D6D5}" Directory_="sitepackages_Dir" Attributes="0" KeyPath="README.txt_4" Type="0"/>
     <ROW Component="README.txt_2" ComponentId="{1A2F7DB1-B284-40C1-9E67-0F5509E7053C}" Directory_="data_1_Dir" Attributes="0" KeyPath="README.txt_6" Type="0"/>
     <ROW Component="README.txt_3" ComponentId="{FB998953-5A23-4D4D-A4BB-863CD082B3D5}" Directory_="leakers_Dir" Attributes="0" KeyPath="README.txt_7" Type="0"/>
@@ -171,9 +168,9 @@
     <ROW Component="aboutDialog.py" ComponentId="{BD7FAF59-CE37-441C-92D8-03DE07F83A83}" Directory_="idlelib_Dir" Attributes="0" KeyPath="aboutDialog.py" Type="0"/>
     <ROW Component="about_turtle.txt" ComponentId="{2371852C-DE5A-4E0A-BD56-5E7EA2E878D1}" Directory_="turtledemo_Dir" Attributes="0" KeyPath="about_turtle.txt" Type="0"/>
     <ROW Component="abs.decTest" ComponentId="{AABB9382-185C-4207-8B34-85BD967263D1}" Directory_="decimaltestdata_Dir" Attributes="0" KeyPath="abs.decTest" Type="0"/>
-    <ROW Component="actionbar.png" ComponentId="{0DF50EFD-185F-49C1-AE95-72DFAF6DDF72}" Directory_="_images_Dir" Attributes="0" KeyPath="actionbar.png" Type="0"/>
     <ROW Component="activate" ComponentId="{111D9630-E04C-4014-B0AD-27CEEA574E37}" Directory_="posix_Dir" Attributes="0" KeyPath="activate" Type="0"/>
     <ROW Component="activate.bat" ComponentId="{1903F1E2-E86C-4C7F-98C9-DCDAF3937F04}" Directory_="nt_Dir" Attributes="0" KeyPath="activate.bat" Type="0"/>
+    <ROW Component="ajaxloader.gif" ComponentId="{F63CD6AD-E72B-470D-941C-CA87673297F1}" Directory_="_static_Dir" Attributes="0" KeyPath="ajaxloader.gif" Type="0"/>
     <ROW Component="aliases.cpython33.pyc" ComponentId="{DD482ED4-5A2E-4A28-A8F0-524B1830717B}" Directory_="__pycache___1_Dir" Attributes="0" KeyPath="aliases.cpython33.pyc" Type="0"/>
     <ROW Component="aliases.py" ComponentId="{EE304F04-7BA2-4062-8070-C6E6979099F2}" Directory_="encodings_Dir" Attributes="0" KeyPath="aliases.py" Type="0"/>
     <ROW Component="application.py" ComponentId="{E5597575-CB4D-4C39-A229-1E4FE00145ED}" Directory_="mime_Dir" Attributes="0" KeyPath="application.py" Type="0"/>
@@ -185,12 +182,12 @@
     <ROW Component="avformat55.dll" ComponentId="{DD35D53C-B9D3-41DB-8D3C-07876FDE15A4}" Directory_="APPDIR" Attributes="0" KeyPath="avformat55.dll"/>
     <ROW Component="avutil52.dll" ComponentId="{7821315E-59CE-4121-BD00-7954D4A06A26}" Directory_="APPDIR" Attributes="0" KeyPath="avutil52.dll"/>
     <ROW Component="bad_order.py" ComponentId="{1BC6D4D3-9B22-43A2-BE6E-2368A5464EC1}" Directory_="fixers_Dir" Attributes="0" KeyPath="bad_order.py" Type="0"/>
-    <ROW Component="basic.css" ComponentId="{A14E7682-7512-4882-9D51-7116B2F77D70}" Directory_="_static_Dir" Attributes="0" KeyPath="basic.css" Type="0"/>
     <ROW Component="bdist.py" ComponentId="{A0A9B991-E60D-46B2-BB2E-A94987928650}" Directory_="command_Dir" Attributes="0" KeyPath="bdist.py" Type="0"/>
     <ROW Component="big5utf8.txt" ComponentId="{E899175F-2CB9-406C-A103-F666D88EAC0D}" Directory_="cjkencodings_Dir" Attributes="0" KeyPath="big5utf8.txt" Type="0"/>
     <ROW Component="bogus_code_obj.py" ComponentId="{401E5A0D-22A8-4890-8C11-4997BA5401A1}" Directory_="crashers_Dir" Attributes="0" KeyPath="bogus_code_obj.py" Type="0"/>
     <ROW Component="bom.py" ComponentId="{0F0BD1AF-4F00-43A6-B63F-8AA226E26D5C}" Directory_="data_Dir" Attributes="0" KeyPath="bom.py" Type="0"/>
     <ROW Component="btm_matcher.py" ComponentId="{823567D9-7810-40C3-9F3E-7E363E172210}" Directory_="lib2to3_Dir" Attributes="0" KeyPath="btm_matcher.py" Type="0"/>
+    <ROW Component="buildinfo" ComponentId="{A3401EE2-91BC-4A82-9C29-579CDF7A5CC3}" Directory_="AutoScript_Dir" Attributes="0" KeyPath="buildinfo" Type="0"/>
     <ROW Component="cElementTree.py" ComponentId="{99272409-7510-4E17-AEA5-996E749B9391}" Directory_="etree_Dir" Attributes="0" KeyPath="cElementTree.py" Type="0"/>
     <ROW Component="case.py" ComponentId="{358BBCAE-5CC8-4D70-AA4D-F08ED9BF630A}" Directory_="unittest_Dir" Attributes="0" KeyPath="case.py" Type="0"/>
     <ROW Component="client.py" ComponentId="{21A2AE0F-AB78-4CB8-A148-360E001876EC}" Directory_="http_Dir" Attributes="0" KeyPath="client.py" Type="0"/>
@@ -217,8 +214,7 @@
     <ROW Component="fix_apply.py" ComponentId="{C2F3A76A-2787-4760-BE31-D6F8C8C4D0AA}" Directory_="fixes_Dir" Attributes="0" KeyPath="fix_apply.py" Type="0"/>
     <ROW Component="fix_explicit.py" ComponentId="{6CDC393F-F26D-45BE-8782-E4E8455DDC9C}" Directory_="myfixes_Dir" Attributes="0" KeyPath="fix_explicit.py" Type="0"/>
     <ROW Component="folder.gif" ComponentId="{927F03DA-CA9D-470A-986C-0FE0366CCEF1}" Directory_="Icons_Dir" Attributes="0" KeyPath="folder.gif" Type="0"/>
-    <ROW Component="functions.html" ComponentId="{B811D7C5-0DE8-4F8F-A3E3-84BF75AAC370}" Directory_="AutoScript_Dir" Attributes="0" KeyPath="functions.html" Type="0"/>
-    <ROW Component="functions.txt" ComponentId="{510AC648-383A-4368-A6FA-C7958745DAF5}" Directory_="_sources_Dir" Attributes="0" KeyPath="functions.txt" Type="0"/>
+    <ROW Component="functions.txt" ComponentId="{0E1B1DE0-1B5E-4B2D-81D4-0BE25E15378D}" Directory_="_sources_Dir" Attributes="0" KeyPath="functions.txt" Type="0"/>
     <ROW Component="handlers.py" ComponentId="{AA101D04-823C-41F7-80E3-EC3DC5668696}" Directory_="wsgiref_Dir" Attributes="0" KeyPath="handlers.py_1" Type="0"/>
     <ROW Component="icudt51.dll" ComponentId="{8A9BC15B-B8E3-4728-8D2D-94E48E2AC6F1}" Directory_="APPDIR" Attributes="0" KeyPath="icudt51.dll"/>
     <ROW Component="icuin51.dll" ComponentId="{F37955E8-6BFE-42DC-B995-D707E8509A3F}" Directory_="APPDIR" Attributes="0" KeyPath="icuin51.dll"/>
@@ -272,7 +268,7 @@
     <ROW Component="wininst9.0amd64.exe" ComponentId="{32BDD234-D93B-4AD8-BEB6-690DE7D54360}" Directory_="command_Dir" Attributes="256" KeyPath="wininst9.0amd64.exe"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFeatsComponent">
-    <ROW Feature="MainFeature" Title="MainFeature" Description="Description" Display="1" Level="1" Directory_="APPDIR" Attributes="0" Components="AutoFlight.exe ProductInformation Qt5Core.dll Qt5Gui.dll Qt5Network.dll Qt5OpenGL.dll Qt5PrintSupport.dll Qt5Qml.dll Qt5Quick.dll Qt5Sensors.dll Qt5Sql.dll Qt5Test.dll Qt5V8.dll Qt5WebKit.dll Qt5WebKitWidgets.dll Qt5Widgets.dll README.txt README.txt_1 README.txt_2 README.txt_3 README.txt_4 README.txt_5 SHORTCUTDIR Setup.sample __init__.py __init__.py_1 __init__.py_2 a_test.py abc.cpython33.pyc abc.cpython33.pyc_1 abc.py abc.py_1 abc.py_2 abc.py_3 aboutDialog.py about_turtle.txt abs.decTest actionbar.png activate activate.bat aliases.cpython33.pyc aliases.py application.py architecture.rst archive_util.py ascii.py audiotest.au avcodec55.dll avformat55.dll avutil52.dll bad_order.py basic.css bdist.py big5utf8.txt bogus_code_obj.py bom.py btm_matcher.py cElementTree.py case.py client.py client.py_1 colorchooser.py config.py connection.py connection.py_1 conv.py dbapi.py dbapi2.py decoder.py domreg.py dumb.py dummy.py dyld.py e1295a3.0 empty entities.py error.py expat.py expatreader.py fd_status.py fix_apply.py fix_explicit.py folder.gif functions.html functions.txt handlers.py icudt51.dll icuin51.dll icuuc51.dll libgcc_s_dw21.dll libgomp1.dll libopencv_core246.dll libopencv_highgui246.dll libquadmath0.dll libssp0.dll libstdc6.dll libwinpthread1.dll missing_directory.zip module_iso_8859_1.py one.py one.py_1 one.py_2 one.py_3 process.py python33.dll pytree_idempotency.py qwindows.dll qwindowsd.dll runtests.py schema.py simplens.xml support.py swscale2.dll test.db test_abc_loader.py test_api.py test_asian_codecs.py test_case_sensitivity.py test_decode.py test_extensions.py test_finder.py test_finder.py_1 test_font.py testmod.py three.py topics.py two.py two.py_1 util.py wininst10.0.exe wininst10.0amd64.exe wininst6.0.exe wininst7.1.exe wininst8.0.exe wininst9.0.exe wininst9.0amd64.exe"/>
+    <ROW Feature="MainFeature" Title="MainFeature" Description="Description" Display="1" Level="1" Directory_="APPDIR" Attributes="0" Components="AutoFlight.exe ProductInformation Qt5Core.dll Qt5Gui.dll Qt5Network.dll Qt5OpenGL.dll Qt5PrintSupport.dll Qt5Qml.dll Qt5Quick.dll Qt5Sensors.dll Qt5Sql.dll Qt5Test.dll Qt5V8.dll Qt5WebKit.dll Qt5WebKitWidgets.dll Qt5Widgets.dll README.txt_1 README.txt_2 README.txt_3 README.txt_4 README.txt_5 SHORTCUTDIR Setup.sample __init__.py __init__.py_1 __init__.py_2 a_test.py abc.cpython33.pyc abc.cpython33.pyc_1 abc.py abc.py_1 abc.py_2 abc.py_3 aboutDialog.py about_turtle.txt abs.decTest activate activate.bat ajaxloader.gif aliases.cpython33.pyc aliases.py application.py architecture.rst archive_util.py ascii.py audiotest.au avcodec55.dll avformat55.dll avutil52.dll bad_order.py bdist.py big5utf8.txt bogus_code_obj.py bom.py btm_matcher.py buildinfo cElementTree.py case.py client.py client.py_1 colorchooser.py config.py connection.py connection.py_1 conv.py dbapi.py dbapi2.py decoder.py domreg.py dumb.py dummy.py dyld.py e1295a3.0 empty entities.py error.py expat.py expatreader.py fd_status.py fix_apply.py fix_explicit.py folder.gif functions.txt handlers.py icudt51.dll icuin51.dll icuuc51.dll libgcc_s_dw21.dll libgomp1.dll libopencv_core246.dll libopencv_highgui246.dll libquadmath0.dll libssp0.dll libstdc6.dll libwinpthread1.dll missing_directory.zip module_iso_8859_1.py one.py one.py_1 one.py_2 one.py_3 process.py python33.dll pytree_idempotency.py qwindows.dll qwindowsd.dll runtests.py schema.py simplens.xml support.py swscale2.dll test.db test_abc_loader.py test_api.py test_asian_codecs.py test_case_sensitivity.py test_decode.py test_extensions.py test_finder.py test_finder.py_1 test_font.py testmod.py three.py topics.py two.py two.py_1 util.py wininst10.0.exe wininst10.0amd64.exe wininst6.0.exe wininst7.1.exe wininst8.0.exe wininst9.0.exe wininst9.0amd64.exe"/>
     <ATTRIBUTE name="CurrentFeature" value="MainFeature"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFilesComponent">
@@ -332,7 +328,6 @@
     <ROW File="Qt5WebKitWidgets.dll" Component_="Qt5WebKitWidgets.dll" FileName="QT5WEB~2.DLL|Qt5WebKitWidgets.dll" Attributes="0" SourcePath="..\release_windows\Qt5WebKitWidgets.dll" SelfReg="false" NextFile="Qt5Widgets.dll"/>
     <ROW File="Qt5Widgets.dll" Component_="Qt5Widgets.dll" FileName="QT5WID~1.DLL|Qt5Widgets.dll" Attributes="0" SourcePath="..\release_windows\Qt5Widgets.dll" SelfReg="false" NextFile="swscale2.dll"/>
     <ROW File="README.ctypes" Component_="dyld.py" FileName="README~1.CTY|README.ctypes" Attributes="0" SourcePath="..\release_windows\Lib\ctypes\macholib\README.ctypes" SelfReg="false" NextFile="__init__.py_3"/>
-    <ROW File="README.txt" Component_="README.txt" FileName="README.txt" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_sources\armstrong\README.txt" SelfReg="false" NextFile="functions.txt"/>
     <ROW File="README.txt_1" Component_="archive_util.py" FileName="README.txt" Attributes="0" SourcePath="..\release_windows\Lib\distutils\README.txt" SelfReg="false" NextFile="spawn.py"/>
     <ROW File="README.txt_2" Component_="aboutDialog.py" FileName="README.txt" Attributes="0" SourcePath="..\release_windows\Lib\idlelib\README.txt" SelfReg="false" NextFile="RemoteDebugger.py"/>
     <ROW File="README.txt_3" Component_="bom.py" FileName="README.txt" Attributes="0" SourcePath="..\release_windows\Lib\lib2to3\tests\data\README.txt" SelfReg="false" NextFile="pytree_idempotency.py"/>
@@ -454,7 +449,7 @@
     <ROW File="_strptime.py" Component_="abc.py" FileName="_STRPT~1.PY|_strptime.py" Attributes="0" SourcePath="..\release_windows\Lib\_strptime.py" SelfReg="false" NextFile="_threading_local.py"/>
     <ROW File="_test_warnings.py" Component_="dummy.py" FileName="_TEST_~1.PY|_test_warnings.py" Attributes="0" SourcePath="..\release_windows\Lib\unittest\test\_test_warnings.py" SelfReg="false" NextFile="__init__.py_50"/>
     <ROW File="_threading_local.py" Component_="abc.py" FileName="_THREA~1.PY|_threading_local.py" Attributes="0" SourcePath="..\release_windows\Lib\_threading_local.py" SelfReg="false" NextFile="_weakrefset.py"/>
-    <ROW File="_weakrefset.cpython33.pyc" Component_="abc.cpython33.pyc_1" FileName="_WEAKR~1.PYC|_weakrefset.cpython-33.pyc" Attributes="0" SourcePath="..\release_windows\Lib\__pycache__\_weakrefset.cpython-33.pyc" SelfReg="false"/>
+    <ROW File="_weakrefset.cpython33.pyc" Component_="abc.cpython33.pyc_1" FileName="_WEAKR~1.PYC|_weakrefset.cpython-33.pyc" Attributes="0" SourcePath="..\release_windows\Lib\__pycache__\_weakrefset.cpython-33.pyc" SelfReg="false" NextFile="buildinfo"/>
     <ROW File="_weakrefset.py" Component_="abc.py" FileName="_WEAKR~1.PY|_weakrefset.py" Attributes="0" SourcePath="..\release_windows\Lib\_weakrefset.py" SelfReg="false" NextFile="__future__.py"/>
     <ROW File="a_test.py" Component_="a_test.py" FileName="a_test.py" Attributes="0" SourcePath="..\release_windows\Lib\test\namespace_pkgs\module_and_namespace_package\a_test.py" SelfReg="false" NextFile="nested_portion1.zip"/>
     <ROW File="abc.cpython33.pyc" Component_="abc.cpython33.pyc" FileName="ABCCPY~1.PYC|abc.cpython-33.pyc" Attributes="0" SourcePath="..\release_windows\Lib\collections\__pycache__\abc.cpython-33.pyc" SelfReg="false" NextFile="__init__.cpython33.pyc"/>
@@ -467,11 +462,11 @@
     <ROW File="about_turtle.txt" Component_="about_turtle.txt" FileName="ABOUT_~1.TXT|about_turtle.txt" Attributes="0" SourcePath="..\release_windows\Lib\turtledemo\about_turtle.txt" SelfReg="false" NextFile="about_turtledemo.txt"/>
     <ROW File="about_turtledemo.txt" Component_="about_turtle.txt" FileName="ABOUT_~2.TXT|about_turtledemo.txt" Attributes="0" SourcePath="..\release_windows\Lib\turtledemo\about_turtledemo.txt" SelfReg="false" NextFile="bytedesign.py"/>
     <ROW File="abs.decTest" Component_="abs.decTest" FileName="ABS~1.DEC|abs.decTest" Attributes="0" SourcePath="..\release_windows\Lib\test\decimaltestdata\abs.decTest" SelfReg="false" NextFile="add.decTest"/>
-    <ROW File="actionbar.png" Component_="actionbar.png" FileName="ACTION~1.PNG|actionbar.png" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_images\actionbar.png" SelfReg="false" NextFile="README.txt"/>
     <ROW File="activate" Component_="activate" FileName="activate" Attributes="0" SourcePath="..\release_windows\Lib\venv\scripts\posix\activate" SelfReg="false" NextFile="pydoc"/>
     <ROW File="activate.bat" Component_="activate.bat" FileName="activate.bat" Attributes="0" SourcePath="..\release_windows\Lib\venv\scripts\nt\activate.bat" SelfReg="false" NextFile="Activate.ps1"/>
     <ROW File="add.decTest" Component_="abs.decTest" FileName="ADD~1.DEC|add.decTest" Attributes="0" SourcePath="..\release_windows\Lib\test\decimaltestdata\add.decTest" SelfReg="false" NextFile="and.decTest"/>
     <ROW File="aifc.py" Component_="abc.py" FileName="aifc.py" Attributes="0" SourcePath="..\release_windows\Lib\aifc.py" SelfReg="false" NextFile="antigravity.py"/>
+    <ROW File="ajaxloader.gif" Component_="ajaxloader.gif" FileName="AJAX-L~1.GIF|ajax-loader.gif" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\ajax-loader.gif" SelfReg="false" NextFile="basic.css"/>
     <ROW File="aliases.cpython33.pyc" Component_="aliases.cpython33.pyc" FileName="ALIASE~1.PYC|aliases.cpython-33.pyc" Attributes="0" SourcePath="..\release_windows\Lib\encodings\__pycache__\aliases.cpython-33.pyc" SelfReg="false" NextFile="cp1252.cpython33.pyc"/>
     <ROW File="aliases.py" Component_="aliases.py" FileName="aliases.py" Attributes="0" SourcePath="..\release_windows\Lib\encodings\aliases.py" SelfReg="false" NextFile="ascii.py_1"/>
     <ROW File="and.decTest" Component_="abs.decTest" FileName="AND~1.DEC|and.decTest" Attributes="0" SourcePath="..\release_windows\Lib\test\decimaltestdata\and.decTest" SelfReg="false" NextFile="base.decTest"/>
@@ -511,7 +506,7 @@
     <ROW File="base64.py" Component_="abc.py" FileName="base64.py" Attributes="0" SourcePath="..\release_windows\Lib\base64.py" SelfReg="false" NextFile="bdb.py"/>
     <ROW File="base64_codec.py" Component_="aliases.py" FileName="BASE64~1.PY|base64_codec.py" Attributes="0" SourcePath="..\release_windows\Lib\encodings\base64_codec.py" SelfReg="false" NextFile="big5.py"/>
     <ROW File="base64mime.py" Component_="architecture.rst" FileName="BASE64~1.PY|base64mime.py" Attributes="0" SourcePath="..\release_windows\Lib\email\base64mime.py" SelfReg="false" NextFile="charset.py"/>
-    <ROW File="basic.css" Component_="basic.css" FileName="basic.css" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\basic.css" SelfReg="false" NextFile="default.css"/>
+    <ROW File="basic.css" Component_="ajaxloader.gif" FileName="basic.css" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\basic.css" SelfReg="false" NextFile="commentbright.png"/>
     <ROW File="bcppcompiler.py" Component_="archive_util.py" FileName="BCPPCO~1.PY|bcppcompiler.py" Attributes="0" SourcePath="..\release_windows\Lib\distutils\bcppcompiler.py" SelfReg="false" NextFile="ccompiler.py"/>
     <ROW File="bdb.py" Component_="abc.py" FileName="bdb.py" Attributes="0" SourcePath="..\release_windows\Lib\bdb.py" SelfReg="false" NextFile="binhex.py"/>
     <ROW File="bdist.py" Component_="bdist.py" FileName="bdist.py" Attributes="0" SourcePath="..\release_windows\Lib\distutils\command\bdist.py" SelfReg="false" NextFile="bdist_dumb.py"/>
@@ -537,6 +532,7 @@
     <ROW File="build_ext.py" Component_="bdist.py" FileName="BUILD_~2.PY|build_ext.py" Attributes="0" SourcePath="..\release_windows\Lib\distutils\command\build_ext.py" SelfReg="false" NextFile="build_py.py"/>
     <ROW File="build_py.py" Component_="bdist.py" FileName="build_py.py" Attributes="0" SourcePath="..\release_windows\Lib\distutils\command\build_py.py" SelfReg="false" NextFile="build_scripts.py"/>
     <ROW File="build_scripts.py" Component_="bdist.py" FileName="BUILD_~3.PY|build_scripts.py" Attributes="0" SourcePath="..\release_windows\Lib\distutils\command\build_scripts.py" SelfReg="false" NextFile="check.py"/>
+    <ROW File="buildinfo" Component_="buildinfo" FileName="BUILDI~1|.buildinfo" Attributes="2" SourcePath="..\release_windows\docs\AutoScript\.buildinfo" SelfReg="false" NextFile="functions.html"/>
     <ROW File="bytedesign.py" Component_="about_turtle.txt" FileName="BYTEDE~1.PY|bytedesign.py" Attributes="0" SourcePath="..\release_windows\Lib\turtledemo\bytedesign.py" SelfReg="false" NextFile="chaos.py"/>
     <ROW File="bz2.py" Component_="abc.py" FileName="bz2.py" Attributes="0" SourcePath="..\release_windows\Lib\bz2.py" SelfReg="false" NextFile="calendar.py"/>
     <ROW File="bz2_codec.py" Component_="aliases.py" FileName="BZ2_CO~1.PY|bz2_codec.py" Attributes="0" SourcePath="..\release_windows\Lib\encodings\bz2_codec.py" SelfReg="false" NextFile="charmap.py"/>
@@ -573,6 +569,9 @@
     <ROW File="colormixer.py" Component_="about_turtle.txt" FileName="COLORM~1.PY|colormixer.py" Attributes="0" SourcePath="..\release_windows\Lib\turtledemo\colormixer.py" SelfReg="false" NextFile="demohelp.txt"/>
     <ROW File="colorsys.py" Component_="abc.py" FileName="colorsys.py" Attributes="0" SourcePath="..\release_windows\Lib\colorsys.py" SelfReg="false" NextFile="compileall.py"/>
     <ROW File="command_template" Component_="bdist.py" FileName="COMMAN~1|command_template" Attributes="0" SourcePath="..\release_windows\Lib\distutils\command\command_template" SelfReg="false" NextFile="config.py"/>
+    <ROW File="comment.png" Component_="ajaxloader.gif" FileName="comment.png" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\comment.png" SelfReg="false" NextFile="default.css"/>
+    <ROW File="commentbright.png" Component_="ajaxloader.gif" FileName="COMMEN~1.PNG|comment-bright.png" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\comment-bright.png" SelfReg="false" NextFile="commentclose.png"/>
+    <ROW File="commentclose.png" Component_="ajaxloader.gif" FileName="COMMEN~2.PNG|comment-close.png" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\comment-close.png" SelfReg="false" NextFile="comment.png"/>
     <ROW File="commondialog.py" Component_="colorchooser.py" FileName="COMMON~1.PY|commondialog.py" Attributes="0" SourcePath="..\release_windows\Lib\tkinter\commondialog.py" SelfReg="false" NextFile="constants.py"/>
     <ROW File="compare.decTest" Component_="abs.decTest" FileName="COMPAR~1.DEC|compare.decTest" Attributes="0" SourcePath="..\release_windows\Lib\test\decimaltestdata\compare.decTest" SelfReg="false" NextFile="comparetotal.decTest"/>
     <ROW File="comparetotal.decTest" Component_="abs.decTest" FileName="COMPAR~2.DEC|comparetotal.decTest" Attributes="0" SourcePath="..\release_windows\Lib\test\decimaltestdata\comparetotal.decTest" SelfReg="false" NextFile="comparetotmag.decTest"/>
@@ -707,7 +706,7 @@
     <ROW File="decSingle.decTest" Component_="abs.decTest" FileName="DECSIN~1.DEC|decSingle.decTest" Attributes="0" SourcePath="..\release_windows\Lib\test\decimaltestdata\decSingle.decTest" SelfReg="false" NextFile="divide.decTest"/>
     <ROW File="decimal.py" Component_="abc.py" FileName="decimal.py" Attributes="0" SourcePath="..\release_windows\Lib\decimal.py" SelfReg="false" NextFile="difflib.py"/>
     <ROW File="decoder.py" Component_="decoder.py" FileName="decoder.py" Attributes="0" SourcePath="..\release_windows\Lib\json\decoder.py" SelfReg="false" NextFile="encoder.py"/>
-    <ROW File="default.css" Component_="basic.css" FileName="default.css" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\default.css" SelfReg="false" NextFile="doctools.js"/>
+    <ROW File="default.css" Component_="ajaxloader.gif" FileName="default.css" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\default.css" SelfReg="false" NextFile="doctools.js"/>
     <ROW File="demohelp.txt" Component_="about_turtle.txt" FileName="demohelp.txt" Attributes="0" SourcePath="..\release_windows\Lib\turtledemo\demohelp.txt" SelfReg="false" NextFile="forest.py"/>
     <ROW File="dep_util.py" Component_="archive_util.py" FileName="dep_util.py" Attributes="0" SourcePath="..\release_windows\Lib\distutils\dep_util.py" SelfReg="false" NextFile="dir_util.py"/>
     <ROW File="dh512.pem" Component_="test.db" FileName="dh512.pem" Attributes="0" SourcePath="..\release_windows\Lib\test\dh512.pem" SelfReg="false" NextFile="dis_module.py"/>
@@ -723,9 +722,11 @@
     <ROW File="dnd.py" Component_="colorchooser.py" FileName="dnd.py" Attributes="0" SourcePath="..\release_windows\Lib\tkinter\dnd.py" SelfReg="false" NextFile="filedialog.py"/>
     <ROW File="doctest.py" Component_="abc.py" FileName="doctest.py" Attributes="0" SourcePath="..\release_windows\Lib\doctest.py" SelfReg="false" NextFile="dummy_threading.py"/>
     <ROW File="doctest_aliases.py" Component_="test.db" FileName="DOCTES~1.PY|doctest_aliases.py" Attributes="0" SourcePath="..\release_windows\Lib\test\doctest_aliases.py" SelfReg="false" NextFile="double_const.py"/>
-    <ROW File="doctools.js" Component_="basic.css" FileName="doctools.js" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\doctools.js" SelfReg="false" NextFile="jquery.js"/>
+    <ROW File="doctools.js" Component_="ajaxloader.gif" FileName="doctools.js" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\doctools.js" SelfReg="false" NextFile="downpressed.png"/>
     <ROW File="domreg.py" Component_="domreg.py" FileName="domreg.py" Attributes="0" SourcePath="..\release_windows\Lib\xml\dom\domreg.py" SelfReg="false" NextFile="expatbuilder.py"/>
     <ROW File="double_const.py" Component_="test.db" FileName="DOUBLE~1.PY|double_const.py" Attributes="0" SourcePath="..\release_windows\Lib\test\double_const.py" SelfReg="false" NextFile="empty.vbs"/>
+    <ROW File="down.png" Component_="ajaxloader.gif" FileName="down.png" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\down.png" SelfReg="false" NextFile="file.png"/>
+    <ROW File="downpressed.png" Component_="ajaxloader.gif" FileName="DOWN-P~1.PNG|down-pressed.png" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\down-pressed.png" SelfReg="false" NextFile="down.png"/>
     <ROW File="dqAbs.decTest" Component_="abs.decTest" FileName="DQABS~1.DEC|dqAbs.decTest" Attributes="0" SourcePath="..\release_windows\Lib\test\decimaltestdata\dqAbs.decTest" SelfReg="false" NextFile="dqAdd.decTest"/>
     <ROW File="dqAdd.decTest" Component_="abs.decTest" FileName="DQADD~1.DEC|dqAdd.decTest" Attributes="0" SourcePath="..\release_windows\Lib\test\decimaltestdata\dqAdd.decTest" SelfReg="false" NextFile="dqAnd.decTest"/>
     <ROW File="dqAnd.decTest" Component_="abs.decTest" FileName="DQAND~1.DEC|dqAnd.decTest" Attributes="0" SourcePath="..\release_windows\Lib\test\decimaltestdata\dqAnd.decTest" SelfReg="false" NextFile="dqBase.decTest"/>
@@ -815,6 +816,7 @@
     <ROW File="feedparser.py" Component_="architecture.rst" FileName="FEEDPA~1.PY|feedparser.py" Attributes="0" SourcePath="..\release_windows\Lib\email\feedparser.py" SelfReg="false" NextFile="generator.py"/>
     <ROW File="fetch_macholib" Component_="dyld.py" FileName="FETCH_~1|fetch_macholib" Attributes="0" SourcePath="..\release_windows\Lib\ctypes\macholib\fetch_macholib" SelfReg="false" NextFile="fetch_macholib.bat"/>
     <ROW File="fetch_macholib.bat" Component_="dyld.py" FileName="FETCH_~1.BAT|fetch_macholib.bat" Attributes="0" SourcePath="..\release_windows\Lib\ctypes\macholib\fetch_macholib.bat" SelfReg="false" NextFile="framework.py"/>
+    <ROW File="file.png" Component_="ajaxloader.gif" FileName="file.png" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\file.png" SelfReg="false" NextFile="jquery.js"/>
     <ROW File="file_util.py" Component_="archive_util.py" FileName="FILE_U~1.PY|file_util.py" Attributes="0" SourcePath="..\release_windows\Lib\distutils\file_util.py" SelfReg="false" NextFile="log.py"/>
     <ROW File="filecmp.py" Component_="abc.py" FileName="filecmp.py" Attributes="0" SourcePath="..\release_windows\Lib\filecmp.py" SelfReg="false" NextFile="fileinput.py"/>
     <ROW File="filedialog.py" Component_="colorchooser.py" FileName="FILEDI~1.PY|filedialog.py" Attributes="0" SourcePath="..\release_windows\Lib\tkinter\filedialog.py" SelfReg="false" NextFile="font.py"/>
@@ -892,7 +894,7 @@
     <ROW File="fractions.py" Component_="abc.py" FileName="FRACTI~1.PY|fractions.py" Attributes="0" SourcePath="..\release_windows\Lib\fractions.py" SelfReg="false" NextFile="ftplib.py"/>
     <ROW File="framework.py" Component_="dyld.py" FileName="FRAMEW~1.PY|framework.py" Attributes="0" SourcePath="..\release_windows\Lib\ctypes\macholib\framework.py" SelfReg="false" NextFile="README.ctypes"/>
     <ROW File="ftplib.py" Component_="abc.py" FileName="ftplib.py" Attributes="0" SourcePath="..\release_windows\Lib\ftplib.py" SelfReg="false" NextFile="functools.py"/>
-    <ROW File="functions.html" Component_="functions.html" FileName="FUNCTI~1.HTM|functions.html" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\functions.html" SelfReg="false" NextFile="genindex.html"/>
+    <ROW File="functions.html" Component_="buildinfo" FileName="FUNCTI~1.HTM|functions.html" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\functions.html" SelfReg="false" NextFile="genindex.html"/>
     <ROW File="functions.txt" Component_="functions.txt" FileName="FUNCTI~1.TXT|functions.txt" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_sources\functions.txt" SelfReg="false" NextFile="index.txt"/>
     <ROW File="functools.cpython33.pyc" Component_="abc.cpython33.pyc_1" FileName="FUNCTO~1.PYC|functools.cpython-33.pyc" Attributes="0" SourcePath="..\release_windows\Lib\__pycache__\functools.cpython-33.pyc" SelfReg="false" NextFile="genericpath.cpython33.pyc"/>
     <ROW File="functools.py" Component_="abc.py" FileName="FUNCTO~1.PY|functools.py" Attributes="0" SourcePath="..\release_windows\Lib\functools.py" SelfReg="false" NextFile="genericpath.py"/>
@@ -912,7 +914,7 @@
     <ROW File="generator.py" Component_="architecture.rst" FileName="GENERA~1.PY|generator.py" Attributes="0" SourcePath="..\release_windows\Lib\email\generator.py" SelfReg="false" NextFile="header.py"/>
     <ROW File="genericpath.cpython33.pyc" Component_="abc.cpython33.pyc_1" FileName="GENERI~1.PYC|genericpath.cpython-33.pyc" Attributes="0" SourcePath="..\release_windows\Lib\__pycache__\genericpath.cpython-33.pyc" SelfReg="false" NextFile="heapq.cpython33.pyc"/>
     <ROW File="genericpath.py" Component_="abc.py" FileName="GENERI~1.PY|genericpath.py" Attributes="0" SourcePath="..\release_windows\Lib\genericpath.py" SelfReg="false" NextFile="getopt.py"/>
-    <ROW File="genindex.html" Component_="functions.html" FileName="GENIND~1.HTM|genindex.html" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\genindex.html" SelfReg="false" NextFile="index.html"/>
+    <ROW File="genindex.html" Component_="buildinfo" FileName="GENIND~1.HTM|genindex.html" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\genindex.html" SelfReg="false" NextFile="index.html"/>
     <ROW File="getopt.py" Component_="abc.py" FileName="getopt.py" Attributes="0" SourcePath="..\release_windows\Lib\getopt.py" SelfReg="false" NextFile="getpass.py"/>
     <ROW File="getpass.py" Component_="abc.py" FileName="getpass.py" Attributes="0" SourcePath="..\release_windows\Lib\getpass.py" SelfReg="false" NextFile="gettext.py"/>
     <ROW File="gettext.py" Component_="abc.py" FileName="gettext.py" Attributes="0" SourcePath="..\release_windows\Lib\gettext.py" SelfReg="false" NextFile="glob.py"/>
@@ -954,7 +956,7 @@
     <ROW File="imaplib.py" Component_="abc.py" FileName="imaplib.py" Attributes="0" SourcePath="..\release_windows\Lib\imaplib.py" SelfReg="false" NextFile="imghdr.py"/>
     <ROW File="imghdr.py" Component_="abc.py" FileName="imghdr.py" Attributes="0" SourcePath="..\release_windows\Lib\imghdr.py" SelfReg="false" NextFile="imp.py"/>
     <ROW File="imp.py" Component_="abc.py" FileName="imp.py" Attributes="0" SourcePath="..\release_windows\Lib\imp.py" SelfReg="false" NextFile="abc.py_2"/>
-    <ROW File="index.html" Component_="functions.html" FileName="INDEX~1.HTM|index.html" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\index.html" SelfReg="false" NextFile="intro.html"/>
+    <ROW File="index.html" Component_="buildinfo" FileName="INDEX~1.HTM|index.html" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\index.html" SelfReg="false" NextFile="intro.html"/>
     <ROW File="index.txt" Component_="functions.txt" FileName="index.txt" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_sources\index.txt" SelfReg="false" NextFile="intro.txt"/>
     <ROW File="inexact.decTest" Component_="abs.decTest" FileName="INEXAC~1.DEC|inexact.decTest" Attributes="0" SourcePath="..\release_windows\Lib\test\decimaltestdata\inexact.decTest" SelfReg="false" NextFile="invert.decTest"/>
     <ROW File="infinite_loop_re.py" Component_="bogus_code_obj.py" FileName="INFINI~1.PY|infinite_loop_re.py" Attributes="0" SourcePath="..\release_windows\Lib\test\crashers\infinite_loop_re.py" SelfReg="false" NextFile="mutation_inside_cyclegc.py"/>
@@ -969,7 +971,7 @@
     <ROW File="install_headers.py" Component_="bdist.py" FileName="INSTAL~3.PY|install_headers.py" Attributes="0" SourcePath="..\release_windows\Lib\distutils\command\install_headers.py" SelfReg="false" NextFile="install_lib.py"/>
     <ROW File="install_lib.py" Component_="bdist.py" FileName="INSTAL~4.PY|install_lib.py" Attributes="0" SourcePath="..\release_windows\Lib\distutils\command\install_lib.py" SelfReg="false" NextFile="install_scripts.py"/>
     <ROW File="install_scripts.py" Component_="bdist.py" FileName="INSTAL~5.PY|install_scripts.py" Attributes="0" SourcePath="..\release_windows\Lib\distutils\command\install_scripts.py" SelfReg="false" NextFile="register.py"/>
-    <ROW File="intro.html" Component_="functions.html" FileName="INTRO~1.HTM|intro.html" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\intro.html" SelfReg="false" NextFile="objects.inv"/>
+    <ROW File="intro.html" Component_="buildinfo" FileName="INTRO~1.HTM|intro.html" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\intro.html" SelfReg="false" NextFile="objects.inv"/>
     <ROW File="intro.txt" Component_="functions.txt" FileName="intro.txt" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_sources\intro.txt" SelfReg="false" NextFile="tutorial.txt"/>
     <ROW File="invert.decTest" Component_="abs.decTest" FileName="INVERT~1.DEC|invert.decTest" Attributes="0" SourcePath="..\release_windows\Lib\test\decimaltestdata\invert.decTest" SelfReg="false" NextFile="ln.decTest"/>
     <ROW File="io.cpython33.pyc" Component_="abc.cpython33.pyc_1" FileName="IOCPYT~1.PYC|io.cpython-33.pyc" Attributes="0" SourcePath="..\release_windows\Lib\__pycache__\io.cpython-33.pyc" SelfReg="false" NextFile="keyword.cpython33.pyc"/>
@@ -1005,7 +1007,7 @@
     <ROW File="johab.py" Component_="aliases.py" FileName="johab.py" Attributes="0" SourcePath="..\release_windows\Lib\encodings\johab.py" SelfReg="false" NextFile="koi8_r.py"/>
     <ROW File="johab.txt" Component_="big5utf8.txt" FileName="johab.txt" Attributes="0" SourcePath="..\release_windows\Lib\test\cjkencodings\johab.txt" SelfReg="false" NextFile="shift_jisutf8.txt"/>
     <ROW File="johabutf8.txt" Component_="big5utf8.txt" FileName="JOHAB-~1.TXT|johab-utf8.txt" Attributes="0" SourcePath="..\release_windows\Lib\test\cjkencodings\johab-utf8.txt" SelfReg="false" NextFile="johab.txt"/>
-    <ROW File="jquery.js" Component_="basic.css" FileName="jquery.js" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\jquery.js" SelfReg="false" NextFile="lbpclabstheme.css"/>
+    <ROW File="jquery.js" Component_="ajaxloader.gif" FileName="jquery.js" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\jquery.js" SelfReg="false" NextFile="minus.png"/>
     <ROW File="keybindingDialog.py" Component_="aboutDialog.py" FileName="KEYBIN~1.PY|keybindingDialog.py" Attributes="0" SourcePath="..\release_windows\Lib\idlelib\keybindingDialog.py" SelfReg="false" NextFile="macosxSupport.py"/>
     <ROW File="keycert.passwd.pem" Component_="test.db" FileName="KEYCER~1.PEM|keycert.passwd.pem" Attributes="0" SourcePath="..\release_windows\Lib\test\keycert.passwd.pem" SelfReg="false" NextFile="keycert.pem"/>
     <ROW File="keycert.pem" Component_="test.db" FileName="keycert.pem" Attributes="0" SourcePath="..\release_windows\Lib\test\keycert.pem" SelfReg="false" NextFile="keycert2.pem"/>
@@ -1016,8 +1018,6 @@
     <ROW File="koi8_u.py" Component_="aliases.py" FileName="koi8_u.py" Attributes="0" SourcePath="..\release_windows\Lib\encodings\koi8_u.py" SelfReg="false" NextFile="latin_1.py"/>
     <ROW File="latin_1.cpython33.pyc" Component_="aliases.cpython33.pyc" FileName="LATIN_~1.PYC|latin_1.cpython-33.pyc" Attributes="0" SourcePath="..\release_windows\Lib\encodings\__pycache__\latin_1.cpython-33.pyc" SelfReg="false" NextFile="mbcs.cpython33.pyc"/>
     <ROW File="latin_1.py" Component_="aliases.py" FileName="latin_1.py" Attributes="0" SourcePath="..\release_windows\Lib\encodings\latin_1.py" SelfReg="false" NextFile="mac_arabic.py"/>
-    <ROW File="lbpclabstheme.css" Component_="basic.css" FileName="LBPCLA~1.CSS|lbpclabstheme.css" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\lbpclabstheme.css" SelfReg="false" NextFile="lbpclabstheme.css_t"/>
-    <ROW File="lbpclabstheme.css_t" Component_="basic.css" FileName="LBPCLA~2.CSS|lbpclabstheme.css_t~" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\lbpclabstheme.css_t~" SelfReg="false" NextFile="pygments.css"/>
     <ROW File="libgcc_s_dw21.dll" Component_="libgcc_s_dw21.dll" FileName="LIBGCC~1.DLL|libgcc_s_dw2-1.dll" Attributes="0" SourcePath="..\release_windows\libgcc_s_dw2-1.dll" SelfReg="false" NextFile="libgomp1.dll"/>
     <ROW File="libgomp1.dll" Component_="libgomp1.dll" FileName="LIBGOM~1.DLL|libgomp-1.dll" Attributes="0" SourcePath="..\release_windows\libgomp-1.dll" SelfReg="false" NextFile="libopencv_core246.dll"/>
     <ROW File="libopencv_core246.dll" Component_="libopencv_core246.dll" FileName="LIBOPE~1.DLL|libopencv_core246.dll" Attributes="0" SourcePath="..\release_windows\libopencv_core246.dll" SelfReg="false" NextFile="libopencv_highgui246.dll"/>
@@ -1079,6 +1079,7 @@
     <ROW File="minimal_hanoi.py" Component_="about_turtle.txt" FileName="MINIMA~1.PY|minimal_hanoi.py" Attributes="0" SourcePath="..\release_windows\Lib\turtledemo\minimal_hanoi.py" SelfReg="false" NextFile="nim.py"/>
     <ROW File="minmag.decTest" Component_="abs.decTest" FileName="MINMAG~1.DEC|minmag.decTest" Attributes="0" SourcePath="..\release_windows\Lib\test\decimaltestdata\minmag.decTest" SelfReg="false" NextFile="minus.decTest"/>
     <ROW File="minus.decTest" Component_="abs.decTest" FileName="MINUS~1.DEC|minus.decTest" Attributes="0" SourcePath="..\release_windows\Lib\test\decimaltestdata\minus.decTest" SelfReg="false" NextFile="multiply.decTest"/>
+    <ROW File="minus.png" Component_="ajaxloader.gif" FileName="minus.png" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\minus.png" SelfReg="false" NextFile="plus.png"/>
     <ROW File="minusnode.gif" Component_="folder.gif" FileName="MINUSN~1.GIF|minusnode.gif" Attributes="0" SourcePath="..\release_windows\Lib\idlelib\Icons\minusnode.gif" SelfReg="false" NextFile="openfolder.gif"/>
     <ROW File="missing_directory.zip" Component_="missing_directory.zip" FileName="MISSIN~1.ZIP|missing_directory.zip" Attributes="0" SourcePath="..\release_windows\Lib\test\namespace_pkgs\missing_directory.zip" SelfReg="false" NextFile="empty"/>
     <ROW File="mock.py" Component_="case.py" FileName="mock.py" Attributes="0" SourcePath="..\release_windows\Lib\unittest\mock.py" SelfReg="false" NextFile="result.py"/>
@@ -1156,7 +1157,7 @@
     <ROW File="nturl2path.py" Component_="abc.py" FileName="NTURL2~1.PY|nturl2path.py" Attributes="0" SourcePath="..\release_windows\Lib\nturl2path.py" SelfReg="false" NextFile="numbers.py"/>
     <ROW File="nullcert.pem" Component_="test.db" FileName="nullcert.pem" Attributes="0" SourcePath="..\release_windows\Lib\test\nullcert.pem" SelfReg="false" NextFile="outstanding_bugs.py"/>
     <ROW File="numbers.py" Component_="abc.py" FileName="numbers.py" Attributes="0" SourcePath="..\release_windows\Lib\numbers.py" SelfReg="false" NextFile="opcode.py"/>
-    <ROW File="objects.inv" Component_="functions.html" FileName="objects.inv" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\objects.inv" SelfReg="false" NextFile="search.html"/>
+    <ROW File="objects.inv" Component_="buildinfo" FileName="objects.inv" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\objects.inv" SelfReg="false" NextFile="search.html"/>
     <ROW File="one.py" Component_="one.py" FileName="one.py" Attributes="0" SourcePath="..\release_windows\Lib\test\namespace_pkgs\both_portions\foo\one.py" SelfReg="false" NextFile="two.py"/>
     <ROW File="one.py_1" Component_="one.py_1" FileName="one.py" Attributes="0" SourcePath="..\release_windows\Lib\test\namespace_pkgs\not_a_namespace_pkg\foo\one.py" SelfReg="false" NextFile="__init__.py_34"/>
     <ROW File="one.py_2" Component_="one.py_2" FileName="one.py" Attributes="0" SourcePath="..\release_windows\Lib\test\namespace_pkgs\portion1\foo\one.py" SelfReg="false" NextFile="two.py_1"/>
@@ -1191,6 +1192,7 @@
     <ROW File="platform.py" Component_="abc.py" FileName="platform.py" Attributes="0" SourcePath="..\release_windows\Lib\platform.py" SelfReg="false" NextFile="plistlib.py"/>
     <ROW File="plistlib.py" Component_="abc.py" FileName="plistlib.py" Attributes="0" SourcePath="..\release_windows\Lib\plistlib.py" SelfReg="false" NextFile="poplib.py"/>
     <ROW File="plus.decTest" Component_="abs.decTest" FileName="PLUS~1.DEC|plus.decTest" Attributes="0" SourcePath="..\release_windows\Lib\test\decimaltestdata\plus.decTest" SelfReg="false" NextFile="power.decTest"/>
+    <ROW File="plus.png" Component_="ajaxloader.gif" FileName="plus.png" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\plus.png" SelfReg="false" NextFile="pygments.css"/>
     <ROW File="plusnode.gif" Component_="folder.gif" FileName="plusnode.gif" Attributes="0" SourcePath="..\release_windows\Lib\idlelib\Icons\plusnode.gif" SelfReg="false" NextFile="python.gif"/>
     <ROW File="policy.py" Component_="architecture.rst" FileName="policy.py" Attributes="0" SourcePath="..\release_windows\Lib\email\policy.py" SelfReg="false" NextFile="quoprimime.py"/>
     <ROW File="pool.py" Component_="connection.py" FileName="pool.py" Attributes="0" SourcePath="..\release_windows\Lib\multiprocessing\pool.py" SelfReg="false" NextFile="process.py_1"/>
@@ -1219,7 +1221,7 @@
     <ROW File="pydoc.py_1" Component_="activate.bat" FileName="pydoc.py" Attributes="0" SourcePath="..\release_windows\Lib\venv\scripts\nt\pydoc.py" SelfReg="false" NextFile="activate"/>
     <ROW File="pydoc_mod.py" Component_="test.db" FileName="PYDOC_~1.PY|pydoc_mod.py" Attributes="0" SourcePath="..\release_windows\Lib\test\pydoc_mod.py" SelfReg="false" NextFile="pystone.py"/>
     <ROW File="pydocfodder.py" Component_="test.db" FileName="PYDOCF~1.PY|pydocfodder.py" Attributes="0" SourcePath="..\release_windows\Lib\test\pydocfodder.py" SelfReg="false" NextFile="pydoc_mod.py"/>
-    <ROW File="pygments.css" Component_="basic.css" FileName="pygments.css" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\pygments.css" SelfReg="false" NextFile="rtd.css"/>
+    <ROW File="pygments.css" Component_="ajaxloader.gif" FileName="pygments.css" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\pygments.css" SelfReg="false" NextFile="rtd.css"/>
     <ROW File="pygram.py" Component_="btm_matcher.py" FileName="pygram.py" Attributes="0" SourcePath="..\release_windows\Lib\lib2to3\pygram.py" SelfReg="false" NextFile="pytree.py"/>
     <ROW File="pystone.py" Component_="test.db" FileName="pystone.py" Attributes="0" SourcePath="..\release_windows\Lib\test\pystone.py" SelfReg="false" NextFile="randv2_32.pck"/>
     <ROW File="python.gif" Component_="folder.gif" FileName="python.gif" Attributes="0" SourcePath="..\release_windows\Lib\idlelib\Icons\python.gif" SelfReg="false" NextFile="tk.gif"/>
@@ -1235,7 +1237,7 @@
     <ROW File="quopri_codec.py" Component_="aliases.py" FileName="QUOPRI~1.PY|quopri_codec.py" Attributes="0" SourcePath="..\release_windows\Lib\encodings\quopri_codec.py" SelfReg="false" NextFile="raw_unicode_escape.py"/>
     <ROW File="quoprimime.py" Component_="architecture.rst" FileName="QUOPRI~1.PY|quoprimime.py" Attributes="0" SourcePath="..\release_windows\Lib\email\quoprimime.py" SelfReg="false" NextFile="utils.py"/>
     <ROW File="qwindows.dll" Component_="qwindows.dll" FileName="qwindows.dll" Attributes="0" SourcePath="..\release_windows\platforms\qwindows.dll" SelfReg="false" NextFile="qwindowsd.dll"/>
-    <ROW File="qwindowsd.dll" Component_="qwindowsd.dll" FileName="QWINDO~1.DLL|qwindowsd.dll" Attributes="0" SourcePath="..\release_windows\platforms\qwindowsd.dll" SelfReg="false" NextFile="functions.html"/>
+    <ROW File="qwindowsd.dll" Component_="qwindowsd.dll" FileName="QWINDO~1.DLL|qwindowsd.dll" Attributes="0" SourcePath="..\release_windows\platforms\qwindowsd.dll" SelfReg="false" NextFile="python33.dll"/>
     <ROW File="random.py" Component_="abc.py" FileName="random.py" Attributes="0" SourcePath="..\release_windows\Lib\random.py" SelfReg="false" NextFile="re.py"/>
     <ROW File="randomBound32.decTest" Component_="abs.decTest" FileName="RANDOM~1.DEC|randomBound32.decTest" Attributes="0" SourcePath="..\release_windows\Lib\test\decimaltestdata\randomBound32.decTest" SelfReg="false" NextFile="randoms.decTest"/>
     <ROW File="randoms.decTest" Component_="abs.decTest" FileName="RANDOM~2.DEC|randoms.decTest" Attributes="0" SourcePath="..\release_windows\Lib\test\decimaltestdata\randoms.decTest" SelfReg="false" NextFile="reduce.decTest"/>
@@ -1271,7 +1273,7 @@
     <ROW File="round_dance.py" Component_="about_turtle.txt" FileName="ROUND_~1.PY|round_dance.py" Attributes="0" SourcePath="..\release_windows\Lib\turtledemo\round_dance.py" SelfReg="false" NextFile="tree.py"/>
     <ROW File="rounding.decTest" Component_="abs.decTest" FileName="ROUNDI~1.DEC|rounding.decTest" Attributes="0" SourcePath="..\release_windows\Lib\test\decimaltestdata\rounding.decTest" SelfReg="false" NextFile="samequantum.decTest"/>
     <ROW File="rpc.py" Component_="aboutDialog.py" FileName="rpc.py" Attributes="0" SourcePath="..\release_windows\Lib\idlelib\rpc.py" SelfReg="false" NextFile="RstripExtension.py"/>
-    <ROW File="rtd.css" Component_="basic.css" FileName="rtd.css" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\rtd.css" SelfReg="false" NextFile="searchtools.js"/>
+    <ROW File="rtd.css" Component_="ajaxloader.gif" FileName="rtd.css" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\rtd.css" SelfReg="false" NextFile="searchtools.js"/>
     <ROW File="run.py" Component_="aboutDialog.py" FileName="run.py" Attributes="0" SourcePath="..\release_windows\Lib\idlelib\run.py" SelfReg="false" NextFile="ScriptBinding.py"/>
     <ROW File="runner.py" Component_="case.py" FileName="runner.py" Attributes="0" SourcePath="..\release_windows\Lib\unittest\runner.py" SelfReg="false" NextFile="signals.py"/>
     <ROW File="runpy.py" Component_="abc.py" FileName="runpy.py" Attributes="0" SourcePath="..\release_windows\Lib\runpy.py" SelfReg="false" NextFile="sched.py"/>
@@ -1289,9 +1291,9 @@
     <ROW File="script_helper.py" Component_="test.db" FileName="SCRIPT~1.PY|script_helper.py" Attributes="0" SourcePath="..\release_windows\Lib\test\script_helper.py" SelfReg="false" NextFile="seq_tests.py"/>
     <ROW File="scrolledtext.py" Component_="colorchooser.py" FileName="SCROLL~1.PY|scrolledtext.py" Attributes="0" SourcePath="..\release_windows\Lib\tkinter\scrolledtext.py" SelfReg="false" NextFile="simpledialog.py"/>
     <ROW File="sdist.py" Component_="bdist.py" FileName="sdist.py" Attributes="0" SourcePath="..\release_windows\Lib\distutils\command\sdist.py" SelfReg="false" NextFile="upload.py"/>
-    <ROW File="search.html" Component_="functions.html" FileName="SEARCH~1.HTM|search.html" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\search.html" SelfReg="false" NextFile="searchindex.js"/>
-    <ROW File="searchindex.js" Component_="functions.html" FileName="SEARCH~1.JS|searchindex.js" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\searchindex.js" SelfReg="false" NextFile="tutorial.html"/>
-    <ROW File="searchtools.js" Component_="basic.css" FileName="SEARCH~1.JS|searchtools.js" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\searchtools.js" SelfReg="false" NextFile="sidebar.js"/>
+    <ROW File="search.html" Component_="buildinfo" FileName="SEARCH~1.HTM|search.html" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\search.html" SelfReg="false" NextFile="searchindex.js"/>
+    <ROW File="searchindex.js" Component_="buildinfo" FileName="SEARCH~1.JS|searchindex.js" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\searchindex.js" SelfReg="false" NextFile="tutorial.html"/>
+    <ROW File="searchtools.js" Component_="ajaxloader.gif" FileName="SEARCH~1.JS|searchtools.js" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\searchtools.js" SelfReg="false" NextFile="sidebar.js"/>
     <ROW File="seq_tests.py" Component_="test.db" FileName="SEQ_TE~1.PY|seq_tests.py" Attributes="0" SourcePath="..\release_windows\Lib\test\seq_tests.py" SelfReg="false" NextFile="sgml_input.html"/>
     <ROW File="sequence.py" Component_="schema.py" FileName="sequence.py" Attributes="0" SourcePath="..\release_windows\Lib\msilib\sequence.py" SelfReg="false" NextFile="text.py_1"/>
     <ROW File="server.py" Component_="client.py" FileName="server.py" Attributes="0" SourcePath="..\release_windows\Lib\http\server.py" SelfReg="false" NextFile="__init__.py_15"/>
@@ -1310,7 +1312,7 @@
     <ROW File="shift_jisx0213utf8.txt" Component_="big5utf8.txt" FileName="SHIFT_~3.TXT|shift_jisx0213-utf8.txt" Attributes="0" SourcePath="..\release_windows\Lib\test\cjkencodings\shift_jisx0213-utf8.txt" SelfReg="false" NextFile="shift_jisx0213.txt"/>
     <ROW File="shlex.py" Component_="abc.py" FileName="shlex.py" Attributes="0" SourcePath="..\release_windows\Lib\shlex.py" SelfReg="false" NextFile="shutil.py"/>
     <ROW File="shutil.py" Component_="abc.py" FileName="shutil.py" Attributes="0" SourcePath="..\release_windows\Lib\shutil.py" SelfReg="false" NextFile="README.txt_4"/>
-    <ROW File="sidebar.js" Component_="basic.css" FileName="sidebar.js" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\sidebar.js" SelfReg="false" NextFile="style.css"/>
+    <ROW File="sidebar.js" Component_="ajaxloader.gif" FileName="sidebar.js" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\sidebar.js" SelfReg="false" NextFile="underscore.js"/>
     <ROW File="sigchild_ignore.py" Component_="fd_status.py" FileName="SIGCHI~1.PY|sigchild_ignore.py" Attributes="0" SourcePath="..\release_windows\Lib\test\subprocessdata\sigchild_ignore.py" SelfReg="false" NextFile="support.py_2"/>
     <ROW File="signals.py" Component_="case.py" FileName="signals.py" Attributes="0" SourcePath="..\release_windows\Lib\unittest\signals.py" SelfReg="false" NextFile="suite.py"/>
     <ROW File="simple.xml" Component_="simplens.xml" FileName="simple.xml" Attributes="0" SourcePath="..\release_windows\Lib\test\xmltestdata\simple.xml" SelfReg="false" NextFile="test.xml"/>
@@ -1352,7 +1354,6 @@
     <ROW File="string_tests.py" Component_="test.db" FileName="STRING~1.PY|string_tests.py" Attributes="0" SourcePath="..\release_windows\Lib\test\string_tests.py" SelfReg="false" NextFile="fd_status.py"/>
     <ROW File="stringprep.py" Component_="abc.py" FileName="STRING~1.PY|stringprep.py" Attributes="0" SourcePath="..\release_windows\Lib\stringprep.py" SelfReg="false" NextFile="struct.py"/>
     <ROW File="struct.py" Component_="abc.py" FileName="struct.py" Attributes="0" SourcePath="..\release_windows\Lib\struct.py" SelfReg="false" NextFile="subprocess.py"/>
-    <ROW File="style.css" Component_="basic.css" FileName="style.css" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\style.css" SelfReg="false" NextFile="underscore.js"/>
     <ROW File="subprocess.py" Component_="abc.py" FileName="SUBPRO~1.PY|subprocess.py" Attributes="0" SourcePath="..\release_windows\Lib\subprocess.py" SelfReg="false" NextFile="sunau.py"/>
     <ROW File="subtract.decTest" Component_="abs.decTest" FileName="SUBTRA~1.DEC|subtract.decTest" Attributes="0" SourcePath="..\release_windows\Lib\test\decimaltestdata\subtract.decTest" SelfReg="false" NextFile="testall.decTest"/>
     <ROW File="suite.py" Component_="case.py" FileName="suite.py" Attributes="0" SourcePath="..\release_windows\Lib\unittest\suite.py" SelfReg="false" NextFile="dummy.py"/>
@@ -1986,8 +1987,8 @@
     <ROW File="tty.py" Component_="abc.py" FileName="tty.py" Attributes="0" SourcePath="..\release_windows\Lib\tty.py" SelfReg="false" NextFile="turtle.py"/>
     <ROW File="turtle.cfg" Component_="about_turtle.txt" FileName="turtle.cfg" Attributes="0" SourcePath="..\release_windows\Lib\turtledemo\turtle.cfg" SelfReg="false" NextFile="two_canvases.py"/>
     <ROW File="turtle.py" Component_="abc.py" FileName="turtle.py" Attributes="0" SourcePath="..\release_windows\Lib\turtle.py" SelfReg="false" NextFile="about_turtle.txt"/>
-    <ROW File="tutorial.html" Component_="functions.html" FileName="TUTORI~1.HTM|tutorial.html" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\tutorial.html" SelfReg="false" NextFile="actionbar.png"/>
-    <ROW File="tutorial.txt" Component_="functions.txt" FileName="tutorial.txt" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_sources\tutorial.txt" SelfReg="false" NextFile="basic.css"/>
+    <ROW File="tutorial.html" Component_="buildinfo" FileName="TUTORI~1.HTM|tutorial.html" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\tutorial.html" SelfReg="false" NextFile="functions.txt"/>
+    <ROW File="tutorial.txt" Component_="functions.txt" FileName="tutorial.txt" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_sources\tutorial.txt" SelfReg="false" NextFile="ajaxloader.gif"/>
     <ROW File="two.py" Component_="one.py" FileName="two.py" Attributes="0" SourcePath="..\release_windows\Lib\test\namespace_pkgs\both_portions\foo\two.py" SelfReg="false" NextFile="missing_directory.zip"/>
     <ROW File="two.py_1" Component_="two.py" FileName="two.py" Attributes="0" SourcePath="..\release_windows\Lib\test\namespace_pkgs\portion2\foo\two.py" SelfReg="false" NextFile="one.py_3"/>
     <ROW File="two.py_2" Component_="two.py_1" FileName="two.py" Attributes="0" SourcePath="..\release_windows\Lib\test\namespace_pkgs\project2\parent\child\two.py" SelfReg="false" NextFile="three.py"/>
@@ -1996,11 +1997,13 @@
     <ROW File="types.py_1" Component_="abc.py" FileName="types.py" Attributes="0" SourcePath="..\release_windows\Lib\types.py" SelfReg="false" NextFile="case.py"/>
     <ROW File="undefined.py" Component_="aliases.py" FileName="UNDEFI~1.PY|undefined.py" Attributes="0" SourcePath="..\release_windows\Lib\encodings\undefined.py" SelfReg="false" NextFile="unicode_escape.py"/>
     <ROW File="underlying_dict.py" Component_="bogus_code_obj.py" FileName="UNDERL~1.PY|underlying_dict.py" Attributes="0" SourcePath="..\release_windows\Lib\test\crashers\underlying_dict.py" SelfReg="false" NextFile="curses_tests.py"/>
-    <ROW File="underscore.js" Component_="basic.css" FileName="UNDERS~1.JS|underscore.js" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\underscore.js" SelfReg="false" NextFile="websupport.js"/>
+    <ROW File="underscore.js" Component_="ajaxloader.gif" FileName="UNDERS~1.JS|underscore.js" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\underscore.js" SelfReg="false" NextFile="uppressed.png"/>
     <ROW File="unicode_escape.py" Component_="aliases.py" FileName="UNICOD~1.PY|unicode_escape.py" Attributes="0" SourcePath="..\release_windows\Lib\encodings\unicode_escape.py" SelfReg="false" NextFile="unicode_internal.py"/>
     <ROW File="unicode_internal.py" Component_="aliases.py" FileName="UNICOD~2.PY|unicode_internal.py" Attributes="0" SourcePath="..\release_windows\Lib\encodings\unicode_internal.py" SelfReg="false" NextFile="utf_16.py"/>
     <ROW File="unixccompiler.py" Component_="archive_util.py" FileName="UNIXCC~1.PY|unixccompiler.py" Attributes="0" SourcePath="..\release_windows\Lib\distutils\unixccompiler.py" SelfReg="false" NextFile="util.py_1"/>
+    <ROW File="up.png" Component_="ajaxloader.gif" FileName="up.png" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\up.png" SelfReg="false" NextFile="websupport.js"/>
     <ROW File="upload.py" Component_="bdist.py" FileName="upload.py" Attributes="0" SourcePath="..\release_windows\Lib\distutils\command\upload.py" SelfReg="false" NextFile="wininst10.0amd64.exe"/>
+    <ROW File="uppressed.png" Component_="ajaxloader.gif" FileName="UP-PRE~1.PNG|up-pressed.png" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\up-pressed.png" SelfReg="false" NextFile="up.png"/>
     <ROW File="userfunctions.py" Component_="dbapi.py" FileName="USERFU~1.PY|userfunctions.py" Attributes="0" SourcePath="..\release_windows\Lib\sqlite3\test\userfunctions.py" SelfReg="false" NextFile="__init__.py_29"/>
     <ROW File="utf_16.py" Component_="aliases.py" FileName="utf_16.py" Attributes="0" SourcePath="..\release_windows\Lib\encodings\utf_16.py" SelfReg="false" NextFile="utf_16_be.py"/>
     <ROW File="utf_16_be.py" Component_="aliases.py" FileName="UTF_16~1.PY|utf_16_be.py" Attributes="0" SourcePath="..\release_windows\Lib\encodings\utf_16_be.py" SelfReg="false" NextFile="utf_16_le.py"/>
@@ -2036,7 +2039,7 @@
     <ROW File="weakref.cpython33.pyc" Component_="abc.cpython33.pyc_1" FileName="WEAKRE~1.PYC|weakref.cpython-33.pyc" Attributes="0" SourcePath="..\release_windows\Lib\__pycache__\weakref.cpython-33.pyc" SelfReg="false" NextFile="_weakrefset.cpython33.pyc"/>
     <ROW File="weakref.py" Component_="abc.py" FileName="weakref.py" Attributes="0" SourcePath="..\release_windows\Lib\weakref.py" SelfReg="false" NextFile="webbrowser.py"/>
     <ROW File="webbrowser.py" Component_="abc.py" FileName="WEBBRO~1.PY|webbrowser.py" Attributes="0" SourcePath="..\release_windows\Lib\webbrowser.py" SelfReg="false" NextFile="handlers.py_1"/>
-    <ROW File="websupport.js" Component_="basic.css" FileName="WEBSUP~1.JS|websupport.js" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\websupport.js" SelfReg="false" NextFile="python33.dll"/>
+    <ROW File="websupport.js" Component_="ajaxloader.gif" FileName="WEBSUP~1.JS|websupport.js" Attributes="0" SourcePath="..\release_windows\docs\AutoScript\_static\websupport.js" SelfReg="false"/>
     <ROW File="wikipedia.py" Component_="about_turtle.txt" FileName="WIKIPE~1.PY|wikipedia.py" Attributes="0" SourcePath="..\release_windows\Lib\turtledemo\wikipedia.py" SelfReg="false" NextFile="yinyang.py"/>
     <ROW File="win_console_handler.py" Component_="test.db" FileName="WIN_CO~1.PY|win_console_handler.py" Attributes="0" SourcePath="..\release_windows\Lib\test\win_console_handler.py" SelfReg="false" NextFile="simplens.xml"/>
     <ROW File="wininst10.0.exe" Component_="wininst10.0.exe" FileName="WININS~2.EXE|wininst-10.0.exe" Attributes="0" SourcePath="..\release_windows\Lib\distutils\command\wininst-10.0.exe" SelfReg="false" NextFile="wininst6.0.exe" DigSign="true"/>

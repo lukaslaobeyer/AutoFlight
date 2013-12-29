@@ -2,7 +2,7 @@
 Available AutoScript Functions
 ******************************
 
-Here you will find a description of every available function you can use to control the AR.Drone (in alphabetical order).
+Here you will find a description of every available function you can use to control the AR.Drone, divided into the main modules (``control`,``sensors``, ``util``).
 
 AR.Drone control
 ================
@@ -44,6 +44,8 @@ AR.Drone control
 .. function:: control.down_distance(speed, centimeters)
 
    Moves the drone down, and stops it after the specified distance has been traveled. Shortcut for ``move_distance(0, 0, -speed, 0, centimeters)``
+   
+   .. warning:: Not implemented yet! Do not use.
    
    :param speed: The speed at which the drone should be flying. See ``move()``.
    :type speed: float
@@ -276,6 +278,8 @@ AR.Drone control
 .. function:: control.up_distance(speed, centimeters)
 
    Moves the drone up, and stops it after the specified distance has been traveled. Shortcut for ``move_distance(0, 0, speed, 0, centimeters)``
+
+   .. warning:: Not implemented yet! Do not use.
    
    :param speed: The speed at which the drone should be flying. See ``move()``.
    :type speed: float
@@ -323,7 +327,7 @@ Sensor data retrieving
 
    Reads the drone's altitude.
    
-   :returns: The altitude in cm (TODO: Check this, I don't remember, may be mm or m).
+   :returns: The altitude in m.
    
 .. function:: sensors.getBatteryLevel()
 
@@ -349,7 +353,7 @@ Sensor data retrieving
    :param clockwise: The direction in which to count, if ``True`` then in clockwise direction.
    :type clockwise: boolean
 
-   :returns: The angle on the specified axis, in degrees, as a value between 0 and 360. E.g. if the drone is tilted 10 degrees to the right, the value would not be 10 but 100 degree, if clockwise is ``True``. Useful for measuring yaw angles.
+   :returns: The angle on the specified axis, in degrees, as a value between 0 and 360. E.g. if the drone is tilted 10 degrees to the right, the value would not be 10 but 100 degrees, if clockwise is ``True``. Useful for measuring yaw angles.
    
 .. function:: sensors.getLinearVelocity(axis)
 
@@ -358,7 +362,7 @@ Sensor data retrieving
    :param axis: "X", "Y", or "Z"
    :type axis: string
    
-   :returns: The drone's speed on the specified axis, in m/s (TODO: Check this, I don't remember, may be mm/s)
+   :returns: The drone's speed on the specified axis, in m/s.
    
 .. function:: util.isConnected()
 
@@ -417,76 +421,3 @@ Utilities and other
    :param path: The filename of the picture.
    :type path: string
    :returns: ``True`` if command completed successfully, ``False`` otherwise.
-   
-   
-.. function:: alert(message, type)
-
-   Shows a message in a GUI dialog box.
-   
-   :param message: The message to show.
-   :type message: string
-   :param type: The type of message: "ERROR" for an error message, anything else for a normal message.
-   
-   :returns: Nothing.
-   
-.. function:: bool_input(message, text_for_true_option, text_for_false_option)
-   
-   Shows a message in a GUI dialog box, and gives the user 2 choices.
-   
-   :param message: The message to show.
-   :type message: string
-   :param text_for_true_option: The label for the "true" option (e.g. "Yes, I'd like that!")
-   :type text_for_true_option: string
-   :param text_for_false_option: The label for the "false" option (e.g. "No, please don't")
-   :type text_for_false_option: string
-   
-   :return: ``true`` if the user selected the ``true`` option, ``False`` otherwise.
-   
-.. function:: bool_input(message)
-
-   Calls ``bool_input(message, "true", "false")``.
-   
-   :param message: The message to show.
-   :type message: string
-   
-   :return: ``true`` if the user selected the ``true`` option, ``False`` otherwise.
-
-.. function:: raw_input(message)
-   
-   Shows the desired message and a text field for input in a GUI dialog box.
-   
-   :param message: The message to show.
-   :type message: string
-   
-   :returns: What the user entered in the text field.
-
-Arduino extensions
-==================
-
-.. function:: toggleLight(on)
-   
-   Toggles the pin set as lamp on the Arduino on or off.
-   
-   :param on: ``True`` to turn the light on, ``False`` to turn it off.
-   :type on: boolean
-   
-   :returns: ``True`` if command completed successfully, ``False`` otherwise.
-   
-.. function:: getSensorData(type, index)
-   
-   Gets the sensor data for the specified sensor.
-   
-   :param type: The type of the sensor, e.g. "US".
-   :type type: string
-   :param index: The index of the sensor. If you have multiple sensors of one same type this is useful.
-   :type index: int
-   
-   :returns: The requested sensor data.
- 
-.. function:: getGPSPosition()
-   
-   Gets the position of the drone using the data sent by a GPS module connected to the Arduino.
-   
-   :returns: A ``List`` containing latitude followed by longitude.
-
-   

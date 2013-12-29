@@ -428,7 +428,7 @@ float Sensors::getAcceleration(std::string axis)
 float Sensors::getLinearVelocity(std::string axis)
 {
 	ASSERT_ARDRONE_F(d)
-	SIMULATE_INPUT_F(sim, std::string("Please enter a simulated linear velocity on the drone's ").append(axis.append(" axis")), "degree", ssui)
+	SIMULATE_INPUT_F(sim, std::string("Please enter a simulated linear velocity on the drone's ").append(axis.append(" axis")), "m/s", ssui)
 
 	if(axis == "X")
 	{
