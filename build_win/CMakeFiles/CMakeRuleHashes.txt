@@ -1,3 +1,0 @@
-# Hashes of file build rules.
-0dfa921c0ff877a3ee10f9aab41f32fd CMakeFiles/AutoFlight_automoc
-cbb1bd83e34bff4ec7bd4646b17e6e52 qrc_resources.cpp
