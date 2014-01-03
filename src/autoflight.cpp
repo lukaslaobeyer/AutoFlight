@@ -1,5 +1,6 @@
 #include "autoflight.h"
 #include "afconstants.h"
+#include "tools/ardroneconfigurationfileio.h"
 
 #include <iostream>
 #include <boost/filesystem.hpp>
@@ -77,10 +78,10 @@ bool AutoFlight::attemptConnectionToDrone()
 		cout << "Already connected!\n";
 		break;
 	case ardrone::connection::CONNECTION_FAILED:
-		cout << "Error connecting!\n";
+		cerr << "Error connecting!\n";
 		break;
 	case ardrone::connection::EXCEPTION_OCCURRED:
-		cout << "Exception occurred while connecting!\n";
+		cerr << "Exception occurred while connecting!\n";
 		break;
 	case ardrone::connection::CONNECTION_ESTABLISHED:
 		cout << "Connected!\n";
@@ -90,10 +91,16 @@ bool AutoFlight::attemptConnectionToDrone()
 	try
 	{
 		_drone->startUpdateLoop();
+		ARDroneConfiguration *config = ARDroneConfigurationFileIO::loadARDroneConfiguration(0);
+		if(config != nullptr)
+		{
+			_drone->drone_setConfiguration(*config);
+			cout << "AR.Drone configured." << endl;
+		}
 	}
 	catch(NotConnectedException &ex)
 	{
-		cout << ex.what() << endl;
+		cerr << ex.what() << endl;
 	}
 
 	if(connected == ardrone::connection::CONNECTION_ESTABLISHED || connected == ardrone::connection::ALREADY_CONNECTED)

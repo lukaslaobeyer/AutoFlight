@@ -87,13 +87,23 @@ namespace ardrone
 
 	namespace config
 	{
-		const std::string ALTITUDE_MAX       = "control:altitude_max";
-		const std::string OUTDOOR_SHELL      = "control:flight_without_shell";
-		const std::string OUTDOOR_FLIGHT     = "control:outdoor";
-		const std::string TILT_MAX           = "control:euler_angle_max";
-		const std::string VERTICAL_SPEED_MAX = "control:control_vz_max";
-		const std::string YAW_SPEED_MAX      = "control:control_yaw";
-		const std::string VIDEO_CODEC        = "video:video_codec";
+		const std::string ALTITUDE_MAX         = "control:altitude_max";
+		const std::string I_ALTITUDE_MAX       = "control:indoor_altitude_max";
+		const std::string O_ALTITUDE_MAX       = "control:outdoor_altitude_max";
+		const std::string OUTDOOR_SHELL        = "control:flight_without_shell";
+		const std::string OUTDOOR_FLIGHT       = "control:outdoor";
+		const std::string TILT_MAX             = "control:euler_angle_max";
+		const std::string I_TILT_MAX           = "control:indoor_euler_angle_max";
+		const std::string O_TILT_MAX           = "control:outdoor_euler_angle_max";
+		const std::string VERTICAL_SPEED_MAX   = "control:control_vz_max";
+		const std::string I_VERTICAL_SPEED_MAX = "control:indoor_control_vz_max";
+		const std::string O_VERTICAL_SPEED_MAX = "control:outdoor_control_vz_max";
+		const std::string YAW_SPEED_MAX        = "control:control_yaw";
+		const std::string I_YAW_SPEED_MAX      = "control:indoor_control_yaw";
+		const std::string O_YAW_SPEED_MAX      = "control:outdoor_control_yaw";
+
+		const std::string VIDEO_CODEC          = "video:video_codec";
+		const std::string MAX_BITRATE		   = "video:max_bitrate";
 
 		namespace codec
 		{

@@ -76,6 +76,7 @@ class AFMainWindow : public QMainWindow, public INavdataListener, public IConnec
 	private Q_SLOTS:
 		void attemptConnection();
 		void showControlConfigDialog();
+		void showDroneConfigDialog();
 		void videoFrameAvailable(QImage f);
 		void clearConfirmationFlags(); // Called after a timeout to clear the flags used by the confirmation mechanism for performing a flip/sending emergency commands
 		void toggleHUD(bool showHUD);

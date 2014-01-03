@@ -12,8 +12,10 @@
 #include "dialogs/selectcontroller.h"
 #include "dialogs/configurecontrols.h"
 #include "dialogs/welcomedialog.h"
+#include "dialogs/dronesettings.h"
 
 #include "tools/controllerconfigurationfileio.h"
+#include "tools/ardroneconfigurationfileio.h"
 
 #include <QtWidgets>
 
@@ -184,6 +186,11 @@ void AFMainWindow::createMenuBar() {
 		drone->addAction(calibMagneto);
 		
 		drone->addSeparator();
+
+		QAction *flightSettings = new QAction(tr("Flight &Settings"), this);
+		drone->addAction(flightSettings);
+
+		drone->addSeparator();
 		/* TODO: This
 		QAction *pairDrone = new QAction(tr("Pair (Mac-Address coupling)"), this);
 		drone->addAction(pairDrone);
@@ -242,6 +249,7 @@ void AFMainWindow::createMenuBar() {
 	QWidget::connect(connectDrone, SIGNAL(triggered()), this, SLOT(attemptConnection()));
 	QWidget::connect(flatTrim, SIGNAL(triggered()), this, SLOT(flatTrimActionTriggered()));
 	QWidget::connect(calibMagneto, SIGNAL(triggered()), this, SLOT(calibrateMagnetometerActionTriggered()));
+	QWidget::connect(flightSettings, SIGNAL(triggered()), this, SLOT(showDroneConfigDialog()));
 
 	QWidget::connect(controlConfig, SIGNAL(triggered()), this, SLOT(showControlConfigDialog()));
 	QWidget::connect(imgProcEdit, SIGNAL(triggered()), this, SLOT(launchImageProcessingPipelineEditor()));
@@ -395,6 +403,21 @@ void AFMainWindow::launchImageProcessingPipelineEditor()
 	}
 
 	_imgProc->show();
+}
+
+void AFMainWindow::showDroneConfigDialog()
+{
+	ARDroneConfiguration *conf = ARDroneConfigurationFileIO::loadARDroneConfiguration(0);
+	DroneSettings ds(conf, this);
+	ds.exec();
+
+	ARDroneConfiguration *new_conf = ds.getConfiguration();
+
+	if(new_conf != nullptr)
+	{
+		ARDroneConfigurationFileIO::saveARDroneConfiguration(new_conf, 0);
+		_af->ardrone()->drone_setConfiguration(*new_conf);
+	}
 }
 
 void AFMainWindow::showControlConfigDialog()

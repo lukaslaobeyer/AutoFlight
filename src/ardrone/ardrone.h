@@ -8,6 +8,7 @@
 #include <opencv2/opencv.hpp>
 #include "../afconstants.h"
 #include "controllink.h"
+#include "ardroneconfiguration.h"
 #include "iconnectionstatuslistener.h"
 #include "navdata/navdatamanager.h"
 #include "navdata/inavdatalistener.h"
@@ -92,7 +93,10 @@ class ARDrone
 		bool drone_toggleRecordingOnUSB();
 		bool drone_changeView(int view); // View defined in afconstants.h
 		bool drone_toggleView();
+		bool drone_setConfiguration(ARDroneConfiguration &config);
+		bool drone_setConfiguration(std::string field, bool value);
 		bool drone_setConfiguration(std::string field, float value);       // Field defined in afconstants.h
+		bool drone_setConfiguration(std::string field, int value);
 		bool drone_setConfiguration(std::string field, std::string value);
 	private:
 		void runUpdateLoop();
