@@ -10,10 +10,4 @@ ImgProcMainWindow::ImgProcMainWindow(QWidget *parent) : QMainWindow(parent)
 
 	VisualPipeline *pipeline = new VisualPipeline();
 	setCentralWidget(pipeline);
-
-	pipeline->addBlock(VisualPipeline::test);
-	pipeline->addBlock(VisualPipeline::test);
-	pipeline->addBlock(VisualPipeline::test);
-	pipeline->addBlock(VisualPipeline::test);
-	pipeline->addBlock(VisualPipeline::test);
 }

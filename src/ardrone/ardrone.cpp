@@ -92,7 +92,7 @@ int ARDrone::connect()
 			// Wait for the AR.Drone to process the commands
 			boost::this_thread::sleep_for(boost::chrono::milliseconds(50));
 		
-			_cl.sendATCommands(vector<ATCommand>{ConfigIDSCommand(), ConfigCommand(ardrone::config::VIDEO_CODEC, to_string(ardrone::config::codec::H264_720P)), ConfigCommand(ardrone::config::MAX_BITRATE, to_string(4000))});
+			_cl.sendATCommands(vector<ATCommand>{ConfigIDSCommand(), ConfigCommand(ardrone::config::VIDEO_CODEC, to_string(ardrone::config::codec::H264_720P)), ConfigIDSCommand(), ConfigCommand(ardrone::config::MAX_BITRATE, to_string(4000))});
 
 			// Init navdata manager
 			_nm.init(_ip, *_io_service);
@@ -265,7 +265,7 @@ void ARDrone::runUpdateLoop()
 			{
 				zero_packets_counter++;
 
-				if(zero_packets_counter == 15)
+				if(zero_packets_counter == 50)
 				{
 					// Definitely lost connection
 					cout << "[WARNING] Lost connection to AR.Drone!" << endl;
@@ -876,7 +876,7 @@ bool ARDrone::drone_setYaw(float yaw)
 	return true;
 }
 
-bool ARDrone::drone_pair(string mac_address)
+bool ARDrone::drone_pair(const string &mac_address)
 {
 	if(!isConnected())
 	{
@@ -903,58 +903,64 @@ bool ARDrone::drone_pair()
 	return true;
 }
 
-bool ARDrone::drone_setConfiguration(ARDroneConfiguration &config)
+bool ARDrone::drone_setConfiguration(const ARDroneConfiguration &config)
 {
 	if(!isConnected())
 	{
 		return false;
 	}
 
-	drone_setConfiguration(ardrone::config::ALTITUDE_MAX, config.altitude_max);
-	drone_setConfiguration(ardrone::config::I_ALTITUDE_MAX, config.altitude_max);
-	drone_setConfiguration(ardrone::config::O_ALTITUDE_MAX, config.altitude_max);
 	drone_setConfiguration(ardrone::config::OUTDOOR_SHELL, config.no_hull);
 	drone_setConfiguration(ardrone::config::OUTDOOR_FLIGHT, config.outdoor_flight);
+	drone_setConfiguration("control:control_iphone_tilt", (float) M_PI/2.0f);
+	drone_setConfiguration(ardrone::config::ALTITUDE_MAX, config.altitude_max);
+	//drone_setConfiguration(ardrone::config::I_ALTITUDE_MAX, config.altitude_max);
+	//drone_setConfiguration(ardrone::config::O_ALTITUDE_MAX, config.altitude_max);
 	drone_setConfiguration(ardrone::config::TILT_MAX, config.pitch_roll_max);
-	drone_setConfiguration(ardrone::config::I_TILT_MAX, config.pitch_roll_max);
-	drone_setConfiguration(ardrone::config::O_TILT_MAX, config.pitch_roll_max);
+	//drone_setConfiguration(ardrone::config::I_TILT_MAX, config.pitch_roll_max);
+	//drone_setConfiguration(ardrone::config::O_TILT_MAX, config.pitch_roll_max);
 	drone_setConfiguration(ardrone::config::VERTICAL_SPEED_MAX, config.vertical_speed_max);
-	drone_setConfiguration(ardrone::config::I_VERTICAL_SPEED_MAX, config.vertical_speed_max);
-	drone_setConfiguration(ardrone::config::O_VERTICAL_SPEED_MAX, config.vertical_speed_max);
+	//drone_setConfiguration(ardrone::config::I_VERTICAL_SPEED_MAX, config.vertical_speed_max);
+	//drone_setConfiguration(ardrone::config::O_VERTICAL_SPEED_MAX, config.vertical_speed_max);
 	drone_setConfiguration(ardrone::config::YAW_SPEED_MAX, config.yaw_speed_max);
-	drone_setConfiguration(ardrone::config::I_YAW_SPEED_MAX, config.yaw_speed_max);
-	drone_setConfiguration(ardrone::config::O_YAW_SPEED_MAX, config.yaw_speed_max);
+	//drone_setConfiguration(ardrone::config::I_YAW_SPEED_MAX, config.yaw_speed_max);
+	//drone_setConfiguration(ardrone::config::O_YAW_SPEED_MAX, config.yaw_speed_max);
 
 	return true;
 }
 
-bool ARDrone::drone_setConfiguration(string field, bool value)
+bool ARDrone::drone_setConfiguration(const string &field, bool value)
 {
 	if(value == true)
 	{
-		return drone_setConfiguration(field, "TRUE");
+		return drone_setConfiguration(field, string("TRUE"));
 	}
 	else
 	{
-		return drone_setConfiguration(field, "FALSE");
+		return drone_setConfiguration(field, string("FALSE"));
 	}
 }
 
-bool ARDrone::drone_setConfiguration(string field, float value)
+bool ARDrone::drone_setConfiguration(const string &field, float value)
 {
 	if(!isConnected())
 	{
 		return false;
 	}
 
-	if((field == ardrone::config::YAW_SPEED_MAX) || (field == ardrone::config::TILT_MAX))
+	if((field == ardrone::config::YAW_SPEED_MAX) || (field == ardrone::config::TILT_MAX) ||
+	   (field == ardrone::config::I_YAW_SPEED_MAX) || (field == ardrone::config::I_TILT_MAX) ||
+	   (field == ardrone::config::O_YAW_SPEED_MAX) || (field == ardrone::config::O_TILT_MAX))
 	{
 		value = value * M_PI / 180.0; // Convert degrees to radians
 	}
-	else if((field == ardrone::config::ALTITUDE_MAX) || (field == ardrone::config::VERTICAL_SPEED_MAX))
+	else if((field == ardrone::config::ALTITUDE_MAX) || (field == ardrone::config::VERTICAL_SPEED_MAX) ||
+			(field == ardrone::config::I_ALTITUDE_MAX) || (field == ardrone::config::I_VERTICAL_SPEED_MAX) ||
+			(field == ardrone::config::O_ALTITUDE_MAX) || (field == ardrone::config::O_VERTICAL_SPEED_MAX))
 	{
 		value = value * 1000;
 	}
+
 
 	_commandmutex.lock();
 	_commandqueue.push_back(ConfigIDSCommand());
@@ -964,7 +970,7 @@ bool ARDrone::drone_setConfiguration(string field, float value)
 	return true;
 }
 
-bool ARDrone::drone_setConfiguration(string field, string value)
+bool ARDrone::drone_setConfiguration(const string &field, const string &value)
 {
 	if(!isConnected())
 	{
@@ -979,7 +985,7 @@ bool ARDrone::drone_setConfiguration(string field, string value)
 	return true;
 }
 
-bool ARDrone::drone_setConfiguration(string field, int value)
+bool ARDrone::drone_setConfiguration(const string &field, int value)
 {
 	if(!isConnected())
 	{
@@ -1150,7 +1156,7 @@ bool ARDrone::drone_takePicture()
 	string picdirectory = _saveDir;
 	picdirectory.append("Pictures/");
 
-	// Create the dirextory if it doesn't exist
+	// Create the directory if it doesn't exist
 	boost::filesystem::create_directories(picdirectory);
 
 	string timestamp = AutoFlight::af_timestamp();

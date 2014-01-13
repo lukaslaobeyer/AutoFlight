@@ -32,6 +32,8 @@
 		<file>resources/sessionviewer_land.png</file>
 		<file>resources/sessionviewer_emergency.png</file>
 		
+		<file>resources/visualpipeline_bg.png</file>
+		
 		<file>resources/welcome.png</file>
 	</qresource>
 </RCC>

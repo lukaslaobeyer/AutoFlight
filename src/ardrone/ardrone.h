@@ -86,18 +86,18 @@ class ARDrone
 		bool drone_calibmagneto();
 		bool drone_flip(int direction); // Direction defined in afconstants.h
 		bool drone_pair();
-		bool drone_pair(std::string mac_address);
+		bool drone_pair(const std::string &mac_address);
 		bool drone_unpair();
 		bool drone_startRecordingOnUSB();
 		bool drone_stopRecordingOnUSB();
 		bool drone_toggleRecordingOnUSB();
 		bool drone_changeView(int view); // View defined in afconstants.h
 		bool drone_toggleView();
-		bool drone_setConfiguration(ARDroneConfiguration &config);
-		bool drone_setConfiguration(std::string field, bool value);
-		bool drone_setConfiguration(std::string field, float value);       // Field defined in afconstants.h
-		bool drone_setConfiguration(std::string field, int value);
-		bool drone_setConfiguration(std::string field, std::string value);
+		bool drone_setConfiguration(const ARDroneConfiguration &config);
+		bool drone_setConfiguration(const std::string &field, bool value);
+		bool drone_setConfiguration(const std::string &field, float value);       // Field defined in afconstants.h
+		bool drone_setConfiguration(const std::string &field, int value);
+		bool drone_setConfiguration(const std::string &field, const std::string &value);
 	private:
 		void runUpdateLoop();
 		void processControllerInput();

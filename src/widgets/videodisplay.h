@@ -23,6 +23,9 @@ class VideoDisplay : public QGLWidget
 		void showHUD(bool show);
 		void connectionLost();
 
+		void setRecordingVideo(bool rec);
+		void setRecordingNavdata(bool rec);
+
 	public Q_SLOTS:
 		void navdataAvailable(AFNavdata *nd);
 		void controllerInputAvailable(ControllerInput *in);
@@ -38,6 +41,8 @@ class VideoDisplay : public QGLWidget
 		bool _maximize = false;
 		bool _hud = false;
 		bool _connectionLost = false;
+		bool _rec_vid = false;
+		bool _rec_nav = false;
 
 		double yaw = 0, pitch = 0, roll = 0, altitude = 0, charge = 0, speed = 0, rollInput = 0, pitchInput = 0, altitudeInput = 0, yawInput = 0;
 };

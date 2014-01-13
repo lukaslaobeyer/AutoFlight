@@ -28,6 +28,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 #include <QGraphicsScene>
 #include <QEvent>
 #include <QGraphicsSceneMouseEvent>
+#include <algorithm>
 
 #include "qneport.h"
 #include "qneconnection.h"
@@ -91,13 +92,29 @@ bool QNodesEditor::eventFilter(QObject *o, QEvent *e)
 		case Qt::RightButton:
 		{
 			QGraphicsItem *item = itemAt(me->scenePos());
-			if (item && (item->type() == QNEConnection::Type || item->type() == QNEBlock::Type))
+			if (item && (item->type() == QNEConnection::Type))
+			{
+				qDebug("connection deleted");
 				delete item;
+			}
+			else if(item && (item->type() == QNEBlock::Type))
+			{
+				for(INodesEditorListener *listener : listeners)
+				{
+					//listener->nodeDeleted(item->id(), item->)
+				}
+
+
+				delete item;
+			}
+
 			// if (selBlock == (QNEBlock*) item)
 				// selBlock = 0;
+
 			break;
 		}
 		}
+		break;
 	}
 	case QEvent::GraphicsSceneMouseMove:
 	{
@@ -125,6 +142,15 @@ bool QNodesEditor::eventFilter(QObject *o, QEvent *e)
 					conn->setPort2(port2);
 					conn->updatePath();
 					conn = 0;
+
+					QNEBlock *node1 = (QNEBlock *) port1->parentItem();
+					QNEBlock *node2 = (QNEBlock *) port2->parentItem();
+
+					for(INodesEditorListener *listener : listeners)
+					{
+						listener->connectionMade(node1->id(), node2->id());
+					}
+
 					return true;
 				}
 			}
@@ -137,6 +163,16 @@ bool QNodesEditor::eventFilter(QObject *o, QEvent *e)
 	}
 	}
 	return QObject::eventFilter(o, e);
+}
+
+void QNodesEditor::addNodesEditorListener(INodesEditorListener *listener)
+{
+	listeners.push_back(listener);
+}
+
+void QNodesEditor::removeNodesEditorListener(INodesEditorListener *listener)
+{
+	listeners.erase(std::remove(listeners.begin(), listeners.end(), listener), listeners.end());
 }
 
 void QNodesEditor::save(QDataStream &ds)

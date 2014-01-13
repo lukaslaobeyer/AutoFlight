@@ -37,6 +37,11 @@ public:
 
     QNEBlock(QGraphicsItem *parent = 0);
 
+    void setID(int id);
+    void setType(int type);
+    int id();
+    int type();
+
 	QNEPort* addPort(const QString &name, bool isOutput, int flags = 0, int ptr = 0);
 	void addInputPort(const QString &name);
 	void addOutputPort(const QString &name);
@@ -58,6 +63,9 @@ private:
 	int vertMargin;
 	int width;
 	int height;
+
+	int _id = -1;
+	int _type = -1;
 };
 
 #endif // QNEBLOCK_H

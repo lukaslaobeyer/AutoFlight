@@ -47,6 +47,26 @@ QNEBlock::QNEBlock(QGraphicsItem *parent) : QGraphicsPathItem(parent)
 	height = vertMargin;
 }
 
+int QNEBlock::type()
+{
+	return _type;
+}
+
+int QNEBlock::id()
+{
+	return _id;
+}
+
+void QNEBlock::setID(int id)
+{
+	_id = id;
+}
+
+void QNEBlock::setType(int type)
+{
+	_type = type;
+}
+
 QNEPort* QNEBlock::addPort(const QString &name, bool isOutput, int flags, int ptr)
 {
 	QNEPort *port = new QNEPort(this);

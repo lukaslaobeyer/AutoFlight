@@ -12,6 +12,7 @@
 #include <opencv2/opencv.hpp>
 #include "autoflight.h"
 #include "imgprocui/imgprocmainwindow.h"
+#include "imgproc/imageprocessor.h"
 #include "dialogs/sessionviewer.h"
 #include "ardrone/ardrone.h"
 #include "ardrone/navdata/inavdatalistener.h"
@@ -44,6 +45,7 @@ class AFMainWindow : public QMainWindow, public INavdataListener, public IConnec
 		void flatTrimActionTriggered();
 		void calibrateMagnetometerActionTriggered();
 		void showAboutDialog();
+		void controllerInputAvailableSlot(ControllerInput *ci);
 	protected:
 		bool eventFilter(QObject *sender, QEvent *e);
 	private:
@@ -73,6 +75,8 @@ class AFMainWindow : public QMainWindow, public INavdataListener, public IConnec
 		SessionViewer *_sessionViewerWindow = NULL;
 		Map3D *_map = NULL;
 		ImgProcMainWindow *_imgProc = NULL;
+
+		ImageProcessor *_imgProcTest = NULL;
 	private Q_SLOTS:
 		void attemptConnection();
 		void showControlConfigDialog();

@@ -8,46 +8,107 @@ VisualPipeline::VisualPipeline(QWidget *parent) : QGraphicsView(parent)
 	setScene(s);
 	setRenderHint(QPainter::Antialiasing);
 
-	///// Initialize and add default nodes
+	s->setBackgroundBrush(QBrush(QPixmap(":/resources/visualpipeline_bg.png")));
 
-	QNodesEditor *nodesEditor = new QNodesEditor(this);
+	nodesEditor = new QNodesEditor(this);
 	nodesEditor->install(s);
+}
 
-	imgIn = new QNEBlock;
-	s->addItem(imgIn);
-	imgIn->addPort(tr("Image In"), 0, QNEPort::NamePort);
-	imgIn->addPort(" ", 0, QNEPort::TypePort);
-	imgIn->addOutputPort("out 1");
-	imgIn->setPos(-200, 0);
+void VisualPipeline::compile()
+{
 
-	imgDisp = new QNEBlock;
-	s->addItem(imgDisp);
-	imgDisp->addPort(tr("Display Image"), 0, QNEPort::NamePort);
-	imgDisp->addPort(" ", 0, QNEPort::TypePort);
-	imgDisp->addInputPort("in 1");
-	imgDisp->setPos(200, 0);
-
-	///// Initialize node types added by the user
-
-	dummy = new QNEBlock;
-	s->addItem(dummy);
-	dummy->addPort("Hello, World!", 0, QNEPort::NamePort);
-	dummy->addPort("test", 0, QNEPort::TypePort);
-	dummy->addInputPort("in1");
-	dummy->addInputPort("in2");
-	dummy->addInputPort("in3");
-	dummy->addOutputPort("out1");
-	dummy->addOutputPort("out2");
-	dummy->addOutputPort("out3");
-	dummy->setVisible(false);
 }
 
 void VisualPipeline::addBlock(BlockType type, int x, int y)
 {
-	if(type == test)
+	static int id_count = 0;
+
+	if(type == ImageIn)
 	{
-		QNEBlock *newnode = dummy->clone();
-		s->addItem(newnode);
-		newnode->setPos(x, y);
+		QNEBlock *imgIn = new QNEBlock;
+		s->addItem(imgIn);
+		imgIn->addPort(tr("Image In"), 0, QNEPort::NamePort);
+		imgIn->addPort(" ", 0, QNEPort::TypePort);
+		imgIn->addOutputPort("out [img]");
+		imgIn->setPos(x, y);
+
+		imgIn->setID(id_count++);
+		imgIn->setType(ImageIn);
 	}
+	else if(type == ImageDisplay)
+	{
+		QNEBlock *imgDisp = new QNEBlock;
+		s->addItem(imgDisp);
+		imgDisp->addPort(tr("Display Image"), 0, QNEPort::NamePort);
+		imgDisp->addPort(" ", 0, QNEPort::TypePort);
+		imgDisp->addInputPort("in [img]");
+		imgDisp->setPos(x, y);
+
+		imgDisp->setID(id_count++);
+		imgDisp->setType(ImageDisplay);
+	}
+	else if(type == GaussianBlur)
+	{
+		QNEBlock *gaussianBlur = new QNEBlock;
+		s->addItem(gaussianBlur);
+		gaussianBlur->addPort(tr("Gaussian Blur"), 0, QNEPort::NamePort);
+		gaussianBlur->addPort(" ", 0, QNEPort::TypePort);
+		gaussianBlur->addInputPort("in [img]");
+		gaussianBlur->addInputPort("kernel width [uint]");
+		gaussianBlur->addInputPort("kernel height [uint]");
+		gaussianBlur->addPort("", 0, QNEPort::TypePort);
+		gaussianBlur->addOutputPort("out [img]");
+		gaussianBlur->setPos(x, y);
+
+		gaussianBlur->setID(id_count++);
+		gaussianBlur->setType(GaussianBlur);
+	}
+	else if(type == Number)
+	{
+		QNENumberBlock *number = new QNENumberBlock;
+		s->addItem(number);
+		number->initialize();
+		number->setPos(x, y);
+
+		number->setID(id_count++);
+		number->setType(Number);
+	}
+}
+
+void VisualPipeline::addBlock(int type)
+{
+	addBlock((VisualPipeline::BlockType) type, addNodeAtX, addNodeAtY);
+}
+
+void VisualPipeline::contextMenuEvent(QContextMenuEvent *event)
+{
+	QMenu menu(this);
+
+	addNodeAtX = mapToScene(event->pos()).x();
+	addNodeAtY = mapToScene(event->pos()).y();
+
+	QMenu *addItem = menu.addMenu(tr("Add item"));
+		QMenu *basic = addItem->addMenu(tr("Basic"));
+			QAction *addImageIn = basic->addAction(tr("Image In"));
+			QAction *addImageDisp = basic->addAction(tr("Image Display"));
+			QAction *addNumber = basic->addAction(tr("Number"));
+		QMenu *imgproc = addItem->addMenu(tr("Image Processing"));
+			QAction *addGaussianBlur = imgproc->addAction(tr("Gaussian Blur"));
+	QAction *compile = menu.addAction(tr("Compile"));
+
+	QSignalMapper *signalMapper = new QSignalMapper(this) ;
+	QObject::connect(addImageIn, SIGNAL(triggered()), signalMapper, SLOT(map()));
+	QObject::connect(addImageDisp, SIGNAL(triggered()), signalMapper, SLOT(map()));
+	QObject::connect(addNumber, SIGNAL(triggered()), signalMapper, SLOT(map()));
+	QObject::connect(addGaussianBlur, SIGNAL(triggered()), signalMapper, SLOT(map()));
+
+	signalMapper->setMapping(addImageIn, VisualPipeline::ImageIn);
+	signalMapper->setMapping(addImageDisp, VisualPipeline::ImageDisplay);
+	signalMapper->setMapping(addNumber, VisualPipeline::Number);
+	signalMapper->setMapping(addGaussianBlur, VisualPipeline::GaussianBlur);
+
+	QObject::connect(signalMapper, SIGNAL(mapped(int)), this, SLOT(addBlock(int)));
+	QObject::connect(compile, SIGNAL(triggered()), this, SLOT(compile()));
+
+	menu.exec(event->globalPos());
 }

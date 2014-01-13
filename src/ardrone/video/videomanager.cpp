@@ -77,7 +77,7 @@ void VideoManager::update()
 	socket->get_io_service().poll();
 }
 
-bool VideoManager::startRecording(string savePath)
+bool VideoManager::startRecording(const string &savePath)
 {
 	static bool already_registered = false;
 
@@ -520,7 +520,7 @@ void VideoManager::decodePacket()
 	_previous_width = _pave->encoded_stream_width;
 }
 
-bool VideoManager::takePicture(string savePath)
+bool VideoManager::takePicture(const string &savePath)
 {
 	bool succeeded = false;
 
@@ -537,7 +537,7 @@ bool VideoManager::takePicture(string savePath)
 	}
 	catch (runtime_error& ex)
 	{
-		cout << "Could not save image! " << ex.what() << endl;
+		cerr << "Could not save image! " << ex.what() << endl;
 		succeeded = false;
 	}
 	_status = READY;

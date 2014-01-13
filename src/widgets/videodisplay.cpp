@@ -59,6 +59,18 @@ void VideoDisplay::showHUD(bool show)
 	Q_EMIT update();
 }
 
+void VideoDisplay::setRecordingVideo(bool rec)
+{
+	_rec_vid = rec;
+	Q_EMIT update();
+}
+
+void VideoDisplay::setRecordingNavdata(bool rec)
+{
+	_rec_nav = rec;
+	Q_EMIT update();
+}
+
 void VideoDisplay::connectionLost()
 {
 	_connectionLost = true;
@@ -309,6 +321,16 @@ void VideoDisplay::paintEvent(QPaintEvent *)
 		p.translate(-25, -25);*/
 
 		p.translate(-offsetX, -offsetY);
+    }
+
+    if(_rec_vid)
+    {
+    	//TODO: Show nice recording indicator
+    }
+
+    if(_rec_nav)
+    {
+    	//TODO: Show nice recording indicator
     }
 
     if(_connectionLost)

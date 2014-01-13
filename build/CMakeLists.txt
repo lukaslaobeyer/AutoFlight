@@ -65,6 +65,8 @@ file(GLOB AutoFlight_SRC
     "../src/tools/*.cpp"
     "../src/imgprocui/*.h"
     "../src/imgprocui/*.cpp"
+    "../src/imgproc/*.h"
+    "../src/imgproc/*.cpp"
     "../src/imgprocui/nodeseditor/*.h"
     "../src/imgprocui/nodeseditor/*.cpp"
     

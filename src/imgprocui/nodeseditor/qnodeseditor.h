@@ -27,6 +27,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 #define QNODESEDITOR_H
 
 #include <QObject>
+#include <vector>
+#include "inodeseditorlistener.h"
 
 class QGraphicsScene;
 class QNEConnection;
@@ -47,12 +49,17 @@ public:
 	void save(QDataStream &ds);
 	void load(QDataStream &ds);
 
+	void addNodesEditorListener(INodesEditorListener *listener);
+	void removeNodesEditorListener(INodesEditorListener *listener);
+
 private:
 	QGraphicsItem *itemAt(const QPointF&);
 
 private:
 	QGraphicsScene *scene;
 	QNEConnection *conn;
+	std::vector<INodesEditorListener *> listeners;
+
 	// QNEBlock *selBlock;
 };
 

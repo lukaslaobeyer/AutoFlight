@@ -38,7 +38,7 @@ void AFMainWindow::setWindowAttributes()
 {
 	setWindowTitle("AutoFlight");
 	setWindowIcon(QIcon(":/resources/icon.png"));
-	setMinimumSize(PREF_WIDTH, PREF_HEIGHT); //TODO: netbook support
+	setMinimumSize(PREF_WIDTH, PREF_HEIGHT); //TODO: Netbook support
 }
 
 AFMainWindow::AFMainWindow(AutoFlight *af, QWidget *parent) : QMainWindow(parent)
@@ -78,15 +78,19 @@ AFMainWindow::AFMainWindow(AutoFlight *af, QWidget *parent) : QMainWindow(parent
 	grid->addWidget(horizontalToolbar, 1, 0, 1, 1);
 	grid->addWidget(verticalToolbar, 0, 1, 2, 1);
 
+	_imgProcTest = new ImageProcessor();
+
 	_af->ardrone()->addNavdataListener(this);
 	_af->ardrone()->addVideoListener(this);
 	_af->ardrone()->addControllerInputListener(this);
 	_af->ardrone()->addConnectionStatusListener(this);
+	_af->ardrone()->addVideoListener(_imgProcTest);
 
 	QObject::connect(this, SIGNAL(videoFrameAvailableSignal(QImage)), this, SLOT(videoFrameAvailable(QImage)));
 	QObject::connect(this, SIGNAL(connectionLostSignal()), this, SLOT(handleConnectionLost()));
 	QObject::connect(this, SIGNAL(navdataAvailableSignal(AFNavdata *)), videoPanel, SLOT(navdataAvailable(AFNavdata *)));
 	QObject::connect(this, SIGNAL(controllerInputAvailableSignal(ControllerInput *)), videoPanel, SLOT(controllerInputAvailable(ControllerInput *)));
+	QObject::connect(this, SIGNAL(controllerInputAvailableSignal(ControllerInput *)), this, SLOT(controllerInputAvailableSlot(ControllerInput *)));
 
 	installEventFilter(this);
 
@@ -142,7 +146,7 @@ void AFMainWindow::connectionLost()
 
 void AFMainWindow::connectionEstablished()
 {
-
+	_imgProcTest->startProcessing();
 }
 
 void AFMainWindow::videoFrameAvailable(cv::Mat f)
@@ -335,6 +339,20 @@ void AFMainWindow::attemptConnection()
 	{
 		QMessageBox::warning(this, tr("Could not connect"), tr("AutoFlight could not connect to the AR.Drone. Please make sure that you are connected to it over WiFi and try again."));
 	}
+}
+
+void AFMainWindow::controllerInputAvailableSlot(ControllerInput *in)
+{
+	static bool prev_picture_button_state = false;		 // Needed to detect if the picture taking button
+	bool current_picture_button_state = in->takePicture; // was pressed
+
+	if(prev_picture_button_state == false && current_picture_button_state == true)
+	{
+		// Picture button pressed, show message:
+		showMessage("Picture saved");
+	}
+
+	prev_picture_button_state = current_picture_button_state;
 }
 
 void AFMainWindow::handleConnectionLost()
@@ -666,8 +684,13 @@ void AFMainWindow::closeEvent(QCloseEvent *event)
 	_af->ardrone()->removeNavdataListener(this);
 	_af->ardrone()->removeVideoListener(this);
 	_af->ardrone()->removeControllerInputListener(this);
+	_af->ardrone()->removeConnectionStatusListener(this);
+	_af->ardrone()->removeVideoListener(_imgProcTest);
+
+	_imgProcTest->stopProcessing();
+	delete _imgProcTest;
+
 	_af->saveSession();
-	//TODO: exit confirmation dialog, etc.
 }
 
 void AFMainWindow::flatTrimActionTriggered()

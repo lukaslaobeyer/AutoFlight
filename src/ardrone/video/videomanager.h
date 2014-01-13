@@ -30,8 +30,8 @@ class VideoManager
 		void init(std::string ip, boost::asio::io_service &io_service); // Always call this before using other methods
 		void update(); // Process available packets, call this regularily (>60 times per second)
 		cv::Mat getVideoFrame();
-		bool takePicture(std::string savePath);
-		bool startRecording(std::string savePath);
+		bool takePicture(const std::string &savePath);
+		bool startRecording(const std::string &savePath);
 		bool stopRecording();
 		void close();
 	private:
@@ -56,7 +56,8 @@ class VideoManager
 		AVPacket _packet; // Received data is stored into this, and then decoded.
 		uint8_t *_decode_buffer = nullptr;
 		int _decode_buffer_size;
-		int _status = READY; // Either READY or PROCESSING (defined above)
+		volatile int _status = READY; // Either READY or PROCESSING (defined above)
+									  // (volatile is really needed, at least with the MinGW-builds GCC 4.8.0 on Windows 7 32-bit
 		unsigned long _decodedPackets = 0;
 
 		unsigned int _recording_frame_size = -1;
@@ -64,7 +65,7 @@ class VideoManager
 		bool _stop_recording_requested = false;
 		bool _recording = false;
 		bool _recording_got_first_iframe = false;
-		int _recording_status = READY;
+		volatile int _recording_status = READY;
 		AVFormatContext *_recording_ctx = NULL;
 		boost::asio::ip::tcp::socket *recordingSocket = nullptr;
 		char *_recording_receivedDataBuffer = nullptr;
