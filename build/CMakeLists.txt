@@ -29,7 +29,7 @@ find_package(Qt5WebKitWidgets)
 
 # Find the Boost libraries
 set(Python_ADDITIONAL_VERSIONS 3)
-find_package(Boost 1.53 COMPONENTS python-py33 system filesystem thread chrono date_time REQUIRED)
+find_package(Boost 1.53 COMPONENTS program_options python-py33 system filesystem thread chrono date_time REQUIRED)
 include_directories(${Boost_INCLUDE_DIR})
 
 # Find OpenCV

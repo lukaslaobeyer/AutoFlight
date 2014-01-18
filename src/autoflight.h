@@ -14,7 +14,7 @@
 class AutoFlight
 {
 	public:
-		AutoFlight();
+		AutoFlight(std::string drone_ip = ardrone::DEFAULT_IP);
 		~AutoFlight();
 
 		bool attemptConnectionToDrone();

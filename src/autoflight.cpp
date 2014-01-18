@@ -9,12 +9,12 @@
 
 using namespace std;
 
-AutoFlight::AutoFlight()
+AutoFlight::AutoFlight(string ip)
 {
 	_drone = new ARDrone();
 	_ase = new ASEngine(_drone);
 
-	_drone->setIP(ardrone::DEFAULT_IP);
+	_drone->setIP(ip);
 	_drone->setSaveDirectory(getHomeDirectory().append("AutoFlightSaves/"));
 
 	_srec = new SessionRecorder(_sessionRecDoc);

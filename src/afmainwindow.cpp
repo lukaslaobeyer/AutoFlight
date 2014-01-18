@@ -748,7 +748,7 @@ void AFMainWindow::showAboutDialog()
 	right->addStretch();
 
 	QChar copyrightSymbol(0x00A9);
-	QLabel *copyright = new QLabel(QString("Copyright ").append(copyrightSymbol).append(" 2013 Lukas Lao Beyer"));
+	QLabel *copyright = new QLabel(QString("Copyright ").append(copyrightSymbol).append(" 2013, 2014 Lukas Lao Beyer"));
 	right->addWidget(copyright);
 
 	QLabel *website = new QLabel(QString("<a href=\"http://lbpclabs.com/autoflight\">lbpclabs.com/autoflight</a>"));
