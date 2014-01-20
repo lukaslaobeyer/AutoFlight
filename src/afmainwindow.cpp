@@ -581,19 +581,19 @@ bool AFMainWindow::eventFilter(QObject *watched, QEvent* e)
 
 				case Qt::Key_W:
 					// Pitch forward
-					_af->ardrone()->drone_setTheta(-0.4f);
+					_af->ardrone()->drone_setTheta(-0.6f);
 					break;
 				case Qt::Key_A:
 					// Roll left
-					_af->ardrone()->drone_setPhi(-0.4f);
+					_af->ardrone()->drone_setPhi(-0.6f);
 					break;
 				case Qt::Key_S:
 					// Pitch backwards
-					_af->ardrone()->drone_setTheta(0.4f);
+					_af->ardrone()->drone_setTheta(0.6f);
 					break;
 				case Qt::Key_D:
 					// Roll right
-					_af->ardrone()->drone_setPhi(0.4f);
+					_af->ardrone()->drone_setPhi(0.6f);
 					break;
 
 				case Qt::Key_I:

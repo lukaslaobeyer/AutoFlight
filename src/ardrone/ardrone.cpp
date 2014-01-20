@@ -82,12 +82,15 @@ int ARDrone::connect()
 			// Initialize communication with AR.Drone
 			_cl.init(_ip, *_io_service);
 		
-			// Needed for the AR.Drone to send full navigation data and accept commands (Somewhat like described in the dev guide in section 7.1.2)
+
+			// Needed for the AR.Drone to send full navigation data and accept commands (Somewhat like described in the dev guide in section 7.1.2, and some magic)
 			_cl.setAppID();
 			boost::this_thread::sleep_for(boost::chrono::milliseconds(250)); // Wait until the drone has performed its configuration switch (important)
 			_cl.sendATCommands(vector<ATCommand>{ConfigIDSCommand(), ConfigCommand("general:navdata_demo", "TRUE"), ControlCommand(0)});
 			boost::this_thread::sleep_for(boost::chrono::milliseconds(250));
 			_cl.sendATCommands(vector<ATCommand>{ConfigIDSCommand(), ConfigCommand("general:navdata_demo", "FALSE"), ConfigIDSCommand(), ConfigCommand("general:navdata_options", "268435455"), ControlCommand(5)});
+			boost::this_thread::sleep_for(boost::chrono::milliseconds(100));
+			_cl.sendATCommands(vector<ATCommand>{ConfigIDSCommand(), ConfigCommand("control:control_level", ATCommand::_int(1<<0))});
 
 			// Wait for the AR.Drone to process the commands
 			boost::this_thread::sleep_for(boost::chrono::milliseconds(50));
@@ -961,10 +964,12 @@ bool ARDrone::drone_setConfiguration(const string &field, float value)
 		value = value * 1000;
 	}
 
+	string value_str = to_string(value);
+	replace(value_str.begin(), value_str.end(), ',', '.'); // Decimal separator needs to be a dot (to_string seems to recognize the current locale)
 
 	_commandmutex.lock();
 	_commandqueue.push_back(ConfigIDSCommand());
-	_commandqueue.push_back(ConfigCommand(field, to_string(value)));
+	_commandqueue.push_back(ConfigCommand(field, value_str));
 	_commandmutex.unlock();
 
 	return true;

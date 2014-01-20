@@ -24,7 +24,7 @@ class ControlLink
 		void close();
 	private:
 		boost::asio::ip::udp::socket *socket = NULL;
-		int seqNum = 0; // AT Command sequence number
+		int seqNum = 1; // AT Command sequence number
 };
 
 #endif
