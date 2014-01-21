@@ -6,6 +6,7 @@
 #define READY_FOR_NEXT_FRAME 0
 
 #include <opencv2/opencv.hpp>
+#include <opencv/cv.h>
 #include <boost/thread.hpp>
 #include "../ardrone/video/ivideolistener.h"
 #include "../imgprocui/imagevisualizer.h"
