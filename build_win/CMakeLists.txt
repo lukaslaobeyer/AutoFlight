@@ -31,7 +31,7 @@ find_package(Qt5WebKitWidgets)
 
 # Find the Boost libraries
 set(Python_ADDITIONAL_VERSIONS 3)
-find_package(Boost 1.53 COMPONENTS python python3 system filesystem thread chrono date_time REQUIRED)
+find_package(Boost 1.53 COMPONENTS python python3 program_options system filesystem thread chrono date_time REQUIRED)
 include_directories(${Boost_INCLUDE_DIR})
 
 # Needed on Windows
@@ -78,6 +78,8 @@ file(GLOB AutoFlight_SRC
     "../src/tools/*.cpp"
     "../src/imgprocui/*.h"
     "../src/imgprocui/*.cpp"
+    "../src/imgproc/*.h"
+    "../src/imgproc/*.cpp"
     "../src/imgprocui/nodeseditor/*.h"
     "../src/imgprocui/nodeseditor/*.cpp"
     

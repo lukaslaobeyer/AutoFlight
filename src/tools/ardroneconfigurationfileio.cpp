@@ -1,6 +1,7 @@
 #include "ardroneconfigurationfileio.h"
 #include <iostream>
 #include <boost/lexical_cast.hpp>
+#include <algorithm>
 #include "../autoflight.h"
 
 using namespace std;
@@ -52,7 +53,19 @@ ARDroneConfiguration *ARDroneConfigurationFileIO::loadARDroneConfiguration(int i
 		}
 
 		string key = child.attribute("key").as_string();
-		float value = child.attribute("value").as_float();
+		string value_str = child.attribute("value").as_string();
+		float value;
+		try
+		{
+			stringstream value_strstr(value_str);
+			value_strstr.imbue(locale("C"));
+			value_strstr >> value;
+		}
+		catch(exception &e)
+		{
+			cout << e.what() << endl;
+			return nullptr;
+		}
 
 		if(key == "altitude_max")
 		{
@@ -85,6 +98,8 @@ ARDroneConfiguration *ARDroneConfigurationFileIO::loadARDroneConfiguration(int i
 
 void ARDroneConfigurationFileIO::addARDroneConfigNode(pugi::xml_node &root, string name, string value)
 {
+	replace(value.begin(), value.end(), ',', '.'); // Decimal separator needs to be a dot (boost lexical_cast seems to recognize the current locale)
+
 	pugi::xml_node event = root.append_child("af:ardconfigkey");
 
 	pugi::xml_attribute key_attr = event.append_attribute("key");

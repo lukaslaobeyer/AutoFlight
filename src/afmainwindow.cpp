@@ -78,13 +78,13 @@ AFMainWindow::AFMainWindow(AutoFlight *af, QWidget *parent) : QMainWindow(parent
 	grid->addWidget(horizontalToolbar, 1, 0, 1, 1);
 	grid->addWidget(verticalToolbar, 0, 1, 2, 1);
 
-	_imgProcTest = new ImageProcessor();
+	//_imgProcTest = new ImageProcessor();
 
 	_af->ardrone()->addNavdataListener(this);
 	_af->ardrone()->addVideoListener(this);
 	_af->ardrone()->addControllerInputListener(this);
 	_af->ardrone()->addConnectionStatusListener(this);
-	_af->ardrone()->addVideoListener(_imgProcTest);
+	//_af->ardrone()->addVideoListener(_imgProcTest);
 
 	QObject::connect(this, SIGNAL(videoFrameAvailableSignal(QImage)), this, SLOT(videoFrameAvailable(QImage)));
 	QObject::connect(this, SIGNAL(connectionLostSignal()), this, SLOT(handleConnectionLost()));
@@ -146,7 +146,7 @@ void AFMainWindow::connectionLost()
 
 void AFMainWindow::connectionEstablished()
 {
-	_imgProcTest->startProcessing();
+	//_imgProcTest->startProcessing();
 }
 
 void AFMainWindow::videoFrameAvailable(cv::Mat f)
@@ -685,10 +685,10 @@ void AFMainWindow::closeEvent(QCloseEvent *event)
 	_af->ardrone()->removeVideoListener(this);
 	_af->ardrone()->removeControllerInputListener(this);
 	_af->ardrone()->removeConnectionStatusListener(this);
-	_af->ardrone()->removeVideoListener(_imgProcTest);
+	//_af->ardrone()->removeVideoListener(_imgProcTest);
 
-	_imgProcTest->stopProcessing();
-	delete _imgProcTest;
+	//_imgProcTest->stopProcessing();
+	//delete _imgProcTest;
 
 	_af->saveSession();
 }
