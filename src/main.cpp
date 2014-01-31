@@ -24,6 +24,7 @@ int main(int argc, char *argv[])
 	desc.add_options()
 			("help", "show help message")
 			("ip-address", boost::program_options::value<std::string>(), "an alternative IP address for the AR.Drone (default is 192.168.1.1)")
+			("stream-resolution", boost::program_options::value<std::string>(), "resolution for the live video stream (360P default, can be set to 720P)")
 	;
 
 	boost::program_options::variables_map vm;
@@ -37,6 +38,7 @@ int main(int argc, char *argv[])
 	}
 
 	std::string ip_address = ardrone::DEFAULT_IP;
+	std::string stream_res = "360P";
 
 	if(vm.count("ip-address"))
 	{
@@ -48,12 +50,23 @@ int main(int argc, char *argv[])
 		std::cout << "Using default AR.Drone IP address (192.168.1.1). Use the --ip-address option to choose a different address." << std::endl;
 	}
 
+	if(vm.count("stream-resolution"))
+	{
+		stream_res = vm["stream-resolution"].as<std::string>();
+	}
+
 	std::cout << "Starting AutoFlight...\n";
 
 	Gamepad_init();
 	Gamepad_detectDevices();
 
 	AutoFlight af(ip_address);
+
+	if(stream_res == "720P")
+	{
+		af.ardrone()->setDefaultLiveStreamCodec(ardrone::config::codec::H264_720P);
+		std::cout << "AR.Drone live video stream resolution manually set to " << stream_res << std::endl;
+	}
 
 	QApplication gui(argc, argv);
 

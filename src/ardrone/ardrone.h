@@ -53,6 +53,8 @@ class ARDrone
 		void setControllerConfiguration(ControllerConfiguration *config);
 		ControllerConfiguration *getControllerConfiguration();
 
+		void setDefaultLiveStreamCodec(int codec);
+
 		ardrone::orientation drone_getOrientation();
 		float drone_getRelativeHeading(bool clockwise = true);
 		ardrone::linearvelocity drone_getLinearVelocity();
@@ -103,6 +105,7 @@ class ARDrone
 		void processControllerInput();
 
 		std::string _ip;
+		int _default_codec = ardrone::config::codec::H264_360P;
 		boost::asio::io_service *_io_service = nullptr;
 		std::string _saveDir;
 		SessionRecorder *_srec = NULL;

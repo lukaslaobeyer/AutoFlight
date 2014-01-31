@@ -68,6 +68,11 @@ void ARDrone::setSessionRecorder(SessionRecorder *srec)
 	_srec = srec;
 }
 
+void ARDrone::setDefaultLiveStreamCodec(int codec)
+{
+	_default_codec = codec;
+}
+
 int ARDrone::connect()
 {
 	if(!_connected)
@@ -95,13 +100,13 @@ int ARDrone::connect()
 			// Wait for the AR.Drone to process the commands
 			boost::this_thread::sleep_for(boost::chrono::milliseconds(50));
 		
-			_cl.sendATCommands(vector<ATCommand>{ConfigIDSCommand(), ConfigCommand(ardrone::config::VIDEO_CODEC, to_string(ardrone::config::codec::H264_720P)), ConfigIDSCommand(), ConfigCommand(ardrone::config::MAX_BITRATE, to_string(4000))});
+			_cl.sendATCommands(vector<ATCommand>{ConfigIDSCommand(), ConfigCommand(ardrone::config::VIDEO_CODEC, to_string(_default_codec)), ConfigIDSCommand(), ConfigCommand(ardrone::config::MAX_BITRATE, to_string(4000))});
 
 			// Init navdata manager
 			_nm.init(_ip, *_io_service);
 
 			// Wait for navdata packets to be received
-			boost::this_thread::sleep_for(boost::chrono::milliseconds(100));
+			boost::this_thread::sleep_for(boost::chrono::milliseconds(250));
 
 			// Process received packets (if any)
 			_nm.update();
