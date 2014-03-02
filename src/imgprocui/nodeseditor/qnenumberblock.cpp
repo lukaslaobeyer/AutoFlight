@@ -3,7 +3,7 @@
 
 QNENumberBlock::QNENumberBlock(QGraphicsItem *parent) : QNEBlock(parent) {}
 
-void QNENumberBlock::initialize()
+void QNENumberBlock::initialize(/*INodeAttributeListener *l*/)
 {
 	_lineEdit = new QLineEdit("a number");
 	_lineEdit->setAlignment(Qt::AlignRight);
@@ -21,6 +21,8 @@ void QNENumberBlock::initialize()
 	QPainterPath p;
 	p.addRoundedRect(-50, -20, 100, 58, 5, 5);
 	setPath(p);
+
+	/*_l = l;*/
 }
 
 int QNENumberBlock::intValue()

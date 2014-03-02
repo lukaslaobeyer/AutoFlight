@@ -97,6 +97,8 @@ ControllerConfiguration *ControllerConfigurationFileIO::loadControllerConfigurat
 		if(strcmp(child.name(), "af:cconfigkey") != 0 || child.attribute("key").as_string()[0] == '\0' || child.attribute("value").as_string()[0] == '\0')
 		{
 			cerr << "[ERROR] Invalid controller configuration file (" << path << ")." << endl;
+			delete cc;
+			cc = nullptr;
 			return nullptr;
 		}
 

@@ -57,6 +57,84 @@ QGraphicsItem* QNodesEditor::itemAt(const QPointF &pos)
 	return 0;
 }
 
+void QNodesEditor::addBlock(BlockType type, int x, int y)
+{
+	static int id_count = 0;
+
+	QNEBlock *block = nullptr;
+
+	if(type == ImageIn)
+	{
+		QNEBlock *imgIn = new QNEBlock;
+		scene->addItem(imgIn);
+		imgIn->addPort(tr("Image In"), 0, QNEPort::NamePort);
+		imgIn->addPort(" ", 0, QNEPort::TypePort);
+		imgIn->addOutputPort("out [img]");
+		imgIn->setPos(x, y);
+
+		imgIn->setID(id_count);
+		imgIn->setType(ImageIn);
+		id_count++;
+
+		block = imgIn;
+	}
+	else if(type == ImageDisplay)
+	{
+		QNEBlock *imgDisp = new QNEBlock;
+		scene->addItem(imgDisp);
+		imgDisp->addPort(tr("Display Image"), 0, QNEPort::NamePort);
+		imgDisp->addPort(" ", 0, QNEPort::TypePort);
+		imgDisp->addInputPort("in [img]");
+		imgDisp->setPos(x, y);
+
+		imgDisp->setID(id_count);
+		imgDisp->setType(ImageDisplay);
+		id_count++;
+
+		block = imgDisp;
+	}
+	else if(type == GaussianBlur)
+	{
+		QNEBlock *gaussianBlur = new QNEBlock;
+		scene->addItem(gaussianBlur);
+		gaussianBlur->addPort(tr("Gaussian Blur"), 0, QNEPort::NamePort);
+		gaussianBlur->addPort(" ", 0, QNEPort::TypePort);
+		gaussianBlur->addInputPort("in [img]");
+		gaussianBlur->addInputPort("kernel width [uint]");
+		gaussianBlur->addInputPort("kernel height [uint]");
+		gaussianBlur->addPort("", 0, QNEPort::TypePort);
+		gaussianBlur->addOutputPort("out [img]");
+		gaussianBlur->setPos(x, y);
+
+		gaussianBlur->setID(id_count);
+		gaussianBlur->setType(GaussianBlur);
+		id_count++;
+
+		block = gaussianBlur;
+	}
+	else if(type == Number)
+	{
+		QNENumberBlock *number = new QNENumberBlock;
+		scene->addItem(number);
+		number->initialize(/*this*/);
+		number->setPos(x, y);
+
+		number->setID(id_count);
+		number->setType(Number);
+		id_count++;
+
+		block = number;
+	}
+
+	if(block != nullptr) // Check if an item was actually added
+	{
+		for(INodesEditorListener *listener : listeners)
+		{
+			listener->nodeAdded(block);
+		}
+	}
+}
+
 bool QNodesEditor::eventFilter(QObject *o, QEvent *e)
 {
 	QGraphicsSceneMouseEvent *me = (QGraphicsSceneMouseEvent*) e;
@@ -94,14 +172,23 @@ bool QNodesEditor::eventFilter(QObject *o, QEvent *e)
 			QGraphicsItem *item = itemAt(me->scenePos());
 			if (item && (item->type() == QNEConnection::Type))
 			{
-				qDebug("connection deleted");
+				QNEConnection *conn = (QNEConnection *) item;
+				QNEBlock *node1 = (QNEBlock *) conn->port1()->parentItem();
+				QNEBlock *node2 = (QNEBlock *) conn->port2()->parentItem();
+
+				for(INodesEditorListener *listener : listeners)
+				{
+					listener->connectionDeleted(node1, node2);
+				}
+
 				delete item;
 			}
 			else if(item && (item->type() == QNEBlock::Type))
 			{
+				QNEBlock *block = (QNEBlock *) item;
 				for(INodesEditorListener *listener : listeners)
 				{
-					//listener->nodeDeleted(item->id(), item->)
+					listener->nodeDeleted(block->id(), block->type());
 				}
 
 
@@ -148,7 +235,7 @@ bool QNodesEditor::eventFilter(QObject *o, QEvent *e)
 
 					for(INodesEditorListener *listener : listeners)
 					{
-						listener->connectionMade(node1->id(), node2->id());
+						listener->connectionMade(node1, node2);
 					}
 
 					return true;

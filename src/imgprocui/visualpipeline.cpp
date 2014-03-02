@@ -1,6 +1,8 @@
 #include "visualpipeline.h"
-
+#include <iostream>
 #include <QtWidgets>
+
+using namespace std;
 
 VisualPipeline::VisualPipeline(QWidget *parent) : QGraphicsView(parent)
 {
@@ -12,6 +14,7 @@ VisualPipeline::VisualPipeline(QWidget *parent) : QGraphicsView(parent)
 
 	nodesEditor = new QNodesEditor(this);
 	nodesEditor->install(s);
+	nodesEditor->addNodesEditorListener(this);
 }
 
 void VisualPipeline::compile()
@@ -19,65 +22,9 @@ void VisualPipeline::compile()
 
 }
 
-void VisualPipeline::addBlock(BlockType type, int x, int y)
-{
-	static int id_count = 0;
-
-	if(type == ImageIn)
-	{
-		QNEBlock *imgIn = new QNEBlock;
-		s->addItem(imgIn);
-		imgIn->addPort(tr("Image In"), 0, QNEPort::NamePort);
-		imgIn->addPort(" ", 0, QNEPort::TypePort);
-		imgIn->addOutputPort("out [img]");
-		imgIn->setPos(x, y);
-
-		imgIn->setID(id_count++);
-		imgIn->setType(ImageIn);
-	}
-	else if(type == ImageDisplay)
-	{
-		QNEBlock *imgDisp = new QNEBlock;
-		s->addItem(imgDisp);
-		imgDisp->addPort(tr("Display Image"), 0, QNEPort::NamePort);
-		imgDisp->addPort(" ", 0, QNEPort::TypePort);
-		imgDisp->addInputPort("in [img]");
-		imgDisp->setPos(x, y);
-
-		imgDisp->setID(id_count++);
-		imgDisp->setType(ImageDisplay);
-	}
-	else if(type == GaussianBlur)
-	{
-		QNEBlock *gaussianBlur = new QNEBlock;
-		s->addItem(gaussianBlur);
-		gaussianBlur->addPort(tr("Gaussian Blur"), 0, QNEPort::NamePort);
-		gaussianBlur->addPort(" ", 0, QNEPort::TypePort);
-		gaussianBlur->addInputPort("in [img]");
-		gaussianBlur->addInputPort("kernel width [uint]");
-		gaussianBlur->addInputPort("kernel height [uint]");
-		gaussianBlur->addPort("", 0, QNEPort::TypePort);
-		gaussianBlur->addOutputPort("out [img]");
-		gaussianBlur->setPos(x, y);
-
-		gaussianBlur->setID(id_count++);
-		gaussianBlur->setType(GaussianBlur);
-	}
-	else if(type == Number)
-	{
-		QNENumberBlock *number = new QNENumberBlock;
-		s->addItem(number);
-		number->initialize();
-		number->setPos(x, y);
-
-		number->setID(id_count++);
-		number->setType(Number);
-	}
-}
-
 void VisualPipeline::addBlock(int type)
 {
-	addBlock((VisualPipeline::BlockType) type, addNodeAtX, addNodeAtY);
+	nodesEditor->addBlock((QNodesEditor::BlockType) type, addNodeAtX, addNodeAtY);
 }
 
 void VisualPipeline::contextMenuEvent(QContextMenuEvent *event)
@@ -111,4 +58,30 @@ void VisualPipeline::contextMenuEvent(QContextMenuEvent *event)
 	QObject::connect(compile, SIGNAL(triggered()), this, SLOT(compile()));
 
 	menu.exec(event->globalPos());
+}
+
+void VisualPipeline::nodeAdded(QNEBlock *node)
+{
+	cout << "Node added: " << node->id() << endl;
+	//nodes.
+}
+
+void VisualPipeline::nodeDeleted(int id, int type)
+{
+	cout << "Node deleted: " << id << endl;
+}
+
+void VisualPipeline::connectionMade(QNEBlock *node1, QNEBlock *node2)
+{
+	cout << "Connected " << node1->id() << " and " << node2->id() << endl;
+}
+
+void VisualPipeline::connectionDeleted(QNEBlock *node1, QNEBlock *node2)
+{
+	cout << "Disconnected " << node1->id() << " and " << node2->id() << endl;
+}
+
+void VisualPipeline::attributeSet(QNEBlock *node, int attribute, double value)
+{
+
 }

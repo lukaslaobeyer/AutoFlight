@@ -1,13 +1,13 @@
-#ifndef INODESEDITORLISTENER_H
-#define INODESEDITORLISTENER_H
+#ifndef INODEATTRIBUTELISTENER_H
+#define INODEATTRIBUTELISTENER_H
 
-class INodesEditorListener
+#include "qnenumberblock.h"
+
+class INodeAttributeListener
 {
 	public:
-		virtual ~INodesEditorListener() {}
-	    virtual void nodeAdded(int id, int nodeType);
-	    virtual void nodeDeleted(int id, int nodeType);
-	    virtual void connectionMade(int node1_id, int node2_id);
+		virtual ~INodeAttributeListener() {}
+	    virtual void attributeChanged(QNENumberBlock *numberNode, double number) = 0;
 };
 
 #endif

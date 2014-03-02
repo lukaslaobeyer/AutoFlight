@@ -29,6 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 #include <QObject>
 #include <vector>
 #include "inodeseditorlistener.h"
+#include "qnenumberblock.h"
 
 class QGraphicsScene;
 class QNEConnection;
@@ -36,10 +37,12 @@ class QGraphicsItem;
 class QPointF;
 class QNEBlock;
 
-class QNodesEditor : public QObject
+class QNodesEditor : public QObject/*, public INodeAttributeListener*/
 {
 	Q_OBJECT
 public:
+	enum BlockType {Number, ImageIn, ImageDisplay, GaussianBlur};
+
 	explicit QNodesEditor(QObject *parent = 0);
 
 	void install(QGraphicsScene *scene);
@@ -52,11 +55,15 @@ public:
 	void addNodesEditorListener(INodesEditorListener *listener);
 	void removeNodesEditorListener(INodesEditorListener *listener);
 
+	void addBlock(BlockType type, int x, int y);
+
+	//void attributeChanged(QNENumberBlock *numberNode, double number);
+
 private:
 	QGraphicsItem *itemAt(const QPointF&);
 
 private:
-	QGraphicsScene *scene;
+	QGraphicsScene *scene = nullptr;
 	QNEConnection *conn;
 	std::vector<INodesEditorListener *> listeners;
 

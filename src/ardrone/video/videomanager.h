@@ -55,7 +55,7 @@ class VideoManager
 
 		AVPacket _packet; // Received data is stored into this, and then decoded.
 		uint8_t *_decode_buffer = nullptr;
-		int _decode_buffer_size;
+		int _decode_buffer_size = -1;
 		volatile int _status = READY; // Either READY or PROCESSING (defined above)
 									  // (volatile is really needed, at least with the MinGW-builds GCC 4.8.0 on Windows 7 32-bit
 		unsigned long _decodedPackets = 0;
@@ -69,8 +69,8 @@ class VideoManager
 		AVFormatContext *_recording_ctx = NULL;
 		boost::asio::ip::tcp::socket *recordingSocket = nullptr;
 		char *_recording_receivedDataBuffer = nullptr;
-		PaVE *_recording_pave;
-		char *_recording_rawFrame;
+		PaVE *_recording_pave = nullptr;
+		char *_recording_rawFrame = nullptr;
 		int _recording_decodedPackets = 0;
 		bool recording_frame_ready = false;
 };
