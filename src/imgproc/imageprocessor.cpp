@@ -57,27 +57,36 @@ void ImageProcessor::processLatestFrame()
 	_status = PROCESSING_FRAME;
 	// Just trying out some stuff
 
-	// Only red objects
-
 	// Reduce noise
 	cv::GaussianBlur(_latestFrame, _latestFrame, cv::Size(3, 3), 0, 0);
-
-	// Edge detection
-	cv::Mat cannyFrame;
-	cv::Canny(_latestFrame, cannyFrame, 100, 100);
 
 	// Color threshold
 	cv::Mat latestFrameHSV;
 	cv::cvtColor(_latestFrame, latestFrameHSV, CV_BGR2HSV);
 	cv::Mat redOnly;
-	cv::inRange(latestFrameHSV, cv::Scalar(-30, 120, 80), cv::Scalar(30, 255, 255), redOnly);
+	cv::Mat red0; // Red with hue between 0 and 30
+	cv::Mat red1; // Red with hue between 150 and 180
+	cv::inRange(latestFrameHSV, cv::Scalar(0, 80, 40), cv::Scalar(10, 200, 200), red0);
+	cv::inRange(latestFrameHSV, cv::Scalar(170, 80, 40), cv::Scalar(180, 200, 200), red1);
+	cv::bitwise_or(red0, red1, redOnly);
 
-	// Mask
-	cv::Mat display;
-	cannyFrame.copyTo(display, redOnly);
+	cv::Mat eroded;
+	cv::erode(redOnly, eroded, cv::Mat(), cv::Point(-1, -1), 20);
+	//cv::morphologyEx(redOnly, opened, cv::MORPH_CLOSE, cv::Mat(), cv::Point(-1, -1), 20);
+
+	cv::Moments m = cv::moments(eroded, true);
+	cv::Point centroid(m.m10/m.m00, m.m01/m.m00);
+
+	cv::Mat final;
+	cv::cvtColor(eroded, final, CV_GRAY2BGR);
+
+	if(centroid.x > 0 && centroid.y > 0)
+	{
+		cv::circle(final, centroid, 5, cv::Scalar(0, 255, 0), 2);
+	}
 
 	//_iv->showImage(display);
-	_iv->showImage(redOnly);
+	_iv->showImage(final);
 
 	_status = READY_FOR_NEXT_FRAME;
 }
