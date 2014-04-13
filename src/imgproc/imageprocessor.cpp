@@ -50,6 +50,11 @@ void ImageProcessor::videoFrameAvailable(cv::Mat frame)
 	}
 }
 
+cv::Mat ImageProcessor::getLatestFrame()
+{
+	return _latestFrame;
+}
+
 void ImageProcessor::processLatestFrame()
 {
 	while(_status != READY_FOR_PROCESS);

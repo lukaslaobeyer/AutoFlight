@@ -76,7 +76,7 @@ class AFMainWindow : public QMainWindow, public INavdataListener, public IConnec
 		Map3D *_map = NULL;
 		ImgProcMainWindow *_imgProc = NULL;
 
-		ImageProcessor *_imgProcTest = NULL;
+		//ImageProcessor *_imgProcTest = NULL;
 	private Q_SLOTS:
 		void attemptConnection();
 		void showControlConfigDialog();

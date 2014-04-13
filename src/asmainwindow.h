@@ -15,6 +15,8 @@
 #include "autoscript/asengine.h"
 #include "autoscript/iscriptsimulationui.h"
 
+#include "imgprocui/imagevisualizer.h"
+
 class ASMainWindow : public QMainWindow, public IScriptSimulationUI
 {
 	Q_OBJECT
@@ -68,6 +70,8 @@ class ASMainWindow : public QMainWindow, public IScriptSimulationUI
 		QTabWidget *tabs = NULL;
 
 		ASEngine *_ase = NULL;
+
+		ImageVisualizer *_iv = NULL;
 
 		QAction *abort = NULL;
 		QAction *abort_m = NULL;

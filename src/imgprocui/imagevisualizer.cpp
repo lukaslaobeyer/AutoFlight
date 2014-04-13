@@ -2,7 +2,7 @@
 
 #include <QtWidgets>
 
-ImageVisualizer::ImageVisualizer() : QObject()
+ImageVisualizer::ImageVisualizer(QObject *parent) : QObject(parent)
 {
 	QObject::connect(this, SIGNAL(videoFrameAvailableSignal(QImage)), this, SLOT(videoFrameAvailable(QImage)));
 }
@@ -37,7 +37,7 @@ void ImageVisualizer::showImage(cv::Mat &f)
 void ImageVisualizer::videoFrameAvailable(QImage img)
 {
 	static bool initialized = false;
-	static QGraphicsScene scene;
+	static QGraphicsScene scene(this);
 	static QGraphicsView view(&scene);
 	static QGraphicsPixmapItem item;
 

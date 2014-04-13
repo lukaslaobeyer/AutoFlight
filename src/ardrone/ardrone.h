@@ -55,6 +55,8 @@ class ARDrone
 
 		void setDefaultLiveStreamCodec(int codec);
 
+		cv::Mat getLatestFrame();
+
 		ardrone::orientation drone_getOrientation();
 		float drone_getRelativeHeading(bool clockwise = true);
 		ardrone::linearvelocity drone_getLinearVelocity();

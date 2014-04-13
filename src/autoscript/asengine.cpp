@@ -1,5 +1,6 @@
 #include "asengine.h"
 #include "asmodules.h"
+#include "opencv/asmodules_opencv.h"
 #include <string>
 #include <boost/filesystem.hpp>
 #include "asioredirector.h"
@@ -52,6 +53,10 @@ BOOST_PYTHON_MODULE(autoscript)
 				.def("startRecording", &Util::startRecording)
 				.def("flatTrim", &Util::flatTrim)
 				.def("calibrateMagnetometer", &Util::calibrateMagnetometer);
+
+	py::class_<ImgProc>("ImgProc")
+				.def("getLatestFrame", &ImgProc::getLatestFrame)
+				.def("showFrame", &ImgProc::showFrame);
 
 	//bpy::class_<HWExt>("HWExt");
 }
@@ -129,7 +134,10 @@ vector<string> ASEngine::getAvailableFunctions()
 			"util.stopRecording()",
 			"util.flatTrim()",
 			"util.calibrateMagnetometer()",
-			"util.changeView(camera)"
+			"util.changeView(camera)",
+
+			"imgproc.getLatestFrame()",
+			"imgproc.showFrame(frame)"
 	};
 
 	return funcs;
@@ -142,7 +150,7 @@ string ASEngine::getPythonVersion()
 	return v.substr(0, v.find_first_of(' '));
 }
 
-bool ASEngine::runScript(string script, bool simulate, IScriptSimulationUI *ssui, ASError *e, function<void(const string &)> outputCallback)
+bool ASEngine::runScript(string script, bool simulate, IScriptSimulationUI *ssui, ImageVisualizer *iv, ASError *e, function<void(const string &)> outputCallback)
 {
 	if(simulate && ssui == NULL)
 	{
@@ -150,14 +158,18 @@ bool ASEngine::runScript(string script, bool simulate, IScriptSimulationUI *ssui
 		return false;
 	}
 
+	cout << "Hi" << endl;
 	PyGILState_STATE state = PyGILState_Ensure();
+	cout << "ok" << endl;
 
 	_control = new Control(_drone, simulate, ssui);
 	_sensors = new Sensors(_drone, simulate, ssui);
 	_util = new Util(_drone, simulate, ssui);
+	_imgproc = new ImgProc(_drone, iv, simulate, ssui);
 	_hwext = new HWExt(_drone, simulate, ssui);
 
 	bool initialized = false;
+	bool error = false;
 
 	try
 	{
@@ -186,6 +198,7 @@ bool ASEngine::runScript(string script, bool simulate, IScriptSimulationUI *ssui
 		global_namespace["control"] = py::ptr(_control);
 		global_namespace["sensors"] = py::ptr(_sensors);
 		global_namespace["util"] = py::ptr(_util);
+		global_namespace["imgproc"] = py::ptr(_imgproc);
 		//global_namespace["hwext"] = py::ptr(_hwext);
 
 		initialized = true;
@@ -194,7 +207,7 @@ bool ASEngine::runScript(string script, bool simulate, IScriptSimulationUI *ssui
 
 		_drone->drone_hover();
 
-		return true;
+		error = false;
 	}
 	catch(const py::error_already_set &ex)
 	{
@@ -218,19 +231,23 @@ bool ASEngine::runScript(string script, bool simulate, IScriptSimulationUI *ssui
 			cout << getLatestExceptionMessage().message << endl;
 		}
 
-		return false;
+		error = true;
 	}
 
 	delete _control;
 	delete _sensors;
 	delete _util;
 	delete _hwext;
+	delete _imgproc;
 	_control = NULL;
 	_sensors = NULL;
 	_util = NULL;
 	_hwext = NULL;
+	_imgproc = NULL;
 
 	PyGILState_Release(state);
+
+	return !error;
 }
 
 int pyQuit(void *) // Gets injected into the script by stopRunningScript
@@ -254,6 +271,11 @@ void ASEngine::stopRunningScript()
 	if(_util != NULL)
 	{
 		_util->abortFlag = true;
+	}
+
+	if(_imgproc != NULL)
+	{
+		_imgproc->abortFlag = true;
 	}
 
 	if(_hwext != NULL)

@@ -410,8 +410,8 @@ bool VideoManager::initializeDecoder()
 		return false;
 	}
 
-	cfg.pFrameOutput = avcodec_alloc_frame();
-	cfg.pFrame = avcodec_alloc_frame();
+	cfg.pFrameOutput = av_frame_alloc();
+	cfg.pFrame = av_frame_alloc();
 
 	if(nullptr == cfg.pFrameOutput || nullptr == cfg.pFrame)
 	{

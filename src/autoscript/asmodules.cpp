@@ -69,6 +69,8 @@ bool Control::move_distance(float phi, float theta, float gaz, float yaw, float 
 		double speedsum = 0;
 		int iteration_number = 0;
 
+		double altitude_at_beginning = d->drone_getAltitude();
+
 		move(phi, theta, gaz, yaw);
 
 		bool completed = false;
@@ -78,15 +80,41 @@ bool Control::move_distance(float phi, float theta, float gaz, float yaw, float 
 
 			boost::this_thread::sleep_for(boost::chrono::milliseconds(CHECK_RATE));
 
-			ardrone::linearvelocity v = d->drone_getLinearVelocity();
-
-			time += CHECK_RATE / 1000;
-			speedsum += sqrt(v.vx*v.vx + v.vy*v.vy);
-			double avaragespeed = speedsum / iteration_number;
-
-			if(avaragespeed * time >= distance)
+			if(phi == 0 && theta == 0 && gaz != 0) // Precision altitude control mode
 			{
-				completed = true;
+
+			}
+			else if(gaz == 0) // Ignore altitude readings
+			{
+				ardrone::linearvelocity v = d->drone_getLinearVelocity();
+
+				time += CHECK_RATE / 1000;
+				speedsum += sqrt(v.vx*v.vx + v.vy*v.vy);
+				double avaragespeed = speedsum / iteration_number;
+
+				if(avaragespeed * time >= distance)
+				{
+					completed = true;
+				}
+			}
+			else if(phi == 0 && theta == 0 && gaz == 0)
+			{
+				break;
+			}
+			else // Combined altitude and pitch/roll distance measurement
+			{
+				ardrone::linearvelocity v = d->drone_getLinearVelocity();
+
+				time += CHECK_RATE / 1000;
+				speedsum += sqrt(v.vx*v.vx + v.vy*v.vy);
+				double avaragespeed = speedsum / iteration_number;
+
+				double deltaAltitude = abs(d->drone_getAltitude()-altitude_at_beginning);
+
+				if(sqrt(avaragespeed * time + deltaAltitude) >= distance)
+				{
+					completed = true;
+				}
 			}
 
 			if(abortFlag)

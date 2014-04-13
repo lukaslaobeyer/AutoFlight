@@ -18,6 +18,7 @@ class ImageProcessor : public IVideoListener
 		void startProcessing();
 		void stopProcessing();
 		void videoFrameAvailable(cv::Mat frame);
+		cv::Mat getLatestFrame();
 	private:
 		void processLatestFrame();
 		void runProcessingLoop();

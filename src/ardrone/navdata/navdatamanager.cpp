@@ -113,6 +113,8 @@ bool NavdataManager::parseNavdata(char data[], int receivedbytes)
 	memcpy(&vision_flag, data + position, sizeof(uint32_t));
 	position += sizeof(uint32_t);
 	
+	uint32_t checksum;
+
 	while(position < receivedbytes)
 	{
 		uint16_t id, size;
@@ -191,10 +193,33 @@ bool NavdataManager::parseNavdata(char data[], int receivedbytes)
 			navdata.vz /= 1000.0f;
 
 			break;
+		case ardrone::navdata_keys::NAVDATA_CKS_TAG:
+			// Read checksum
+			memcpy(&checksum, data + position, sizeof(uint32_t));
+			position += sizeof(uint32_t);
+
+			break;
 		}
 		
 		position += size - (position - previous_position) - 4;
 		//                                                  ^ Substract the size of 'id' and 'size'
+	}
+
+	// Compute checksum
+	uint32_t computed_checksum;
+	uint32_t temp;
+	computed_checksum = 0;
+	uint32_t checksum_data_size = (sizeof(uint16_t) * 2 + sizeof(uint32_t));
+	for(int i = 0; i < (receivedbytes - checksum_data_size); i++ )
+	{
+		temp = (uint8_t) data[i];
+		computed_checksum += temp;
+	}
+
+	if(computed_checksum != checksum)
+	{
+		cerr << "Checksum error!" << endl;
+		return false;
 	}
 
 	navdataAvailable = true;

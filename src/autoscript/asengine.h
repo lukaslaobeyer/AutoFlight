@@ -8,9 +8,11 @@
 #include <functional>
 #include <boost/python.hpp>
 #include "../ardrone/ardrone.h"
+#include "../imgprocui/imagevisualizer.h"
 #include "aserror.h"
 #include "iscriptsimulationui.h"
 #include "asmodules.h"
+#include "opencv/asmodules_opencv.h"
 
 #include <Python.h>
 
@@ -25,7 +27,7 @@ class ASEngine
 
 		std::vector<std::string> getAvailableFunctions();
 
-		bool runScript(std::string script, bool simulate, IScriptSimulationUI *ssui, ASError *e, std::function<void(const std::string &)> outputCallback);
+		bool runScript(std::string script, bool simulate, IScriptSimulationUI *ssui, ImageVisualizer *iv, ASError *e, std::function<void(const std::string &)> outputCallback);
 		void stopRunningScript();
 		std::string getPythonVersion();
 	private:
@@ -36,6 +38,7 @@ class ASEngine
 		Sensors *_sensors = NULL;
 		Control *_control = NULL;
 		Util *_util = NULL;
+		ImgProc *_imgproc = NULL;
 		HWExt *_hwext = NULL;
 };
 

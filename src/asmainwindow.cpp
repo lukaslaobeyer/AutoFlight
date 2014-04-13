@@ -25,6 +25,8 @@ ASMainWindow::ASMainWindow(ASEngine *e, QWidget *parent) : QMainWindow(parent)
 {
 	_ase = e;
 
+	_iv = new ImageVisualizer;
+
 	QWidget *w = new QWidget();
 	QVBoxLayout *layout = new QVBoxLayout();
 	layout->setSpacing(0);
@@ -500,7 +502,7 @@ void ASMainWindow::runScript(bool simulate)
 
 	function<void(string)> callback = std::bind(&ASMainWindow::handleScriptOutput, this, std::placeholders::_1);
 
-	if(!_ase->runScript(_editor->text().toStdString(), simulate, this, &exception, callback))
+	if(!_ase->runScript(_editor->text().toStdString(), simulate, this, _iv, &exception, callback))
 	{
 		Q_EMIT scriptOutputAvailable(QString::fromStdString(exception.message));
 		Q_EMIT highlightErrorSignal(exception.linenumber);

@@ -544,6 +544,11 @@ void ARDrone::processControllerInput()
 	}
 }
 
+cv::Mat ARDrone::getLatestFrame()
+{
+	return _frame;
+}
+
 // AR.Drone navdata getting functions
 
 ardrone::orientation ARDrone::drone_getOrientation()

@@ -10,7 +10,7 @@ class ImageVisualizer : public QObject
 	Q_OBJECT
 
 	public:
-		ImageVisualizer();
+		ImageVisualizer(QObject *parent = NULL);
 		void showImage(cv::Mat &f);
 	private Q_SLOTS:
 		void videoFrameAvailable(QImage img);

@@ -32,7 +32,7 @@ namespace ardrone
 		const int NAVDATA_VISION_RAW_TAG = 11;
 		const int NAVDATA_MAGNETO_TAG = 22;
 		const int NAVDATA_WIFI_TAG = 26;
-		const int NAVDATA_CKS_TAG = -1;
+		const int NAVDATA_CKS_TAG = 0xFFFF;
 	}
 	
 	namespace video
