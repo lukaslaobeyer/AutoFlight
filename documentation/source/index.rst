@@ -16,7 +16,7 @@ Documentation Contents:
    :maxdepth: 2
 
    gettingstarted
-   buildingfromsource_ubuntu
+   Automatic flight with AutoScript <autoscript/index>
 
 
 

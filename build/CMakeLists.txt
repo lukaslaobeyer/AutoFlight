@@ -1,3 +1,6 @@
+# May be required to run CMake with  -DPYTHON_EXECUTABLE=/usr/bin/python3 -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.4m.so -DPYTHON_INCLUDE_DIR=/usr/include/python3.4 -DPYTHON_INCLUDE_DIR2=/usr/include/python3.4
+
+
 cmake_minimum_required(VERSION 2.8.9)
 
 project(AutoFlight)
@@ -15,6 +18,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../release_linux)
 # Add current directory to CMAKE_MODULE_PATH
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ".")
 
+set(QT_USE_QTWEBKIT TRUE)
+
 # Tell cmake where Qt is
 set(CMAKE_PREFIX_PATH "/home/lukas/workspace/libs/qt5/qtbase")
 
@@ -29,7 +34,7 @@ find_package(Qt5WebKitWidgets)
 
 # Find the Boost libraries
 set(Python_ADDITIONAL_VERSIONS 3)
-find_package(Boost 1.53 COMPONENTS program_options python-py33 system filesystem thread chrono date_time REQUIRED)
+find_package(Boost 1.53 COMPONENTS program_options python-py34 system filesystem thread chrono date_time REQUIRED)
 include_directories(${Boost_INCLUDE_DIR})
 
 # Find OpenCV
@@ -41,7 +46,7 @@ include_directories(${FFMPEG_INCLUDE_DIR})
 find_package(ZLIB REQUIRED)
 
 # Find Python
-find_package(PythonLibs REQUIRED)
+find_package(PythonLibs 3 REQUIRED)
 include_directories(${PYTHON_INCLUDE_DIRS})
 
 file(GLOB AutoFlight_SRC
@@ -92,7 +97,7 @@ target_link_libraries(AutoFlight ${OpenCV_LIBS})
 target_link_libraries(AutoFlight ${FFMPEG_LIBRARIES})
 target_link_libraries(AutoFlight ${ZLIB_LIBRARIES})
 target_link_libraries(AutoFlight ${PYTHON_LIBRARIES})
-target_link_libraries(AutoFlight GL x264 va swscale)
+target_link_libraries(AutoFlight GL x264 swscale)
 
 # Link libraries in ../lib
 target_link_libraries(AutoFlight "/home/lukas/workspace/AutoFlight/lib/release-linux64/libstem_gamepad.a")
