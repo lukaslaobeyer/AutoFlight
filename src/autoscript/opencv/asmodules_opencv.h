@@ -1,6 +1,9 @@
 #ifndef ASMODULES_OPENCV_H_
 #define ASMODULES_OPENCV_H_
 
+#include <cmath> // Needed, see http://boost.2283326.n4.nabble.com/Boost-Python-Compile-Error-s-GCC-via-MinGW-w64-td3165793.html#a3166760
+                 // and http://bugs.python.org/issue11566
+
 #include <boost/python.hpp>
 #include <string>
 #include "../../ardrone/ardrone.h"

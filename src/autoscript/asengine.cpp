@@ -76,6 +76,8 @@ ASEngine::ASEngine(ARDrone *drone)
 	{
 		Py_SetProgramName((wchar_t *)"AutoFlight");
 		Py_Initialize();
+		PyEval_InitThreads();
+		PyEval_ReleaseLock();
 	}
 
 	_drone = drone;
@@ -158,9 +160,7 @@ bool ASEngine::runScript(string script, bool simulate, IScriptSimulationUI *ssui
 		return false;
 	}
 
-	cout << "Hi" << endl;
 	PyGILState_STATE state = PyGILState_Ensure();
-	cout << "ok" << endl;
 
 	_control = new Control(_drone, simulate, ssui);
 	_sensors = new Sensors(_drone, simulate, ssui);

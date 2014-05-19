@@ -5,7 +5,8 @@
 
 namespace autoflight
 {
-	const std::string SOFTWARE_VERSION = "Alpha 0.1 (Preview)";
+	const std::string SOFTWARE_VERSION = "Alpha 0.2.0";
+	const std::string BUILD_NUMBER     = "806ea66";
 }
 
 namespace ardrone
@@ -15,7 +16,7 @@ namespace ardrone
 	const int VIDEO_PORT           = 5555;
 	const int VIDEO_RECORDING_PORT = 5553;
 	const int CONTROL_PORT         = 5556;
-	
+
 	namespace navdata_keys
 	{
 		const int NAVDATA_DEMO_TAG = 0;
@@ -34,7 +35,7 @@ namespace ardrone
 		const int NAVDATA_WIFI_TAG = 26;
 		const int NAVDATA_CKS_TAG = 0xFFFF;
 	}
-	
+
 	namespace video
 	{
 		namespace frame_type

@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 2.8.9)
 project(AutoFlight)
 
 
-set(CMAKE_PREFIX_PATH "C:/OpenCV/opencv; C:/FFMPEG; C:/Python33")
+set(CMAKE_PREFIX_PATH "C:/OpenCV_RELEASE; C:/FFMPEG; C:/Python33")
 
 # C++11 and warnings
 set(CMAKE_CXX_FLAGS "-Wall -std=c++11 -O2 -s")
@@ -23,6 +23,9 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ".")
 # Include libraries in the ../lib folder
 include_directories("C:/AutoFlight/lib/include/gamepad")
 include_directories("C:/AutoFlight/lib/include")
+
+include_directories("C:/OpenCV_RELEASE/include")
+include_directories("C:/Python33/Lib/site-packages/numpy/core/include")
 
 # Find the QtWidgets library
 add_definitions(-DQT_NO_KEYWORDS)
@@ -41,7 +44,7 @@ add_definitions(-DBOOST_PYTHON_STATIC_LIB)
 add_definitions(-DBOOST_ALL_NO_LIB)
 
 # Find OpenCV
-set(OpenCV_DIR "C:/OpenCV/opencv/build")
+set(OpenCV_DIR "C:/OpenCV_RELEASE/build")
 find_package(OpenCV REQUIRED)
 
 # Find Python
@@ -74,6 +77,9 @@ file(GLOB AutoFlight_SRC
     "../src/ardrone/video/*.cpp"
     "../src/autoscript/*.h"
     "../src/autoscript/*.cpp"
+    "../src/autoscript/opencv/*.h"
+    "../src/autoscript/opencv/*.cpp"
+    "../src/autoscript/opencv/*.hpp"
     "../src/tools/*.h"
     "../src/tools/*.cpp"
     "../src/imgprocui/*.h"
@@ -96,6 +102,13 @@ qt5_add_resources(AutoFlight_RCCS "../src/resources.qrc")
 
 # Create the AutoFlight executable
 add_executable(AutoFlight WIN32 ${AutoFlight_SRC} ${AutoFlight_RCCS})
+
+# Update BUILD_NUMBER in afconstants.h header
+#add_custom_target(
+#  generate_build_number
+#  COMMAND python3 update_build_number.py
+#)
+#add_dependencies(AutoFlight generate_build_number)
 
 # Link
 target_link_libraries(AutoFlight ${Boost_LIBRARIES})

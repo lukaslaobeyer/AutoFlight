@@ -745,6 +745,9 @@ void AFMainWindow::showAboutDialog()
 	QLabel *version = new QLabel(tr("Version ").append(QString::fromStdString(autoflight::SOFTWARE_VERSION)));
 	right->addWidget(version);
 
+	QLabel *build = new QLabel(tr("Build ").append(QString::fromStdString(autoflight::BUILD_NUMBER)));
+	right->addWidget(build);
+
 	right->addStretch();
 
 	QChar copyrightSymbol(0x00A9);

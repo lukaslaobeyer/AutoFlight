@@ -92,6 +92,13 @@ qt5_add_resources(AutoFlight_RCCS "../src/resources.qrc")
 # Create the AutoFlight executable
 add_executable(AutoFlight ${AutoFlight_SRC} ${AutoFlight_RCCS})
 
+# Update BUILD_NUMBER in afconstants.h header
+add_custom_target(
+  generate_build_number
+  COMMAND python3 update_build_number.py
+)
+add_dependencies(AutoFlight generate_build_number)
+
 target_link_libraries(AutoFlight ${Boost_LIBRARIES})
 target_link_libraries(AutoFlight ${OpenCV_LIBS})
 target_link_libraries(AutoFlight ${FFMPEG_LIBRARIES})
