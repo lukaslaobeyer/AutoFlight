@@ -9,14 +9,15 @@
 
 
 
-Documentation Contents:
-=======================
+Documentation Contents
+======================
 
 .. toctree::
    :maxdepth: 2
 
    gettingstarted
    Automatic flight with AutoScript <autoscript/index>
+   Image processing with OpenCV <imageprocessing/index>
 
 
 

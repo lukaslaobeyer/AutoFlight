@@ -30,6 +30,8 @@ class ASEngine
 		bool runScript(std::string script, bool simulate, IScriptSimulationUI *ssui, ImageVisualizer *iv, ASError *e, std::function<void(const std::string &)> outputCallback);
 		void stopRunningScript();
 		std::string getPythonVersion();
+
+		static void initPython();
 	private:
 		ASError getLatestExceptionMessage();
 

@@ -20,6 +20,7 @@
 #include <Gamepad.h>
 
 #include <chrono>
+#include <future>
 #include <thread>
 #include <cmath>
 
@@ -268,6 +269,32 @@ void ARDrone::runUpdateLoop()
 			// Process received packets (if any): Important!
 			_io_service->reset();
 			int packets = _io_service->poll();
+
+			// Process received packets (if any): Important! (with timeout)
+			/*volatile int packets = 0;
+			std::future<void> f = std::async(std::launch::async, [this, packets] () mutable { packets =  _io_service->poll(); });
+			std::future_status status;
+			int timeout_counter = 0;
+			do
+			{
+			    status = f.wait_for(std::chrono::milliseconds(1));
+			    if (status == std::future_status::timeout)
+			    {
+			        timeout_counter++;
+			    }
+
+			    if(timeout_counter >= 25)
+			    {
+			    	cerr << "Timeout while polling sensor data!" << endl;
+			    	_io_service->stop();
+			    	_io_service->reset();
+
+			    	break;
+			    }
+			}
+			while(status != std::future_status::ready);
+
+			packets = 1;*/
 
 			if(packets == 0)
 			{

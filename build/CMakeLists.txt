@@ -20,8 +20,11 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ".")
 
 set(QT_USE_QTWEBKIT TRUE)
 
+add_definitions(-DBOOST_ASIO_ENABLE_HANDLER_TRACKING=TRUE)
+
 # Tell cmake where Qt is
-set(CMAKE_PREFIX_PATH "/home/lukas/workspace/libs/qt5/qtbase")
+#set(CMAKE_PREFIX_PATH "/home/lukas/workspace/libs/qt5/qtbase")
+set(CMAKE_PREFIX_PATH "/usr/local/Qt-5.3.1/")
 
 # Include libraries in the ../lib folder
 include_directories("../lib/include/gamepad")

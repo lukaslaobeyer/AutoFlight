@@ -18,7 +18,7 @@ Basic Usage
 Connecting to the AR.Drone
 --------------------------
 
-To start flying your AR.Drone, make sure you are already connected to it via WiFi, just like you would connect to any other wireless router. Then, just click the button in the upper right corner ("Connect to AR.Drone"). In about one second the real time video stream and sensor data should appear..
+To start flying your AR.Drone, make sure you are already connected to it via WiFi, just like you would connect to any other wireless router. Then, just click the button in the upper right corner ("Connect to AR.Drone"). In about one second the real time video stream and sensor data should appear.
 
 .. note:: 
 	

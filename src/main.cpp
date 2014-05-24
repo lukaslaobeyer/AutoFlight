@@ -7,6 +7,7 @@
 
 #include "autoflight.h"
 #include "afmainwindow.h"
+#include "autoscript/asengine.h"
 #include <boost/program_options.hpp>
 #include <QApplication>
 #include <iostream>
@@ -59,6 +60,8 @@ int main(int argc, char *argv[])
 
 	Gamepad_init();
 	Gamepad_detectDevices();
+
+	ASEngine::initPython();
 
 	AutoFlight af(ip_address);
 

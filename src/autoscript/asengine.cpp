@@ -69,18 +69,22 @@ BOOST_PYTHON_MODULE(autoscriptioredirector)
 
 ASEngine::ASEngine(ARDrone *drone)
 {
-	PyImport_AppendInittab("autoscript", &PyInit_autoscript);
-	PyImport_AppendInittab("autoscriptioredirector", &PyInit_autoscriptioredirector);
+	initPython();
 
+	_drone = drone;
+}
+
+void ASEngine::initPython()
+{
 	if(Py_IsInitialized() == 0)
 	{
+		PyImport_AppendInittab("autoscript", &PyInit_autoscript);
+		PyImport_AppendInittab("autoscriptioredirector", &PyInit_autoscriptioredirector);
 		Py_SetProgramName((wchar_t *)"AutoFlight");
 		Py_Initialize();
 		PyEval_InitThreads();
 		PyEval_ReleaseLock();
 	}
-
-	_drone = drone;
 }
 
 ASEngine::~ASEngine()
