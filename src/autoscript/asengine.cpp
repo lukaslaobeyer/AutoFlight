@@ -141,6 +141,7 @@ vector<string> ASEngine::getAvailableFunctions()
 			"util.flatTrim()",
 			"util.calibrateMagnetometer()",
 			"util.changeView(camera)",
+			"util.savePicture(path)",
 
 			"imgproc.getLatestFrame()",
 			"imgproc.showFrame(frame)"

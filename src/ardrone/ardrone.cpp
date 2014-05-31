@@ -1188,30 +1188,35 @@ bool ARDrone::drone_unpair()
 	return true;
 }
 
-bool ARDrone::drone_takePicture()
+bool ARDrone::drone_takePicture(std::string path)
 {
 	if(!isConnected())
 	{
 		return false;
 	}
 
-	string picdirectory = _saveDir;
-	picdirectory.append("Pictures/");
+	if(path != "")
+	{
+		string picdirectory = _saveDir;
+		picdirectory.append("Pictures/");
 
-	// Create the directory if it doesn't exist
-	boost::filesystem::create_directories(picdirectory);
+		// Create the directory if it doesn't exist
+		boost::filesystem::create_directories(picdirectory);
 
-	string timestamp = AutoFlight::af_timestamp();
+		string timestamp = AutoFlight::af_timestamp();
 
-	string filename = "Pic_";
-	filename.append(timestamp);
-	filename.append(".jpg");
+		string filename = "Pic_";
+		filename.append(timestamp);
+		filename.append(".jpg");
 
-	bool picTaken = _vm.takePicture(picdirectory + filename);
+		path = picdirectory + filename;
+	}
+
+	bool picTaken = _vm.takePicture(path);
 
 	if(picTaken && _srec != NULL)
 	{
-		_srec->addEvent("PictureTaken", picdirectory + filename);
+		_srec->addEvent("PictureTaken", path);
 	}
 
 	return picTaken;

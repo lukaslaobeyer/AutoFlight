@@ -259,7 +259,7 @@ bool Control::rotate(float speed, float degs, bool clockwise)
 	if(sim)
 	{
 		std::stringstream description;
-		description << "Rotating " << degs << "degrees with  yaw = ";
+		description << "Rotating " << degs << " degrees with yaw = ";
 		if(!clockwise)
 		{
 			description << "-";
@@ -558,6 +558,14 @@ bool Util::changeView(std::string view)
 	{
 		return false;
 	}
+}
+
+bool Util::savePicture(std::string path)
+{
+	ASSERT_ARDRONE_B(d)
+	SIMULATE_ACTION_B(sim, "Took picture", ssui)
+
+	return d->drone_takePicture(path);
 }
 
 //////////// HARDWARE EXTENSION RELATED FUNCTIONS ////////////

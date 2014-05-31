@@ -6,7 +6,7 @@
 namespace autoflight
 {
 	const std::string SOFTWARE_VERSION = "Alpha 0.2.0";
-	const std::string BUILD_NUMBER     = "8192aba";
+	const std::string BUILD_NUMBER     = "a428004";
 }
 
 namespace ardrone

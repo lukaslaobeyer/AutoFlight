@@ -90,6 +90,8 @@ class Util
 
 		bool changeView(std::string view);
 
+		bool savePicture(std::string path);
+
 		bool abortFlag = false;
 	private:
 		ARDrone *d = NULL;

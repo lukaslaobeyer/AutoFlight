@@ -69,7 +69,7 @@ class ARDrone
 		bool drone_isRecordingNavdata();
 		bool drone_isFlying();
 
-		bool drone_takePicture();
+		bool drone_takePicture(std::string path = "");
 		bool drone_startRecording();
 		bool drone_stopRecording();
 		bool drone_toggleRecording();
