@@ -20,7 +20,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ".")
 
 set(QT_USE_QTWEBKIT TRUE)
 
-add_definitions(-DBOOST_ASIO_ENABLE_HANDLER_TRACKING=TRUE)
+#add_definitions(-DBOOST_ASIO_ENABLE_HANDLER_TRACKING=TRUE)
 
 # Tell cmake where Qt is
 #set(CMAKE_PREFIX_PATH "/home/lukas/workspace/libs/qt5/qtbase")
@@ -107,7 +107,7 @@ target_link_libraries(AutoFlight ${OpenCV_LIBS})
 target_link_libraries(AutoFlight ${FFMPEG_LIBRARIES})
 target_link_libraries(AutoFlight ${ZLIB_LIBRARIES})
 target_link_libraries(AutoFlight ${PYTHON_LIBRARIES})
-target_link_libraries(AutoFlight GL x264 swscale)
+target_link_libraries(AutoFlight GL x264 swscale swresample)
 
 # Link libraries in ../lib
 target_link_libraries(AutoFlight "/home/lukas/workspace/AutoFlight/lib/release-linux64/libstem_gamepad.a")

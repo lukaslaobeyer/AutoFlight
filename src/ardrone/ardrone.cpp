@@ -415,6 +415,12 @@ void ARDrone::processControllerInput()
 			}
 		}
 
+		if(device == nullptr)
+		{
+			drone_hover();
+			return;
+		}
+
 		if(_controllerconfig->takeoff >= 0 && cyclesToWait[0] == 0)
 		{
 			if(device->buttonStates[_controllerconfig->takeoff])
@@ -1195,28 +1201,39 @@ bool ARDrone::drone_takePicture(std::string path)
 		return false;
 	}
 
-	if(path != "")
+	bool picTaken = false;
+
+	try
 	{
-		string picdirectory = _saveDir;
-		picdirectory.append("Pictures/");
+		if(path == "") // No custom path specified
+		{
+			string picdirectory = _saveDir;
+			picdirectory.append("Pictures/");
 
-		// Create the directory if it doesn't exist
-		boost::filesystem::create_directories(picdirectory);
+			// Create the directory if it doesn't exist
+			boost::filesystem::create_directories(picdirectory);
 
-		string timestamp = AutoFlight::af_timestamp();
+			string timestamp = AutoFlight::af_timestamp();
 
-		string filename = "Pic_";
-		filename.append(timestamp);
-		filename.append(".jpg");
+			string filename = "Pic_";
+			filename.append(timestamp);
+			filename.append(".jpg");
 
-		path = picdirectory + filename;
+			path = picdirectory + filename;
+		}
+
+		picTaken = _vm.takePicture(path);
+
+		if(picTaken && _srec != NULL)
+		{
+			_srec->addEvent("PictureTaken", path);
+		}
 	}
-
-	bool picTaken = _vm.takePicture(path);
-
-	if(picTaken && _srec != NULL)
+	catch(std::exception &ex)
 	{
-		_srec->addEvent("PictureTaken", path);
+		cerr << "Error! Could not save picture." << endl;
+		cerr << ex.what() << endl;
+		picTaken = false;
 	}
 
 	return picTaken;

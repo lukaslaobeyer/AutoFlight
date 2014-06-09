@@ -76,14 +76,23 @@ bool FrameReconstructor::decodePacket(char *data, unsigned int bytes_transferred
 			// Check whether there's a partial frame, one complete frame or more than one frame in this packet
 			if((offset + frameSize + headerSize) > bytes_transferred)
 			{
-				// Partial frame in this packet
-				copy(data + offset + headerSize, data + bytes_transferred, frameBuffer);
-				partialFrame = true;
-				partialFrameOffset = bytes_transferred - offset - headerSize;
+				if(offset + headerSize < bytes_transferred)
+				{
+					// Partial frame in this packet
+					copy(data + offset + headerSize, data + bytes_transferred, frameBuffer);
+					partialFrame = true;
+					partialFrameOffset = bytes_transferred - offset - headerSize;
 
-				_offset = 0;
+					_offset = 0;
 
-				return true;
+					return true;
+				}
+				else
+				{
+					// TODO: ???
+					cout << "Offset: " << offset << "; Frame size: " << frameSize << "; Header size: " << headerSize << "; Transferred: " << bytes_transferred << endl;
+					return false;
+				}
 			}
 			else if((offset + frameSize + headerSize) < bytes_transferred)
 			{
