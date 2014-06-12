@@ -4,7 +4,7 @@ Getting Started using OpenCV in AutoFlight
 
 .. note::
 	To be able to use OpenCV from AutoScript, you will first have to install the image processing add-on.
-	Get it `here <https://github.com/lukaslaobeyer/AutoFlight/releases/download/v0.2.0-alpha/AF_ImageProcessing.zip>`_.
+	Get it `here <https://s3.amazonaws.com/LBPCLabsDownloads/AF_ImageProcessing.zip>`_.
 	Also, please make sure you are using at least AutoFlight version 0.2.
 
 Installation
